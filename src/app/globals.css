@@ -1,0 +1,55 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+body {
+  color: var(--foreground);
+  background: #ffffff;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+@layer components {
+  .article-content h3 {
+    @apply text-2xl font-bold text-gray-900 mt-8 mb-4;
+  }
+
+  .article-content h4 {
+    @apply text-xl font-bold text-gray-900 mt-6 mb-3;
+  }
+
+  .article-content p {
+    @apply text-gray-700 leading-relaxed mb-4;
+  }
+
+  .article-content ul,
+  .article-content ol {
+    @apply list-disc list-inside space-y-2 mb-6 ml-4 text-gray-700;
+  }
+
+  .article-content ol {
+    @apply list-decimal;
+  }
+
+  .article-content li {
+    @apply leading-relaxed;
+  }
+
+  .article-content strong {
+    @apply font-bold text-gray-900;
+  }
+
+  .article-content a {
+    @apply text-gray-700 hover:text-black underline underline-offset-2 transition-colors duration-250;
+  }
+}
