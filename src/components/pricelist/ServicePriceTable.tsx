@@ -1,223 +1,227 @@
 'use client';
 
 import { DeviceModel, Service, ServicePrice } from '@/types/pricelist';
-import { ServiceRow } from './ServiceRow';
+import Image from 'next/image';
+import Link from 'next/link';
+import { Home, ChevronRight } from 'lucide-react';
+import { type Locale, getTranslations, getServiceName, formatMessage } from '@/lib/i18n';
 
 export interface ServicePriceTableProps {
   model: DeviceModel;
   services: Service[];
   prices: ServicePrice[];
+  locale?: Locale;
   onReserve?: (service: Service, model: DeviceModel) => void;
 }
 
 /**
- * ServicePriceTable - таблица услуг с ценами для модели устройства
+ * ServicePriceTable - строгая минималистичная таблица услуг в стиле iFix
  *
- * Отображает все доступные услуги ремонта для конкретной модели
- * с ценами, гарантией и кнопками бронирования.
- * Используется на странице модели (/pricelist/iphone-15-pro-max).
- *
- * @example
- * ```tsx
- * <ServicePriceTable
- *   model={iphone15ProMax}
- *   services={allServices}
- *   prices={pricesForModel}
- *   onReserve={handleReservation}
- * />
- * ```
+ * Дизайн:
+ * - Двухколоночный layout: таблица услуг (левая 2/3) + изображение модели (правая 1/3)
+ * - Строгий минимализм без анимаций
+ * - Цветовая схема: Amber (#f59e0b) + Gray
+ * - Информационные блоки: Ремонт LIVE, Ремонт на месте, Гарантия
  */
 export function ServicePriceTable({
   model,
   services,
   prices,
-  onReserve,
+  locale = 'ru',
 }: ServicePriceTableProps) {
-  // Группируем услуги по категориям
-  const mainServices = services.filter((s) => s.category === 'main');
-  const extraServices = services.filter((s) => s.category === 'extra');
+  // Получаем переводы для текущего языка
+  const t = getTranslations(locale);
 
   // Создаем map цен для быстрого доступа
   const priceMap = new Map(
     prices.map((p) => [p.serviceId, p])
   );
 
-  const handleReserve = (service: Service) => {
-    onReserve?.(service, model);
-  };
-
-  // Проверяем, есть ли цены
   const hasPrices = prices.length > 0;
   const hasServices = services.length > 0;
 
+  // Helper function to get category name
+  const getCategoryName = (category: string): string => {
+    const names: Record<string, string> = {
+      iphone: 'iPhone',
+      ipad: 'iPad',
+      macbook: 'MacBook',
+      'apple-watch': 'Apple Watch',
+    };
+    return names[category] || category;
+  };
+
   return (
-    <div className="w-full max-w-4xl mx-auto px-4 py-8">
+    <div className="w-full max-w-7xl mx-auto px-4 py-8">
+      {/* Breadcrumbs */}
+      <nav className="flex items-center gap-2 text-sm text-gray-600 mb-6">
+        <Link href="/" className="hover:text-gray-900 transition flex items-center gap-1">
+          <Home className="w-4 h-4" />
+          Главная
+        </Link>
+        <ChevronRight className="w-4 h-4" />
+        <Link href="/pricelist" className="hover:text-gray-900 transition">
+          Прайс-лист
+        </Link>
+        <ChevronRight className="w-4 h-4" />
+        <Link
+          href={`/pricelist/${model.category}`}
+          className="hover:text-gray-900 transition"
+        >
+          Ремонт {getCategoryName(model.category)}
+        </Link>
+        <ChevronRight className="w-4 h-4" />
+        <span className="text-gray-900 font-medium">
+          {model.name}
+        </span>
+      </nav>
+
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
           {model.name}
         </h1>
         <p className="text-lg text-gray-600">
-          Прайс-лист услуг по ремонту
+          {t.pricelistTitle}
         </p>
       </div>
 
-      {/* Empty Prices State - показываем, если нет цен но есть услуги */}
-      {!hasPrices && hasServices && (
-        <div className="mb-10">
-          <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-8 text-center border border-gray-200">
-            <div className="text-6xl mb-4">⏳</div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-3">
-              Цены скоро будут добавлены
-            </h2>
-            <p className="text-gray-600 mb-6 max-w-md mx-auto">
-              Мы работаем над обновлением прайс-листа для {model.name}.
-              Пожалуйста, свяжитесь с нами для уточнения стоимости ремонта.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a
-                href="tel:+420607855558"
-                className="inline-flex items-center justify-center px-6 py-3 bg-green-500 hover:bg-green-600
-                         text-white font-semibold rounded-lg shadow-md hover:shadow-lg
-                         transition-all duration-200 transform hover:scale-105"
-              >
-                <span className="mr-2">📞</span>
-                Позвонить
-              </a>
-              <a
-                href="https://t.me/mojservice"
-                className="inline-flex items-center justify-center px-6 py-3 bg-gray-700 hover:bg-gray-800
-                         text-white font-semibold rounded-lg shadow-md hover:shadow-lg
-                         transition-all duration-200 transform hover:scale-105"
-              >
-                <span className="mr-2">💬</span>
-                Написать в Telegram
-              </a>
+      {/* Основной контент: двухколоночный layout */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 mb-12">
+        {/* Левая колонка - таблица услуг (2/3 ширины) */}
+        <div className="lg:col-span-2">
+          {/* Empty State - нет цен */}
+          {!hasPrices && hasServices && (
+            <div className="mb-8">
+              <div className="bg-gray-50 rounded-lg p-8 text-center border border-gray-200">
+                <div className="text-5xl mb-4">⏳</div>
+                <h2 className="text-2xl font-bold text-gray-900 mb-3">
+                  {t.pricesSoonTitle}
+                </h2>
+                <p className="text-gray-600 mb-6">
+                  {formatMessage(t.pricesSoonDescription, { model: model.name })}
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <a
+                    href="tel:+420607855558"
+                    className="inline-flex items-center justify-center px-6 py-3
+                             bg-amber-500 hover:bg-amber-600 text-white font-semibold
+                             rounded-lg shadow-sm transition-colors duration-200"
+                  >
+                    <span className="mr-2">📞</span>
+                    {t.call}
+                  </a>
+                  <a
+                    href="https://t.me/mojservice"
+                    className="inline-flex items-center justify-center px-6 py-3
+                             bg-gray-700 hover:bg-gray-800 text-white font-semibold
+                             rounded-lg shadow-sm transition-colors duration-200"
+                  >
+                    <span className="mr-2">💬</span>
+                    {t.writeToTelegram}
+                  </a>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      )}
+          )}
 
-      {/* Main Services Section */}
-      {mainServices.length > 0 && (
-        <div className="mb-10">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
-            <span className="text-gray-700 mr-2">🔧</span>
-            Основные услуги
-          </h2>
+          {/* Таблица услуг */}
+          {hasPrices && hasServices && (
+            <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow duration-300">
+              <table className="w-full">
+                <thead>
+                  <tr className="bg-gray-50 border-b border-gray-200">
+                    <th className="px-4 sm:px-6 py-4 text-left text-sm font-semibold text-gray-900">
+                      {t.service}
+                    </th>
+                    <th className="px-4 sm:px-6 py-4 text-right text-sm font-semibold text-gray-900">
+                      {t.price}
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-200">
+                  {services.map((service) => {
+                    const price = priceMap.get(service.id);
+                    if (!price) return null;
 
-          <div className="bg-white rounded-2xl shadow-md overflow-hidden border border-gray-100">
-            <div className="divide-y divide-gray-100">
-              {mainServices.map((service) => {
-                const price = priceMap.get(service.id);
-                return (
-                  <ServiceRow
-                    key={service.id}
-                    service={service}
-                    price={price}
-                    onReserve={() => handleReserve(service)}
-                  />
-                );
-              })}
+                    return (
+                      <tr key={service.id} className="hover:bg-gray-50 transition-colors duration-200">
+                        <td className="px-4 sm:px-6 py-4">
+                          <div>
+                            <div className="font-medium text-gray-900">
+                              {getServiceName(service, locale)}
+                            </div>
+                            {price.warranty_months && (
+                              <div className="text-sm text-gray-500 mt-1">
+                                {t.warranty}: {price.warranty_months} {t.months}
+                              </div>
+                            )}
+                          </div>
+                        </td>
+                        <td className="px-4 sm:px-6 py-4 text-right">
+                          <div className="font-semibold text-gray-900 text-lg">
+                            {price.price} Kč
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
             </div>
-          </div>
-        </div>
-      )}
+          )}
 
-      {/* Extra Services Section */}
-      {extraServices.length > 0 && (
-        <div className="mb-10">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
-            <span className="text-green-600 mr-2">✨</span>
-            Дополнительные услуги
-          </h2>
-
-          <div className="bg-white rounded-2xl shadow-md overflow-hidden border border-gray-100">
-            <div className="divide-y divide-gray-100">
-              {extraServices.map((service) => {
-                const price = priceMap.get(service.id);
-                return (
-                  <ServiceRow
-                    key={service.id}
-                    service={service}
-                    price={price}
-                    onReserve={() => handleReserve(service)}
-                  />
-                );
-              })}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Warranty Info - показываем только если есть цены */}
-      {hasPrices && (
-        <div className="mt-8 p-6 bg-gradient-to-r from-gray-50 to-gray-100 rounded-2xl border border-gray-200">
-          <div className="flex items-start space-x-3">
-            <div className="text-3xl">✅</div>
-            <div>
-              <h3 className="text-lg font-bold text-gray-900 mb-1">
-                2 года гарантии на все ремонты
-              </h3>
-              <p className="text-sm text-gray-700">
-                Мы уверены в качестве наших услуг и предоставляем расширенную гарантию
-                на все выполненные работы.
+          {/* Empty State - нет услуг */}
+          {!hasServices && (
+            <div className="text-center py-16">
+              <div className="text-5xl mb-4">🔧</div>
+              <p className="text-gray-500 text-lg mb-2">
+                {t.servicesUnavailableTitle}
+              </p>
+              <p className="text-gray-400 text-sm">
+                {t.servicesUnavailableDescription}
               </p>
             </div>
+          )}
+        </div>
+
+        {/* Правая колонка - изображение модели (1/3 ширины) */}
+        <div className="lg:col-span-1">
+          <div className="sticky top-8">
+            {model.image_url ? (
+              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-300">
+                <div className="relative aspect-square w-full mb-4">
+                  <Image
+                    src={model.image_url}
+                    alt={model.name}
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+                <div className="text-center">
+                  <p className="text-lg font-semibold text-gray-900">
+                    {t.repairLiveTitle}
+                  </p>
+                  <p className="text-sm text-gray-600 mt-2">
+                    {t.repairLiveDescription}
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <div className="bg-gray-50 rounded-lg border border-gray-200 p-6 aspect-square flex items-center justify-center">
+                <div className="text-center">
+                  <div className="text-6xl mb-2">📱</div>
+                  <p className="text-gray-500 text-sm">
+                    {t.imageSoon}
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
         </div>
-      )}
-
-      {/* Additional Info - показываем всегда */}
-      <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
-        <InfoCard
-          icon="🆓"
-          title="Бесплатная диагностика*"
-          description="*При ремонте"
-        />
-        <InfoCard
-          icon="⚡"
-          title="Быстрый ремонт"
-          description="Пока вы ждете"
-        />
-        <InfoCard
-          icon="💼"
-          title="Профессионально"
-          description="Опытные мастера"
-        />
       </div>
 
-      {/* Empty State - нет услуг вообще */}
-      {!hasServices && (
-        <div className="text-center py-16">
-          <div className="text-6xl mb-4">🔧</div>
-          <p className="text-gray-500 text-lg mb-2">
-            Услуги для этой модели временно недоступны
-          </p>
-          <p className="text-gray-400 text-sm">
-            Пожалуйста, свяжитесь с нами для получения информации
-          </p>
-        </div>
-      )}
     </div>
   );
 }
 
-/**
- * InfoCard - информационная карточка
- */
-interface InfoCardProps {
-  icon: string;
-  title: string;
-  description: string;
-}
-
-function InfoCard({ icon, title, description }: InfoCardProps) {
-  return (
-    <div className="p-4 bg-white rounded-xl border border-gray-200 text-center">
-      <div className="text-3xl mb-2">{icon}</div>
-      <h4 className="font-semibold text-gray-900 mb-1">{title}</h4>
-      <p className="text-sm text-gray-600">{description}</p>
-    </div>
-  );
-}
