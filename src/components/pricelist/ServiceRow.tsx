@@ -30,11 +30,11 @@ export function ServiceRow({ service, price }: ServiceRowProps) {
       {/* Service Info */}
       <div className="flex-1 mb-4 sm:mb-0">
         <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-1">
-          {service.nameRu || service.nameEn}
+          {service.name_ru || service.name_en}
         </h3>
 
-        {service.description && (
-          <p className="text-sm text-gray-600 mb-2">{service.description}</p>
+        {service.description_ru && (
+          <p className="text-sm text-gray-600 mb-2">{service.description_ru}</p>
         )}
 
         <div className="flex flex-wrap items-center gap-3 text-sm text-gray-500">
@@ -50,20 +50,20 @@ export function ServiceRow({ service, price }: ServiceRowProps) {
           )}
 
           {/* Warranty */}
-          {price?.warranty && (
+          {price?.warranty_months && (
             <span className="flex items-center">
               <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
                       d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
               </svg>
-              {price.warranty} мес. гарантия
+              {price.warranty_months} мес. гарантия
             </span>
           )}
 
           {/* Note */}
-          {price?.note && (
+          {(price?.note_ru || price?.note_en || price?.note_cz) && (
             <span className="text-gray-400 italic">
-              {price.note}
+              {price.note_ru || price.note_en || price.note_cz}
             </span>
           )}
         </div>
@@ -96,7 +96,7 @@ function PriceDisplay({ service, price }: PriceDisplayProps) {
   }
 
   // Бесплатно
-  if (service.priceType === 'free') {
+  if (service.price_type === 'free') {
     return (
       <div className="text-green-600 font-bold text-lg">
         БЕСПЛАТНО
@@ -105,7 +105,7 @@ function PriceDisplay({ service, price }: PriceDisplayProps) {
   }
 
   // По запросу
-  if (service.priceType === 'on_request') {
+  if (service.price_type === 'on_request') {
     return (
       <div className="text-gray-700 font-semibold text-base">
         По запросу
@@ -114,7 +114,7 @@ function PriceDisplay({ service, price }: PriceDisplayProps) {
   }
 
   // От (цена)
-  if (service.priceType === 'from' && price.price !== undefined) {
+  if (service.price_type === 'from' && price.price !== undefined && price.price !== null) {
     return (
       <div>
         <div className="text-xs text-gray-500 mb-0.5">от</div>
@@ -126,7 +126,7 @@ function PriceDisplay({ service, price }: PriceDisplayProps) {
   }
 
   // Фиксированная цена
-  if (service.priceType === 'fixed' && price.price !== undefined) {
+  if (service.price_type === 'fixed' && price.price !== undefined && price.price !== null) {
     return (
       <div className="text-2xl font-bold text-gray-900">
         {formatPrice(price.price)} {price.currency}

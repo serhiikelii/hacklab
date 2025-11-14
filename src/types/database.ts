@@ -135,6 +135,10 @@ export interface Database {
           price_type: 'fixed' | 'from' | 'free' | 'on_request'
           duration_minutes: number | null
           warranty_months: number | null
+          note_ru: string | null
+          note_en: string | null
+          note_cz: string | null
+          is_active: boolean
           created_at: string
           updated_at: string
         }
@@ -146,6 +150,10 @@ export interface Database {
           price_type?: 'fixed' | 'from' | 'free' | 'on_request'
           duration_minutes?: number | null
           warranty_months?: number | null
+          note_ru?: string | null
+          note_en?: string | null
+          note_cz?: string | null
+          is_active?: boolean
           created_at?: string
           updated_at?: string
         }
@@ -157,8 +165,35 @@ export interface Database {
           price_type?: 'fixed' | 'from' | 'free' | 'on_request'
           duration_minutes?: number | null
           warranty_months?: number | null
+          note_ru?: string | null
+          note_en?: string | null
+          note_cz?: string | null
+          is_active?: boolean
           created_at?: string
           updated_at?: string
+        }
+      }
+      category_services: {
+        Row: {
+          id: string
+          category_id: string
+          service_id: string
+          is_primary: boolean
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          category_id: string
+          service_id: string
+          is_primary?: boolean
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          category_id?: string
+          service_id?: string
+          is_primary?: boolean
+          created_at?: string
         }
       }
     }
@@ -179,6 +214,7 @@ export type Category = Database['public']['Tables']['device_categories']['Row']
 export type DeviceModel = Database['public']['Tables']['device_models']['Row']
 export type Service = Database['public']['Tables']['services']['Row']
 export type Price = Database['public']['Tables']['prices']['Row']
+export type CategoryService = Database['public']['Tables']['category_services']['Row']
 
 // Расширенные типы с relations
 export type DeviceModelWithCategory = DeviceModel & {

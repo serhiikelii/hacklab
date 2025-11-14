@@ -94,7 +94,10 @@ export function ServicePriceTable({
           {!hasPrices && hasServices && (
             <div className="mb-8">
               <div className="bg-gray-50 rounded-lg p-8 text-center border border-gray-200">
-                <div className="text-5xl mb-4">⏳</div>
+                <svg className="mx-auto mb-4 text-gray-400" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <circle cx="12" cy="12" r="10"/>
+                  <path d="M12 6v6l4 2"/>
+                </svg>
                 <h2 className="text-2xl font-bold text-gray-900 mb-3">
                   {t.pricesSoonTitle}
                 </h2>
@@ -108,7 +111,9 @@ export function ServicePriceTable({
                              bg-amber-500 hover:bg-amber-600 text-white font-semibold
                              rounded-lg shadow-sm transition-colors duration-200"
                   >
-                    <span className="mr-2">📞</span>
+                    <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                    </svg>
                     {t.call}
                   </a>
                   <a
@@ -117,7 +122,9 @@ export function ServicePriceTable({
                              bg-gray-700 hover:bg-gray-800 text-white font-semibold
                              rounded-lg shadow-sm transition-colors duration-200"
                   >
-                    <span className="mr-2">💬</span>
+                    <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                    </svg>
                     {t.writeToTelegram}
                   </a>
                 </div>
@@ -174,7 +181,11 @@ export function ServicePriceTable({
           {/* Empty State - нет услуг */}
           {!hasServices && (
             <div className="text-center py-16">
-              <div className="text-5xl mb-4">🔧</div>
+              <svg className="mx-auto mb-4 text-gray-400" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <path d="M12 14l9-5-9-5-9 5 9 5z"/>
+                <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"/>
+              </svg>
               <p className="text-gray-500 text-lg mb-2">
                 {t.servicesUnavailableTitle}
               </p>
@@ -210,7 +221,13 @@ export function ServicePriceTable({
             ) : (
               <div className="bg-gray-50 rounded-lg border border-gray-200 p-6 aspect-square flex items-center justify-center">
                 <div className="text-center">
-                  <div className="text-6xl mb-2">📱</div>
+                  <Image
+                    src="/images/device-placeholder.svg"
+                    alt="Device placeholder"
+                    width={120}
+                    height={120}
+                    className="mx-auto mb-3 opacity-60"
+                  />
                   <p className="text-gray-500 text-sm">
                     {t.imageSoon}
                   </p>

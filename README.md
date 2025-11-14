@@ -15,6 +15,9 @@
 ### Backend
 - **Next.js API Routes** - REST API
 - **Supabase** - PostgreSQL БД + Authentication + Real-time + Storage
+  - UUID-based архитектура
+  - Многоязычность (RU/EN/CZ)
+  - Категорийно-специфичные услуги
 - **Prisma** (опционально) - ORM
 
 ### Интеграции
@@ -50,12 +53,63 @@ npm run dev
 mojservice/
 ├── src/
 │   ├── app/              # Next.js App Router
+│   │   └── pricelist/   # Прайс-лист (iphone, ipad, macbook, apple-watch)
 │   ├── components/       # React компоненты
+│   │   └── pricelist/   # Компоненты прайс-листа
 │   ├── lib/             # Утилиты и хелперы
+│   │   ├── queries.ts   # Запросы к Supabase
+│   │   ├── i18n.ts      # Многоязычность
+│   │   └── supabase.ts  # Supabase клиент
+│   ├── types/           # TypeScript типы
+│   │   ├── pricelist.ts # Типы прайс-листа
+│   │   └── database.ts  # Типы БД
 │   └── styles/          # Глобальные стили
+├── supabase/
+│   └── migrations/      # SQL миграции БД
+├── docs/                # Документация
+│   ├── ARCHITECTURE.md  # Архитектура БД
+│   ├── BREAKING_CHANGES.md
+│   └── MIGRATION_GUIDE.md
 ├── public/              # Статические файлы
-└── prisma/             # Database schema
+└── prisma/             # Database schema (legacy)
 ```
+
+## 📊 База данных
+
+### Архитектура
+
+MojService использует **Supabase PostgreSQL** с:
+- **UUID** в качестве primary keys
+- **Многоязычность** через _ru/_en/_cz суффиксы
+- **Категорийно-специфичные услуги** через many-to-many связь
+
+### Таблицы
+
+- `device_categories` - Категории устройств (iphone, ipad, macbook, apple-watch)
+- `device_models` - Модели устройств
+- `services` - Услуги ремонта (категорийно-специфичные)
+- `category_services` - Связь категорий и услуг (many-to-many)
+- `prices` - Цены на услуги для моделей
+- `discounts` - Скидки и акции
+
+### Миграции
+
+Миграции находятся в `/supabase/migrations/`:
+- `001_initial_schema.sql` - Основная структура таблиц
+- `002_seed_data.sql` - Начальные данные
+
+**Подробнее:** См. [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
+
+## 🌐 Категории устройств
+
+- **iPhone** - `/pricelist/iphone`
+- **iPad** - `/pricelist/ipad`
+- **MacBook** - `/pricelist/macbook`
+- **Apple Watch** - `/pricelist/apple-watch`
+
+**Backward compatibility:**
+- `/pricelist/mac` → редирект на `/pricelist/macbook`
+- `/pricelist/watch` → редирект на `/pricelist/apple-watch`
 
 ## 📄 Лицензия
 

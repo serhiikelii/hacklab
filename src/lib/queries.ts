@@ -4,6 +4,7 @@
 
 import { supabase } from './supabase';
 import * as mockData from './mockData';
+import { MAIN_SERVICES, EXTRA_SERVICES } from '@/types/pricelist';
 import type { DeviceModel as DBDeviceModel, Service as DBService, Price as DBPrice, Category } from '@/types/database';
 import type { DeviceModel, Service, ServicePrice, DeviceCategory } from '@/types/pricelist';
 
@@ -30,15 +31,28 @@ function isSupabaseConfigured(): boolean {
  * Transform database DeviceModel to app DeviceModel
  */
 function transformDeviceModel(dbModel: any): DeviceModel {
+  // Маппинг старых категорий на новые
+  const categorySlugMap: Record<string, DeviceCategory> = {
+    'iphone': 'iphone',
+    'ipad': 'ipad',
+    'macbook': 'macbook',
+    'mac': 'macbook', // Backward compatibility
+    'apple-watch': 'apple-watch',
+    'watch': 'apple-watch', // Backward compatibility
+  };
+
+  const categorySlug = dbModel.device_categories?.slug || 'iphone';
+  const mappedCategory = categorySlugMap[categorySlug] || categorySlug;
+
   return {
     id: dbModel.id,
     slug: dbModel.slug,
-    category: dbModel.device_categories?.slug || 'iphone' as DeviceCategory,
+    category: mappedCategory as DeviceCategory,
     name: dbModel.name,
     series: dbModel.series || undefined,
-    releaseYear: dbModel.release_year || undefined,
-    imageUrl: dbModel.image_url || undefined,
-    isPopular: false,
+    release_year: dbModel.release_year || undefined,
+    image_url: dbModel.image_url || undefined,
+    is_popular: dbModel.is_popular || false,
   };
 }
 
@@ -49,12 +63,14 @@ function transformService(dbService: DBService): Service {
   return {
     id: dbService.id,
     slug: dbService.slug,
-    nameEn: dbService.name_en,
-    nameCz: dbService.name_cz,
-    nameRu: dbService.name_ru,
-    description: dbService.description_en || undefined,
+    name_en: dbService.name_en,
+    name_cz: dbService.name_cz,
+    name_ru: dbService.name_ru,
+    description_en: dbService.description_en || undefined,
+    description_cz: dbService.description_cz || undefined,
+    description_ru: dbService.description_ru || undefined,
     category: dbService.service_type,
-    priceType: 'fixed',
+    price_type: 'fixed',
   };
 }
 
@@ -66,9 +82,14 @@ function transformPrice(dbPrice: DBPrice): ServicePrice {
     serviceId: dbPrice.service_id,
     modelId: dbPrice.model_id,
     price: dbPrice.price || undefined,
+    price_type: dbPrice.price_type,
     currency: 'CZK',
     duration: dbPrice.duration_minutes || undefined,
-    warranty: dbPrice.warranty_months || 24,
+    warranty_months: dbPrice.warranty_months || 24,
+    note_ru: dbPrice.note_ru || undefined,
+    note_en: dbPrice.note_en || undefined,
+    note_cz: dbPrice.note_cz || undefined,
+    is_active: dbPrice.is_active ?? true,
   };
 }
 
@@ -113,19 +134,57 @@ export async function getModelBySlug(slug: string): Promise<DeviceModel | null> 
  */
 export async function getServices(): Promise<Service[]> {
   try {
+    // Fallback to mock data if Supabase is not configured
+    if (!isSupabaseConfigured()) {
+      console.log('Using mock data for services');
+      return [...MAIN_SERVICES, ...EXTRA_SERVICES];
+    }
+
     const { data, error } = await supabase
       .from('services')
       .select('*')
       .order('order', { ascending: true });
 
     if (error) {
-      console.error('Error fetching services:', error);
+      console.error('Error fetching services, falling back to mock data:', error);
+      return [...MAIN_SERVICES, ...EXTRA_SERVICES];
+    }
+
+    return data ? data.map(transformService) : [];
+  } catch (error) {
+    console.error('Unexpected error in getServices, falling back to mock data:', error);
+    return [...MAIN_SERVICES, ...EXTRA_SERVICES];
+  }
+}
+
+/**
+ * Get services for a specific category with category_services relationship
+ */
+export async function getServicesForCategory(categorySlug: DeviceCategory): Promise<Service[]> {
+  try {
+    const { data, error } = await supabase
+      .from('services')
+      .select(`
+        *,
+        category_services!inner(
+          category_id,
+          is_primary
+        ),
+        device_categories!inner(
+          slug
+        )
+      `)
+      .eq('device_categories.slug', categorySlug)
+      .order('order', { ascending: true });
+
+    if (error) {
+      console.error('Error fetching services for category:', error);
       return [];
     }
 
     return data ? data.map(transformService) : [];
   } catch (error) {
-    console.error('Unexpected error in getServices:', error);
+    console.error('Unexpected error in getServicesForCategory:', error);
     return [];
   }
 }
@@ -146,7 +205,7 @@ export async function getPricesForModel(modelId: string): Promise<ServicePrice[]
       return mockData.getPricesForModel(modelId);
     }
 
-    const { data, error } = await supabase
+    const { data, error} = await supabase
       .from('prices')
       .select('*')
       .eq('model_id', modelId)
@@ -180,19 +239,37 @@ export async function getModelsForCategory(categorySlug: string): Promise<Device
       return mockData.getModelsForCategory(categorySlug);
     }
 
+    // First get category ID
+    const { data: category, error: catError } = await supabase
+      .from('device_categories')
+      .select('id')
+      .eq('slug', categorySlug)
+      .single();
+
+    if (catError || !category) {
+      console.error('Category not found:', categorySlug, catError);
+      return mockData.getModelsForCategory(categorySlug);
+    }
+
     const { data, error } = await supabase
       .from('device_models')
-      .select('*, device_categories!inner(*)')
-      .eq('device_categories.slug', categorySlug)
+      .select('*, device_categories(*)')
+      .eq('category_id', category.id)
       .order('release_year', { ascending: false })
       .order('name', { ascending: true });
 
     if (error) {
       console.error('Error fetching models for category, falling back to mock data:', error);
+      console.error('Error details:', JSON.stringify(error, null, 2));
       return mockData.getModelsForCategory(categorySlug);
     }
 
-    return data ? data.map(transformDeviceModel) : [];
+    if (!data || data.length === 0) {
+      console.warn(`No models found for category: ${categorySlug}, falling back to mock data`);
+      return mockData.getModelsForCategory(categorySlug);
+    }
+
+    return data.map(transformDeviceModel);
   } catch (error) {
     console.error('Unexpected error in getModelsForCategory, falling back to mock data:', error);
     return mockData.getModelsForCategory(categorySlug);

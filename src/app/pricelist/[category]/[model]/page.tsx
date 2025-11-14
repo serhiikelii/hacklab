@@ -2,7 +2,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { ServicePriceTable } from "@/components/pricelist";
 import { getModelBySlug, getPricesForModel, getServices } from "@/lib/queries";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 
 interface ModelPageProps {
   params: Promise<{
@@ -16,7 +16,15 @@ interface ModelPageProps {
  * Отображает все услуги ремонта для конкретной модели
  */
 export default async function ModelPage({ params }: ModelPageProps) {
-  const { model: modelSlug } = await params;
+  const { category, model: modelSlug } = await params;
+
+  // Редиректы для backward compatibility (старые URL)
+  if (category === 'mac') {
+    redirect(`/pricelist/macbook/${modelSlug}`);
+  }
+  if (category === 'watch') {
+    redirect(`/pricelist/apple-watch/${modelSlug}`);
+  }
 
   // Получаем данные модели из Supabase
   const model = await getModelBySlug(modelSlug);

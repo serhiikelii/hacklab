@@ -34,11 +34,11 @@ export function DeviceModelGrid({
 }: DeviceModelGridProps) {
   // Сортируем модели: сначала популярные, потом по году выпуска
   const sortedModels = [...models].sort((a, b) => {
-    if (a.isPopular && !b.isPopular) return -1;
-    if (!a.isPopular && b.isPopular) return 1;
+    if (a.is_popular && !b.is_popular) return -1;
+    if (!a.is_popular && b.is_popular) return 1;
 
-    const yearA = a.releaseYear || 0;
-    const yearB = b.releaseYear || 0;
+    const yearA = a.release_year || 0;
+    const yearB = b.release_year || 0;
     return yearB - yearA; // Новые модели сначала
   });
 
@@ -157,8 +157,8 @@ function getCategoryName(category: DeviceCategory): string {
   const names: Record<DeviceCategory, string> = {
     iphone: 'iPhone',
     ipad: 'iPad',
-    mac: 'MacBook',
-    watch: 'Apple Watch',
+    macbook: 'MacBook',
+    'apple-watch': 'Apple Watch',
   };
   return names[category];
 }
@@ -181,7 +181,7 @@ function getCategoryIconSVG(category: DeviceCategory): React.ReactElement {
         d="M10.5 19.5h3m-6.75 2.25h10.5a2.25 2.25 0 002.25-2.25v-15a2.25 2.25 0 00-2.25-2.25H6.75A2.25 2.25 0 004.5 4.5v15a2.25 2.25 0 002.25 2.25z"
       />
     ),
-    mac: (
+    macbook: (
       // Laptop icon - simple minimal design
       <>
         {/* Screen */}
@@ -202,7 +202,7 @@ function getCategoryIconSVG(category: DeviceCategory): React.ReactElement {
         />
       </>
     ),
-    watch: (
+    'apple-watch': (
       // Apple Watch icon - simple rectangular smartwatch
       <>
         {/* Watch case - rounded rectangle */}

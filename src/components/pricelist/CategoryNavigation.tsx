@@ -17,8 +17,8 @@ type CategoryConfig = {
 const categories: CategoryConfig[] = [
   { id: 'iphone', label: 'iPhone', href: '/pricelist/iphone' },
   { id: 'ipad', label: 'iPad', href: '/pricelist/ipad' },
-  { id: 'mac', label: 'MacBook', href: '/pricelist/mac' },
-  { id: 'watch', label: 'Apple Watch', href: '/pricelist/watch' },
+  { id: 'macbook', label: 'MacBook', href: '/pricelist/macbook' },
+  { id: 'apple-watch', label: 'Apple Watch', href: '/pricelist/apple-watch' },
 ];
 
 /**
@@ -86,7 +86,7 @@ function getCategoryIconSVG(categoryId: DeviceCategory): React.ReactElement {
         d="M10.5 19.5h3m-6.75 2.25h10.5a2.25 2.25 0 002.25-2.25v-15a2.25 2.25 0 00-2.25-2.25H6.75A2.25 2.25 0 004.5 4.5v15a2.25 2.25 0 002.25 2.25z"
       />
     ),
-    mac: (
+    macbook: (
       <>
         <rect
           x="3"
@@ -104,7 +104,7 @@ function getCategoryIconSVG(categoryId: DeviceCategory): React.ReactElement {
         />
       </>
     ),
-    watch: (
+    'apple-watch': (
       <>
         <rect
           x="7"
