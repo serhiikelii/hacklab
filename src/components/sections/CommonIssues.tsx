@@ -1,40 +1,47 @@
+"use client"
+
 import { Card } from "@/components/ui/card"
 import { Power, Droplets, Smartphone, WifiOff, BatteryCharging, VolumeX } from "lucide-react"
+import { useLocale } from "@/contexts/LocaleContext"
+import { getTranslations } from "@/lib/i18n"
 
 const issues = [
   {
     icon: Power,
-    title: "Не включается",
+    translationKey: 'notTurningOn' as const,
   },
   {
     icon: Droplets,
-    title: "Попадание жидкости",
+    translationKey: 'liquidDamage' as const,
   },
   {
     icon: Smartphone,
-    title: "Разбито стекло",
+    translationKey: 'brokenGlass' as const,
   },
   {
     icon: WifiOff,
-    title: "Не ловит сеть",
+    translationKey: 'noNetwork' as const,
   },
   {
     icon: BatteryCharging,
-    title: "Не заряжается",
+    translationKey: 'notCharging' as const,
   },
   {
     icon: VolumeX,
-    title: "Не работает динамик",
+    translationKey: 'speakerNotWorking' as const,
   },
 ]
 
 export function CommonIssues() {
+  const { locale } = useLocale()
+  const t = getTranslations(locale)
+
   return (
     <section className="py-16 bg-white">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
-            Устраняем частые поломки
+            {t.commonIssuesTitle}
           </h2>
         </div>
 
@@ -49,7 +56,7 @@ export function CommonIssues() {
                   <issue.icon className="w-10 h-10 text-gray-500" />
                 </div>
                 <h3 className="font-semibold text-gray-900 text-lg">
-                  {issue.title}
+                  {t[issue.translationKey]}
                 </h3>
               </div>
             </Card>

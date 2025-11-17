@@ -1,145 +1,130 @@
+"use client"
+
 import { Check } from "lucide-react"
+import { useLocale } from "@/contexts/LocaleContext"
+import { getTranslations } from "@/lib/i18n"
 
 export function AboutSection() {
+  const { locale } = useLocale()
+  const t = getTranslations(locale)
+
+  const whyChooseFeatures = [
+    t.whyFeature1,
+    t.whyFeature2,
+    t.whyFeature3,
+    t.whyFeature4,
+    t.whyFeature5,
+  ]
+
+  const repairServices = [
+    t.repairService1,
+    t.repairService2,
+    t.repairService3,
+    t.repairService4,
+    t.repairService5,
+    t.repairService6,
+    t.repairService7,
+  ]
+
   return (
     <section id="about" className="py-16 bg-white">
       <div className="container mx-auto px-4 max-w-4xl">
         {/* Главный заголовок */}
         <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-          HackLab – Ваш надежный сервисный центр Apple в Праге
+          {t.aboutTitle}
         </h1>
 
         {/* Вводные параграфы */}
         <p className="text-gray-700 leading-relaxed mb-4">
-          HackLab — это современный и надежный сервисный центр Apple в Праге, которому доверяют
-          владельцы техники Apple и других брендов. Даже самые прочные устройства со временем
-          требуют внимания — ведь случайное падение, удар, попадание влаги или просто износ
-          комплектующих могут привести к сбоям и поломкам.
+          {t.aboutIntro1}
         </p>
 
         <p className="text-gray-700 leading-relaxed mb-4">
-          Наши специалисты ежедневно восстанавливают десятки iPhone, iPad, MacBook, Apple Watch
-          и другой техники, возвращая её к идеальной работе. Мы понимаем, насколько важна ваша
-          техника, поэтому делаем всё, чтобы ремонт занял минимум времени и принес максимум результата.
+          {t.aboutIntro2}
         </p>
 
         {/* Блок: Почему выбирают HackLab */}
         <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mt-12 mb-4">
-          Почему выбирают HackLab
+          {t.whyChooseTitle}
         </h2>
 
         <p className="text-gray-700 leading-relaxed mb-4">
-          Сегодня в Праге можно найти множество сервисов, предлагающих ремонт Apple.
-          Но если вы цените качество, прозрачность и профессионализм — HackLab станет
-          вашим надежным партнером. Мы предлагаем:
+          {t.whyChooseIntro}
         </p>
 
         <ul className="space-y-2 mb-4 ml-6">
-          <li className="flex items-start gap-2 text-gray-700 leading-relaxed">
-            <Check className="w-5 h-5 text-gray-400 flex-shrink-0 mt-0.5" />
-            <span>оригинальные запчасти и проверенные комплектующие</span>
-          </li>
-          <li className="flex items-start gap-2 text-gray-700 leading-relaxed">
-            <Check className="w-5 h-5 text-gray-400 flex-shrink-0 mt-0.5" />
-            <span>точную диагностику и грамотный подход к каждому устройству</span>
-          </li>
-          <li className="flex items-start gap-2 text-gray-700 leading-relaxed">
-            <Check className="w-5 h-5 text-gray-400 flex-shrink-0 mt-0.5" />
-            <span>квалифицированных мастеров с опытом работы более 5 лет</span>
-          </li>
-          <li className="flex items-start gap-2 text-gray-700 leading-relaxed">
-            <Check className="w-5 h-5 text-gray-400 flex-shrink-0 mt-0.5" />
-            <span>удобные адреса сервисных центров в разных районах Праги</span>
-          </li>
-          <li className="flex items-start gap-2 text-gray-700 leading-relaxed">
-            <Check className="w-5 h-5 text-gray-400 flex-shrink-0 mt-0.5" />
-            <span>гарантию на все виды работ и деталей</span>
-          </li>
+          {whyChooseFeatures.map((feature, index) => (
+            <li key={index} className="flex items-start gap-2 text-gray-700 leading-relaxed">
+              <Check className="w-5 h-5 text-gray-400 flex-shrink-0 mt-0.5" />
+              <span>{feature}</span>
+            </li>
+          ))}
         </ul>
 
         <p className="text-gray-700 leading-relaxed mb-4">
-          Наши мастерские оснащены современным оборудованием, что позволяет выполнять
-          даже компонентный ремонт — замену микросхем, восстановление материнских плат,
-          пайку контактов и многое другое.
+          {t.whyChooseOutro}
         </p>
 
         {/* Блок: Что мы ремонтируем */}
         <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mt-12 mb-4">
-          Что мы ремонтируем
+          {t.whatWeRepairTitle}
         </h2>
 
         <p className="text-gray-700 leading-relaxed mb-4">
-          В HackLab вы можете получить профессиональный ремонт любой сложности:
+          {t.whatWeRepairIntro}
         </p>
 
         <ul className="space-y-2 mb-4 ml-6">
-          <li className="text-gray-700 leading-relaxed">замена экрана или стекла</li>
-          <li className="text-gray-700 leading-relaxed">восстановление после попадания воды</li>
-          <li className="text-gray-700 leading-relaxed">устранение последствий падений и ударов</li>
-          <li className="text-gray-700 leading-relaxed">замена аккумулятора</li>
-          <li className="text-gray-700 leading-relaxed">ремонт разъёмов и кнопок</li>
-          <li className="text-gray-700 leading-relaxed">перепрошивка и обновление системы</li>
-          <li className="text-gray-700 leading-relaxed">восстановление данных и разблокировка устройств</li>
+          {repairServices.map((service, index) => (
+            <li key={index} className="text-gray-700 leading-relaxed">{service}</li>
+          ))}
         </ul>
 
         <p className="text-gray-700 leading-relaxed mb-4">
-          Если ваш iPhone зависает, самопроизвольно выключается, не заряжается или не реагирует
-          на касания — просто принесите его к нам. Мы проведем диагностику и предложим оптимальное
-          решение по времени и стоимости.
+          {t.whatWeRepairOutro}
         </p>
 
         {/* Блок: Профессиональная диагностика и обслуживание */}
         <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mt-12 mb-4">
-          Профессиональная диагностика и обслуживание
+          {t.diagnosticsTitle}
         </h2>
 
         <p className="text-gray-700 leading-relaxed mb-4">
-          Каждое устройство проходит детальную диагностику перед началом ремонта. Это позволяет
-          точно определить причину неисправности и подобрать правильный способ восстановления.
+          {t.diagnosticsText1}
         </p>
 
         <p className="text-gray-700 leading-relaxed mb-4">
-          После завершения всех работ мы проводим тестирование, чтобы убедиться, что гаджет
-          работает как новый.
+          {t.diagnosticsText2}
         </p>
 
         <p className="text-gray-700 leading-relaxed mb-4">
-          HackLab — это сервис, где ценят качество, честность и комфорт клиента.
-          Мы не просто ремонтируем технику — мы восстанавливаем ваше удобство,
-          продуктивность и настроение.
+          {t.diagnosticsText3}
         </p>
 
         {/* Блок: Курьерская доставка */}
         <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mt-12 mb-4">
-          Курьерская доставка и дистанционный сервис
+          {t.courierTitle}
         </h2>
 
         <p className="text-gray-700 leading-relaxed mb-4">
-          Если у вас нет времени приехать лично — не проблема. Мы предлагаем курьерскую доставку
-          по всей Чехии: просто оставьте заявку на сайте, и мы организуем забор устройства из
-          вашего дома или офиса. После ремонта ваш гаджет будет оперативно доставлен обратно
-          в исправном состоянии.
+          {t.courierText}
         </p>
 
         {/* Заключительный блок */}
         <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mt-12 mb-4">
-          We don&apos;t hack, we fix!
+          {t.weFixTitle}
         </h2>
 
         <p className="text-gray-700 leading-relaxed mb-4">
-          С каждым месяцем всё больше клиентов выбирают HackLab за качество, скорость и внимательное
-          отношение к деталям. Мы постоянно расширяем сеть сервисных центров в Праге, чтобы быть
-          ещё ближе к вам и вашей технике.
+          {t.weFixText1}
         </p>
 
         <p className="text-gray-700 leading-relaxed mb-4">
-          HackLab — это команда профессионалов, для которых ремонт Apple и другой электроники —
-          не просто работа, а настоящее призвание.
+          {t.weFixText2}
         </p>
 
         <p className="text-gray-700 leading-relaxed">
-          Доверьте свой гаджет экспертам, и он снова будет работать так же безупречно,
-          как в первый день.
+          {t.weFixText3}
         </p>
       </div>
     </section>

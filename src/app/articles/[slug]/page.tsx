@@ -1,51 +1,41 @@
+'use client'
+
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { notFound } from "next/navigation"
+import { useParams, notFound } from "next/navigation"
 import { Calendar, ArrowLeft } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { articles } from "@/data/articles"
 import { Header } from "@/components/layout/Header"
 import { Footer } from "@/components/layout/Footer"
+import { useLocale } from "@/contexts/LocaleContext"
+import { getLocalizedString, getTranslations } from "@/lib/i18n"
 
-interface ArticlePageProps {
-  params: Promise<{
-    slug: string
-  }>
-}
+export default function ArticlePage() {
+  const params = useParams()
+  const slug = params?.slug as string
+  const { locale } = useLocale()
+  const t = getTranslations(locale)
+  const [article, setArticle] = useState(() => articles.find((a) => a.slug === slug))
 
-export async function generateStaticParams() {
-  return articles.map((article) => ({
-    slug: article.slug,
-  }))
-}
+  useEffect(() => {
+    const foundArticle = articles.find((a) => a.slug === slug)
+    setArticle(foundArticle)
 
-export async function generateMetadata({ params }: ArticlePageProps) {
-  const resolvedParams = await params
-  const article = articles.find((a) => a.slug === resolvedParams.slug)
-
-  if (!article) {
-    return {
-      title: "Статья не найдена | MojService",
+    if (!foundArticle) {
+      notFound()
     }
-  }
-
-  return {
-    title: `${article.title} | MojService`,
-    description: article.excerpt,
-  }
-}
-
-export default async function ArticlePage({ params }: ArticlePageProps) {
-  const resolvedParams = await params
-  const article = articles.find((a) => a.slug === resolvedParams.slug)
+  }, [slug])
 
   if (!article) {
-    notFound()
+    return null
   }
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString)
-    return date.toLocaleDateString("ru-RU", {
+    const localeMap = { ru: "ru-RU", en: "en-US", cz: "cs-CZ" }
+    return date.toLocaleDateString(localeMap[locale], {
       year: "numeric",
       month: "long",
       day: "numeric",
@@ -63,18 +53,18 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
                 <ol className="flex items-center space-x-2 text-sm text-gray-600">
                   <li>
                     <Link href="/" className="hover:text-gray-900 transition-colors">
-                      Главная
+                      {t.home}
                     </Link>
                   </li>
                   <li>/</li>
                   <li>
                     <Link href="/articles" className="hover:text-gray-900 transition-colors">
-                      Статьи
+                      {t.footerArticles}
                     </Link>
                   </li>
                   <li>/</li>
                   <li className="text-gray-900 font-medium truncate max-w-xs">
-                    {article.title}
+                    {getLocalizedString(article.title, locale)}
                   </li>
                 </ol>
               </nav>
@@ -82,13 +72,13 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
               <Button asChild variant="ghost" className="mb-6">
                 <Link href="/articles">
                   <ArrowLeft className="mr-2 w-4 h-4" />
-                  Все статьи
+                  {t.viewAllArticles}
                 </Link>
               </Button>
 
               <div className="max-w-4xl">
                 <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4">
-                  {article.title}
+                  {getLocalizedString(article.title, locale)}
                 </h1>
                 <div className="flex items-center text-gray-600">
                   <Calendar className="w-5 h-5 mr-2" />
@@ -105,7 +95,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
               <div className="relative w-full h-96 mb-8 rounded-lg overflow-hidden">
                 <Image
                   src={article.image}
-                  alt={article.title}
+                  alt={getLocalizedString(article.title, locale)}
                   fill
                   className="object-cover"
                   priority
@@ -114,12 +104,12 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
               <div className="prose prose-lg max-w-none">
                 <div className="text-xl text-gray-700 mb-8 font-medium border-l-4 border-gray-700 pl-6 py-2 bg-gray-50">
-                  {article.excerpt}
+                  {getLocalizedString(article.excerpt, locale)}
                 </div>
 
                 <div
                   className="article-content"
-                  dangerouslySetInnerHTML={{ __html: article.content }}
+                  dangerouslySetInnerHTML={{ __html: getLocalizedString(article.content, locale) }}
                 />
               </div>
 
@@ -127,7 +117,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
                 <Button asChild size="lg">
                   <Link href="/articles">
                     <ArrowLeft className="mr-2 w-4 h-4" />
-                    Вернуться к статьям
+                    {t.backToHome}
                   </Link>
                 </Button>
               </div>

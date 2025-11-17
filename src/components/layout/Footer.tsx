@@ -1,7 +1,14 @@
+"use client"
+
 import Link from "next/link"
 import { Phone, Mail } from "lucide-react"
+import { useLocale } from "@/contexts/LocaleContext"
+import { getTranslations } from "@/lib/i18n"
 
 export function Footer() {
+  const { locale } = useLocale()
+  const t = getTranslations(locale)
+
   return (
     <footer className="bg-secondary text-white">
       <div className="container mx-auto px-4 py-12">
@@ -13,28 +20,27 @@ export function Footer() {
               <span className="text-red-600">LAB</span>
             </h3>
             <p className="text-gray-400 text-sm leading-relaxed">
-              HackLab предоставляет эксклюзивный сервис и ремонт продуктов;
-              а именно iPhone, iPad, MacBook, Apple Watch и Apple TV.
+              {t.footerAbout}
             </p>
           </div>
 
           {/* Column 2 - Links */}
           <div>
-            <h4 className="font-bold mb-4">Также посетите</h4>
+            <h4 className="font-bold mb-4">{t.footerLinksTitle}</h4>
             <ul className="space-y-2">
               <li>
                 <Link href="/articles" className="text-gray-400 hover:text-white transition text-sm">
-                  Статьи
+                  {t.footerArticles}
                 </Link>
               </li>
               <li>
                 <Link href="/pricelist" className="text-gray-400 hover:text-white transition text-sm">
-                  Прайс-лист
+                  {t.footerPricelist}
                 </Link>
               </li>
               <li>
                 <Link href="/kontakt" className="text-gray-400 hover:text-white transition text-sm">
-                  Контакты
+                  {t.footerContacts}
                 </Link>
               </li>
             </ul>
@@ -42,21 +48,21 @@ export function Footer() {
 
           {/* Column 3 - Hours */}
           <div>
-            <h4 className="font-bold mb-4">Часы работы</h4>
+            <h4 className="font-bold mb-4">{t.footerHoursTitle}</h4>
             <div className="space-y-1 text-sm text-gray-400">
-              <p>Понедельник: 09:00 - 19:00</p>
-              <p>Вторник: 09:00 - 19:00</p>
-              <p>Среда: 09:00 - 19:00</p>
-              <p>Четверг: 09:00 - 19:00</p>
-              <p>Пятница: 09:00 - 19:00</p>
-              <p>Суббота: 10:30 - 17:30</p>
-              <p>Воскресенье: закрыто</p>
+              <p>{t.footerMonday}</p>
+              <p>{t.footerTuesday}</p>
+              <p>{t.footerWednesday}</p>
+              <p>{t.footerThursday}</p>
+              <p>{t.footerFriday}</p>
+              <p>{t.footerSaturday}</p>
+              <p>{t.footerSunday}</p>
             </div>
           </div>
 
           {/* Column 4 - Contact */}
           <div>
-            <h4 className="font-bold mb-4">Свяжитесь с нами:</h4>
+            <h4 className="font-bold mb-4">{t.footerContactTitle}</h4>
             <div className="space-y-3">
               <p className="text-sm text-gray-400">
                 Seifertova 83<br />
@@ -84,7 +90,7 @@ export function Footer() {
         {/* Bottom */}
         <div className="border-t border-gray-700 mt-8 pt-8 text-center">
           <p className="text-sm text-gray-400">
-            Copyright © 2025 <Link href="/" className="text-white hover:text-gray-300">HackLab</Link>
+            {t.footerCopyright} <Link href="/" className="text-white hover:text-gray-300">HackLab</Link>
           </p>
         </div>
       </div>

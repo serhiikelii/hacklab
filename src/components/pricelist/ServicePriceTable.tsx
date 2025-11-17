@@ -4,13 +4,13 @@ import { DeviceModel, Service, ServicePrice } from '@/types/pricelist';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Home, ChevronRight } from 'lucide-react';
-import { type Locale, getTranslations, getServiceName, formatMessage } from '@/lib/i18n';
+import { getTranslations, getServiceName, formatMessage, getCategoryName } from '@/lib/i18n';
+import { useLocale } from '@/contexts/LocaleContext';
 
 export interface ServicePriceTableProps {
   model: DeviceModel;
   services: Service[];
   prices: ServicePrice[];
-  locale?: Locale;
   onReserve?: (service: Service, model: DeviceModel) => void;
 }
 
@@ -27,8 +27,10 @@ export function ServicePriceTable({
   model,
   services,
   prices,
-  locale = 'ru',
 }: ServicePriceTableProps) {
+  // Получаем текущий язык из контекста
+  const { locale } = useLocale();
+
   // Получаем переводы для текущего языка
   const t = getTranslations(locale);
 
@@ -40,35 +42,24 @@ export function ServicePriceTable({
   const hasPrices = prices.length > 0;
   const hasServices = services.length > 0;
 
-  // Helper function to get category name
-  const getCategoryName = (category: string): string => {
-    const names: Record<string, string> = {
-      iphone: 'iPhone',
-      ipad: 'iPad',
-      macbook: 'MacBook',
-      'apple-watch': 'Apple Watch',
-    };
-    return names[category] || category;
-  };
-
   return (
     <div className="w-full max-w-7xl mx-auto px-4 py-8">
       {/* Breadcrumbs */}
       <nav className="flex items-center gap-2 text-sm text-gray-600 mb-6">
         <Link href="/" className="hover:text-gray-900 transition flex items-center gap-1">
           <Home className="w-4 h-4" />
-          Главная
+          {t.home}
         </Link>
         <ChevronRight className="w-4 h-4" />
         <Link href="/pricelist" className="hover:text-gray-900 transition">
-          Прайс-лист
+          {t.pricelist}
         </Link>
         <ChevronRight className="w-4 h-4" />
         <Link
           href={`/pricelist/${model.category}`}
           className="hover:text-gray-900 transition"
         >
-          Ремонт {getCategoryName(model.category)}
+          {t.repair} {getCategoryName(model.category, locale)}
         </Link>
         <ChevronRight className="w-4 h-4" />
         <span className="text-gray-900 font-medium">

@@ -254,7 +254,7 @@ export async function getModelsForCategory(categorySlug: string): Promise<Device
     const { data, error } = await supabase
       .from('device_models')
       .select('*, device_categories(*)')
-      .eq('category_id', category.id)
+      .eq('category_id', (category as { id: string }).id)
       .order('release_year', { ascending: false })
       .order('name', { ascending: true });
 

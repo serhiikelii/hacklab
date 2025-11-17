@@ -1,3 +1,5 @@
+'use client'
+
 import Link from "next/link"
 import Image from "next/image"
 import { Card } from "@/components/ui/card"
@@ -6,16 +8,17 @@ import { Button } from "@/components/ui/button"
 import { articles } from "@/data/articles"
 import { Header } from "@/components/layout/Header"
 import { Footer } from "@/components/layout/Footer"
-
-export const metadata = {
-  title: "Статьи о ремонте телефонов | MojService",
-  description: "Полезные советы и рекомендации по уходу за смартфонами, ремонту и обслуживанию мобильных устройств",
-}
+import { useLocale } from "@/contexts/LocaleContext"
+import { getTranslations, getLocalizedString } from "@/lib/i18n"
 
 export default function ArticlesPage() {
+  const { locale } = useLocale()
+  const t = getTranslations(locale)
+
   const formatDate = (dateString: string) => {
     const date = new Date(dateString)
-    return date.toLocaleDateString("ru-RU", {
+    const localeMap = { ru: "ru-RU", en: "en-US", cz: "cs-CZ" }
+    return date.toLocaleDateString(localeMap[locale], {
       year: "numeric",
       month: "long",
       day: "numeric",
@@ -31,14 +34,14 @@ export default function ArticlesPage() {
             <Button asChild variant="ghost" className="mb-4">
               <Link href="/">
                 <ArrowLeft className="mr-2 w-4 h-4" />
-                На главную
+                {t.backToHome}
               </Link>
             </Button>
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              Статьи о ремонте телефонов
+              {t.articlesPageTitle}
             </h1>
             <p className="text-lg text-gray-600 max-w-3xl">
-              Полезные советы по уходу за смартфонами, решению распространенных проблем и профилактике поломок
+              {t.articlesPageDescription}
             </p>
           </div>
         </div>
@@ -55,7 +58,7 @@ export default function ArticlesPage() {
                   <div className="relative h-56 w-full overflow-hidden bg-gray-100">
                     <Image
                       src={article.image}
-                      alt={article.title}
+                      alt={getLocalizedString(article.title, locale)}
                       fill
                       className="object-cover group-hover:scale-105 transition-transform duration-300"
                     />
@@ -68,10 +71,10 @@ export default function ArticlesPage() {
                       </time>
                     </div>
                     <h2 className="font-bold text-xl text-gray-900 mb-3 group-hover:text-black transition-colors line-clamp-2">
-                      {article.title}
+                      {getLocalizedString(article.title, locale)}
                     </h2>
                     <p className="text-gray-600 text-sm line-clamp-3">
-                      {article.excerpt}
+                      {getLocalizedString(article.excerpt, locale)}
                     </p>
                   </div>
                 </Card>

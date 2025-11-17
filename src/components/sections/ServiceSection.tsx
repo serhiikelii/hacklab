@@ -1,12 +1,19 @@
+"use client"
+
 import { CheckCircle2 } from "lucide-react"
+import { useLocale } from "@/contexts/LocaleContext"
+import { getTranslations } from "@/lib/i18n"
 
 export function ServiceSection() {
+  const { locale } = useLocale()
+  const t = getTranslations(locale)
+
   const features = [
-    "Хотите видеть, как проходит ремонт вашего телефона? Мы предоставляем такую возможность онлайн",
-    "Профессиональная диагностика (бесплатная*)",
-    "Быстрый ремонт",
-    "2 года гарантии",
-    "Скидки на множественный ремонт",
+    t.feature1,
+    t.feature2,
+    t.feature3,
+    t.feature4,
+    t.feature5,
   ]
 
   return (
@@ -23,12 +30,12 @@ export function ServiceSection() {
           {/* Right - Content */}
           <div>
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-              Мы не скрываем процесс — доверие рождается в прозрачности
+              {t.serviceSectionTitle}
             </h2>
 
             <div className="space-y-4 mb-8">
               <p className="text-lg text-gray-700">
-                Профессиональный и быстрый сервис для устройств.
+                {t.serviceSectionDescription}
               </p>
 
               <ul className="space-y-3">
@@ -41,7 +48,7 @@ export function ServiceSection() {
               </ul>
 
               <p className="text-gray-700 mt-6">
-                При множественном ремонте мы всегда предлагаем оптовую скидку.
+                {t.bulkDiscountText}
               </p>
             </div>
           </div>

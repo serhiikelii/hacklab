@@ -5,42 +5,44 @@ import Link from "next/link"
 import { Phone, Menu, DollarSign, Info } from "lucide-react"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+import { useLocale } from "@/contexts/LocaleContext"
+import { Locale, getTranslations } from "@/lib/i18n"
 
-const menuItems = [
-  {
-    icon: DollarSign,
-    label: "Прайс-лист",
-    href: "/pricelist",
-  },
-  {
-    icon: Info,
-    label: "О нас",
-    href: "/#services",
-  },
-  {
-    icon: Phone,
-    label: "Контакты",
-    href: "/kontakt",
-  },
+type LanguageConfig = {
+  locale: Locale;
+  label: string;
+}
+
+const languages: LanguageConfig[] = [
+  { locale: "ru", label: "RU" },
+  { locale: "en", label: "EN" },
+  { locale: "cz", label: "CZ" },
 ]
 
 export function Header() {
   const [open, setOpen] = useState(false)
-  const [currentLang, setCurrentLang] = useState({ flag: "🇷🇺", code: "RU" })
+  const { locale, setLocale } = useLocale()
+  const t = getTranslations(locale)
+
+  const menuItems = [
+    {
+      icon: DollarSign,
+      label: t.pricelistMenu,
+      href: "/pricelist",
+    },
+    {
+      icon: Info,
+      label: t.aboutMenu,
+      href: "/#services",
+    },
+    {
+      icon: Phone,
+      label: t.contactsMenu,
+      href: "/kontakt",
+    },
+  ]
 
   const closeSheet = () => setOpen(false)
-
-  const languages = [
-    { flag: "🇨🇿", code: "CZ", href: "/cs" },
-    { flag: "🇬🇧", code: "EN", href: "/en" },
-    { flag: "🇷🇺", code: "RU", href: "/ru" },
-  ]
 
   return (
     <header className="bg-secondary text-white py-5">
@@ -65,7 +67,7 @@ export function Header() {
             ))}
           </nav>
 
-          {/* Right: Phone + Language Dropdown (Desktop only) */}
+          {/* Right: Phone + Language Switcher (Desktop only) */}
           <div className="hidden lg:flex items-center gap-6">
             {/* Phone */}
             <Link
@@ -76,33 +78,26 @@ export function Header() {
               <span className="font-medium">+420 607 855 558</span>
             </Link>
 
-            {/* Language Dropdown */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
-                  className="text-white hover:bg-white/10 hover:text-white text-base font-medium gap-1"
-                >
-                  <span>{currentLang.flag}</span>
-                  <span>{currentLang.code}</span>
-                  <span className="ml-1">▼</span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="min-w-[120px]">
-                {languages.map((lang) => (
-                  <DropdownMenuItem key={lang.code} asChild>
-                    <Link
-                      href={lang.href}
-                      className="flex items-center gap-2 cursor-pointer w-full"
-                      onClick={() => setCurrentLang({ flag: lang.flag, code: lang.code })}
-                    >
-                      <span>{lang.flag}</span>
-                      <span>{lang.code}</span>
-                    </Link>
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
+            {/* Language Switcher - Simple inline */}
+            <div className="flex items-center gap-2 text-white text-base font-medium">
+              {languages.map((lang, index) => (
+                <div key={lang.locale} className="flex items-center gap-2">
+                  <button
+                    onClick={() => setLocale(lang.locale)}
+                    className={`transition-colors duration-200 ${
+                      locale === lang.locale
+                        ? 'font-bold text-amber-400'
+                        : 'text-white/80 hover:text-white'
+                    }`}
+                  >
+                    {lang.label}
+                  </button>
+                  {index < languages.length - 1 && (
+                    <span className="text-white/40">|</span>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* Mobile: Hamburger Menu */}
@@ -143,21 +138,23 @@ export function Header() {
 
                 {/* Mobile Language Selector */}
                 <div className="px-4">
-                  <p className="text-sm font-semibold text-gray-500 mb-2">Язык / Language</p>
+                  <p className="text-sm font-semibold text-gray-500 mb-2">{t.languageLabel}</p>
                   <div className="flex flex-col gap-2">
                     {languages.map((lang) => (
-                      <Link
-                        key={lang.code}
-                        href={lang.href}
+                      <button
+                        key={lang.locale}
                         onClick={() => {
-                          setCurrentLang({ flag: lang.flag, code: lang.code })
+                          setLocale(lang.locale)
                           closeSheet()
                         }}
-                        className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors duration-250"
+                        className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-colors duration-250 ${
+                          locale === lang.locale
+                            ? 'bg-amber-100 font-semibold'
+                            : 'hover:bg-gray-100'
+                        }`}
                       >
-                        <span>{lang.flag}</span>
-                        <span className="font-medium">{lang.code}</span>
-                      </Link>
+                        <span className="font-medium">{lang.label}</span>
+                      </button>
                     ))}
                   </div>
                 </div>

@@ -1,6 +1,8 @@
 'use client';
 
 import { Service, ServicePrice } from '@/types/pricelist';
+import { useLocale } from '@/contexts/LocaleContext';
+import { getTranslations, getServiceName, getServiceDescription } from '@/lib/i18n';
 
 export interface ServiceRowProps {
   service: Service;
@@ -25,16 +27,19 @@ export interface ServiceRowProps {
  * ```
  */
 export function ServiceRow({ service, price }: ServiceRowProps) {
+  const { locale } = useLocale();
+  const t = getTranslations(locale);
+
   return (
     <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 sm:p-6 hover:bg-gray-50 transition-colors">
       {/* Service Info */}
       <div className="flex-1 mb-4 sm:mb-0">
         <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-1">
-          {service.name_ru || service.name_en}
+          {getServiceName(service, locale)}
         </h3>
 
-        {service.description_ru && (
-          <p className="text-sm text-gray-600 mb-2">{service.description_ru}</p>
+        {getServiceDescription(service, locale) && (
+          <p className="text-sm text-gray-600 mb-2">{getServiceDescription(service, locale)}</p>
         )}
 
         <div className="flex flex-wrap items-center gap-3 text-sm text-gray-500">
@@ -45,7 +50,7 @@ export function ServiceRow({ service, price }: ServiceRowProps) {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
                       d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              {formatDuration(price.duration)}
+              {formatDuration(price.duration, t)}
             </span>
           )}
 
@@ -56,7 +61,7 @@ export function ServiceRow({ service, price }: ServiceRowProps) {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
                       d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
               </svg>
-              {price.warranty_months} мес. гарантия
+              {price.warranty_months} {t.months} {t.warranty.toLowerCase()}
             </span>
           )}
 
@@ -71,7 +76,7 @@ export function ServiceRow({ service, price }: ServiceRowProps) {
 
       {/* Price */}
       <div className="text-right">
-        <PriceDisplay service={service} price={price} />
+        <PriceDisplay service={service} price={price} t={t} />
       </div>
     </div>
   );
@@ -83,14 +88,15 @@ export function ServiceRow({ service, price }: ServiceRowProps) {
 interface PriceDisplayProps {
   service: Service;
   price?: ServicePrice;
+  t: ReturnType<typeof getTranslations>;
 }
 
-function PriceDisplay({ service, price }: PriceDisplayProps) {
+function PriceDisplay({ service, price, t }: PriceDisplayProps) {
   // Если нет данных о цене
   if (!price) {
     return (
       <div className="text-gray-400 text-sm">
-        Уточняйте
+        {t.clarify}
       </div>
     );
   }
@@ -99,7 +105,7 @@ function PriceDisplay({ service, price }: PriceDisplayProps) {
   if (service.price_type === 'free') {
     return (
       <div className="text-green-600 font-bold text-lg">
-        БЕСПЛАТНО
+        {t.free}
       </div>
     );
   }
@@ -108,7 +114,7 @@ function PriceDisplay({ service, price }: PriceDisplayProps) {
   if (service.price_type === 'on_request') {
     return (
       <div className="text-gray-700 font-semibold text-base">
-        По запросу
+        {t.onRequest}
       </div>
     );
   }
@@ -117,7 +123,7 @@ function PriceDisplay({ service, price }: PriceDisplayProps) {
   if (service.price_type === 'from' && price.price !== undefined && price.price !== null) {
     return (
       <div>
-        <div className="text-xs text-gray-500 mb-0.5">от</div>
+        <div className="text-xs text-gray-500 mb-0.5">{t.from}</div>
         <div className="text-2xl font-bold text-gray-900">
           {formatPrice(price.price)} {price.currency}
         </div>
@@ -137,7 +143,7 @@ function PriceDisplay({ service, price }: PriceDisplayProps) {
   // Fallback
   return (
     <div className="text-gray-400 text-sm">
-      Уточняйте
+      {t.clarify}
     </div>
   );
 }
@@ -147,19 +153,19 @@ function PriceDisplay({ service, price }: PriceDisplayProps) {
 /**
  * Форматировать длительность в читаемый вид
  */
-function formatDuration(minutes: number): string {
+function formatDuration(minutes: number, t: ReturnType<typeof getTranslations>): string {
   if (minutes < 60) {
-    return `${minutes} мин`;
+    return `${minutes} ${t.minutes}`;
   }
 
   const hours = Math.floor(minutes / 60);
   const remainingMinutes = minutes % 60;
 
   if (remainingMinutes === 0) {
-    return `${hours} ч`;
+    return `${hours} ${t.hours}`;
   }
 
-  return `${hours} ч ${remainingMinutes} мин`;
+  return `${hours} ${t.hours} ${remainingMinutes} ${t.minutes}`;
 }
 
 /**

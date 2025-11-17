@@ -4,13 +4,18 @@ import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Calendar, ArrowRight } from "lucide-react"
 import { articles } from "@/data/articles"
+import { useLocale } from "@/contexts/LocaleContext"
+import { getTranslations, getLocalizedString } from "@/lib/i18n"
 
 export function ArticlesSection() {
+  const { locale } = useLocale()
+  const t = getTranslations(locale)
   const latestArticles = articles.slice(0, 3)
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString)
-    return date.toLocaleDateString("ru-RU", {
+    const localeMap = { ru: "ru-RU", en: "en-US", cz: "cs-CZ" }
+    return date.toLocaleDateString(localeMap[locale], {
       year: "numeric",
       month: "long",
       day: "numeric",
@@ -22,10 +27,10 @@ export function ArticlesSection() {
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Статьи
+            {t.articlesTitle}
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Полезные советы и рекомендации по уходу за вашим смартфоном
+            {t.articlesDescription}
           </p>
         </div>
 
@@ -40,7 +45,7 @@ export function ArticlesSection() {
                 <div className="relative h-48 w-full overflow-hidden bg-gray-50">
                   <Image
                     src={article.image}
-                    alt={article.title}
+                    alt={getLocalizedString(article.title, locale)}
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-350"
                   />
@@ -53,10 +58,10 @@ export function ArticlesSection() {
                     </time>
                   </div>
                   <h3 className="font-bold text-xl text-gray-900 mb-3 group-hover:text-black transition-colors duration-250 line-clamp-2">
-                    {article.title}
+                    {getLocalizedString(article.title, locale)}
                   </h3>
                   <p className="text-gray-600 text-sm line-clamp-3">
-                    {article.excerpt}
+                    {getLocalizedString(article.excerpt, locale)}
                   </p>
                 </div>
               </Card>
@@ -67,7 +72,7 @@ export function ArticlesSection() {
         <div className="text-center">
           <Button asChild size="lg" className="group bg-gray-100 text-gray-700 hover:bg-gray-700 hover:text-white shadow-none">
             <Link href="/articles">
-              Смотреть все статьи
+              {t.viewAllArticles}
               <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Link>
           </Button>

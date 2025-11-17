@@ -9,6 +9,73 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+      admins: {
+        Row: {
+          id: string
+          user_id: string
+          email: string
+          role: 'editor' | 'admin' | 'superadmin'
+          is_active: boolean
+          created_at: string
+          updated_at: string
+          created_by: string | null
+          last_login_at: string | null
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          email: string
+          role?: 'editor' | 'admin' | 'superadmin'
+          is_active?: boolean
+          created_at?: string
+          updated_at?: string
+          created_by?: string | null
+          last_login_at?: string | null
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          email?: string
+          role?: 'editor' | 'admin' | 'superadmin'
+          is_active?: boolean
+          created_at?: string
+          updated_at?: string
+          created_by?: string | null
+          last_login_at?: string | null
+        }
+      }
+      audit_log: {
+        Row: {
+          id: string
+          admin_id: string | null
+          action: string
+          table_name: string
+          record_id: string | null
+          old_data: Json | null
+          new_data: Json | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          admin_id?: string | null
+          action: string
+          table_name: string
+          record_id?: string | null
+          old_data?: Json | null
+          new_data?: Json | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          admin_id?: string | null
+          action?: string
+          table_name?: string
+          record_id?: string | null
+          old_data?: Json | null
+          new_data?: Json | null
+          created_at?: string
+        }
+      }
       device_categories: {
         Row: {
           id: string

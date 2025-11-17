@@ -2,33 +2,37 @@
 
 import React from 'react';
 import Link from "next/link"
+import { useLocale } from "@/contexts/LocaleContext"
+import { getTranslations } from "@/lib/i18n"
 
 type CategoryId = 'iphone' | 'mac' | 'ipad' | 'watch';
 
 const categories = [
   {
     id: 'iphone' as CategoryId,
-    label: "Ремонт iPhone",
+    translationKey: 'repairIphone' as const,
     href: "/pricelist/iphone",
   },
   {
     id: 'mac' as CategoryId,
-    label: "Ремонт MacBook",
+    translationKey: 'repairMacbook' as const,
     href: "/pricelist/mac",
   },
   {
     id: 'ipad' as CategoryId,
-    label: "Ремонт iPad",
+    translationKey: 'repairIpad' as const,
     href: "/pricelist/ipad",
   },
   {
     id: 'watch' as CategoryId,
-    label: "Ремонт Apple Watch",
+    translationKey: 'repairAppleWatch' as const,
     href: "/pricelist/watch",
   },
 ]
 
 export function HeroSection() {
+  const { locale } = useLocale()
+  const t = getTranslations(locale)
   return (
     <section className="relative mt-16 py-16 md:py-20 lg:py-24 min-h-[500px] md:min-h-[550px] lg:min-h-[600px] bg-cover bg-bottom bg-no-repeat overflow-hidden bg-white" style={{ backgroundImage: 'url(/images/backgrounds/hero-bg.webp)' }}>
       <div className="container mx-auto px-4 relative z-10 h-full">
@@ -58,7 +62,7 @@ export function HeroSection() {
                       </svg>
                     </div>
                     <span className="text-base md:text-lg lg:text-xl font-semibold text-gray-900 group-hover:text-gray-800 transition-colors">
-                      {category.label}
+                      {t[category.translationKey]}
                     </span>
                   </div>
                 </Link>
