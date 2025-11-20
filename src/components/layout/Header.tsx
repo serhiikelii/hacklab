@@ -86,7 +86,7 @@ export function Header() {
                     onClick={() => setLocale(lang.locale)}
                     className={`transition-colors duration-200 ${
                       locale === lang.locale
-                        ? 'font-bold text-amber-400'
+                        ? 'font-bold text-teal-400'
                         : 'text-white/80 hover:text-white'
                     }`}
                   >
@@ -149,7 +149,7 @@ export function Header() {
                         }}
                         className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-colors duration-250 ${
                           locale === lang.locale
-                            ? 'bg-amber-100 font-semibold'
+                            ? 'bg-teal-100 font-semibold'
                             : 'hover:bg-gray-100'
                         }`}
                       >

@@ -15,7 +15,7 @@ export const SUPPORTED_LOCALES: Locale[] = ['ru', 'en', 'cz'];
 export const translations = {
   ru: {
     // ServicePriceTable
-    pricelistTitle: 'Прайс-лист услуг по ремонту',
+    servicePriceTableTitle: 'Прайс-лист услуг по ремонту',
     service: 'Услуга',
     price: 'Цена',
     warranty: 'Гарантия',
@@ -44,6 +44,13 @@ export const translations = {
     // Info blocks
     repairLiveTitle: 'Ремонт LIVE',
     repairLiveDescription: 'Смотрите процесс ремонта в реальном времени',
+    bookLiveStream: 'Запись на просмотр',
+    liveStreamFormTitle: 'Доступ к трансляции',
+    liveStreamFormDescription: 'Введите данные для доступа к онлайн-трансляции ремонта',
+    loginPlaceholder: 'Логин',
+    passwordPlaceholder: 'Пароль',
+    submitAccess: 'Получить доступ',
+    cancel: 'Отмена',
     repairOnSiteTitle: 'Ремонт на месте',
     repairOnSiteDescription: 'Пока вы ждете - мы ремонтируем',
     warrantyTitle: '2 года гарантии',
@@ -139,6 +146,26 @@ export const translations = {
     kontaktPageTitle: 'Контакты',
     kontaktPageDescription: 'Мы находимся в центре Праги. Приезжайте к нам или свяжитесь удобным способом.',
 
+    // ContactSection
+    addressTitle: 'Адрес',
+    transportTitle: 'Транспорт',
+    transportStop: 'Остановка: Lipanská',
+    transportTrams: 'Трамваи: 5, 9, 15, 26',
+    openingHoursTitle: 'Часы работы',
+    weekdaysHours: 'Понедельник - Пятница: 9:00 - 19:00',
+    saturdayHours: 'Суббота: 10:30 - 17:30',
+
+    // Pricelist page
+    pricelistTitle: 'Ремонт Apple устройств в Праге',
+    pricelistContentTitle: 'Ремонт Apple в Праге',
+    pricelistCategoryQuestion: 'Какое устройство нужно отремонтировать? Зная модель вашего устройства, мы точнее определим стоимость и сроки ремонта.',
+    pricelistIntro: 'Ваш iPhone, iPad или MacBook перестал включаться, разбился, утонул или просто стал работать нестабильно? Добро пожаловать в сервисный центр HackLab.',
+    pricelistWhyUs: 'Почему именно мы?',
+    pricelistWhyUsText1: 'Мы выполняем быстрый и профессиональный ремонт всей техники Apple любой сложности. Наши специалисты устранят любые неисправности, точно определят причины поломки и вернут вашему устройству идеальную работу. HackLab известен в Праге своей скоростью и качеством обслуживания — срочная замена дисплея, аккумулятора, кнопок или шлейфов занимает от 30 минут.',
+    pricelistWhyUsText2: 'Мы работаем с техникой Apple уже более 10 лет и накопили огромный опыт в восстановлении iPhone, iPad и MacBook. Сотрудничаем только с проверенными поставщиками оригинальных запчастей, что гарантирует надежность и долговечность ремонта.',
+    pricelistWhyUsText3: 'Мы ценим ваше время и понимаем, насколько сложно оставаться без связи. Поэтому, если вы не можете лично привезти устройство в наш сервис, закажите курьера HackLab — мы заберём гаджет, отремонтируем его и вернём обратно в кратчайшие сроки.',
+    pricelistFooter: 'HackLab — быстро, качественно и с заботой о вашем устройстве.',
+
     // Footer
     footerAbout: 'HackLab предоставляет эксклюзивный сервис и ремонт продуктов; а именно iPhone, iPad, MacBook и Apple Watch.',
     footerLinksTitle: 'Также посетите',
@@ -158,7 +185,7 @@ export const translations = {
   },
   en: {
     // ServicePriceTable
-    pricelistTitle: 'Repair Services Price List',
+    servicePriceTableTitle: 'Repair Services Price List',
     service: 'Service',
     price: 'Price',
     warranty: 'Warranty',
@@ -187,6 +214,13 @@ export const translations = {
     // Info blocks
     repairLiveTitle: 'LIVE Repair',
     repairLiveDescription: 'Watch the repair process in real time',
+    bookLiveStream: 'Book Viewing',
+    liveStreamFormTitle: 'Stream Access',
+    liveStreamFormDescription: 'Enter credentials to access the live repair stream',
+    loginPlaceholder: 'Login',
+    passwordPlaceholder: 'Password',
+    submitAccess: 'Get Access',
+    cancel: 'Cancel',
     repairOnSiteTitle: 'On-site repair',
     repairOnSiteDescription: 'While you wait - we repair',
     warrantyTitle: '2 years warranty',
@@ -282,6 +316,26 @@ export const translations = {
     kontaktPageTitle: 'Contacts',
     kontaktPageDescription: 'We are located in the center of Prague. Visit us or get in touch in a convenient way.',
 
+    // ContactSection
+    addressTitle: 'Address',
+    transportTitle: 'Transport',
+    transportStop: 'Stop: Lipanská',
+    transportTrams: 'Trams: 5, 9, 15, 26',
+    openingHoursTitle: 'Opening Hours',
+    weekdaysHours: 'Monday - Friday: 9:00 - 19:00',
+    saturdayHours: 'Saturday: 10:30 - 17:30',
+
+    // Pricelist page
+    pricelistTitle: 'Apple Device Repair in Prague',
+    pricelistContentTitle: 'Apple Repair in Prague',
+    pricelistCategoryQuestion: 'Which device needs repair? Knowing your device model helps us determine the cost and timeframe more accurately.',
+    pricelistIntro: 'Has your iPhone, iPad or MacBook stopped turning on, broken, drowned or just started working unstably? Welcome to the HackLab service center.',
+    pricelistWhyUs: 'Why choose us?',
+    pricelistWhyUsText1: 'We provide fast and professional repair of all Apple equipment of any complexity. Our specialists will fix any malfunction, accurately determine the causes of the breakdown and restore your device to perfect working condition. HackLab is known in Prague for its speed and service quality — urgent replacement of the display, battery, buttons or cables takes from 30 minutes.',
+    pricelistWhyUsText2: 'We have been working with Apple equipment for more than 10 years and have accumulated vast experience in restoring iPhones, iPads and MacBooks. We cooperate only with verified suppliers of original parts, which guarantees the reliability and durability of repairs.',
+    pricelistWhyUsText3: 'We value your time and understand how difficult it is to be without communication. Therefore, if you cannot personally bring your device to our service, order a HackLab courier — we will pick up the gadget, repair it and return it back as soon as possible.',
+    pricelistFooter: 'HackLab — fast, high quality and caring for your device.',
+
     // Footer
     footerAbout: 'HackLab provides exclusive service and repair for products; namely iPhone, iPad, MacBook and Apple Watch.',
     footerLinksTitle: 'Also Visit',
@@ -301,7 +355,7 @@ export const translations = {
   },
   cz: {
     // ServicePriceTable
-    pricelistTitle: 'Ceník oprav',
+    servicePriceTableTitle: 'Ceník oprav',
     service: 'Služba',
     price: 'Cena',
     warranty: 'Záruka',
@@ -330,6 +384,13 @@ export const translations = {
     // Info blocks
     repairLiveTitle: 'Oprava LIVE',
     repairLiveDescription: 'Sledujte proces opravy v reálném čase',
+    bookLiveStream: 'Rezervace sledování',
+    liveStreamFormTitle: 'Přístup k přenosu',
+    liveStreamFormDescription: 'Zadejte přihlašovací údaje pro přístup k živému přenosu opravy',
+    loginPlaceholder: 'Přihlášení',
+    passwordPlaceholder: 'Heslo',
+    submitAccess: 'Získat přístup',
+    cancel: 'Zrušit',
     repairOnSiteTitle: 'Oprava na místě',
     repairOnSiteDescription: 'Zatímco čekáte - opravujeme',
     warrantyTitle: '2 roky záruky',
@@ -424,6 +485,26 @@ export const translations = {
     // Kontakt page
     kontaktPageTitle: 'Kontakty',
     kontaktPageDescription: 'Nacházíme se v centru Prahy. Navštivte nás nebo se obraťte vhodným způsobem.',
+
+    // ContactSection
+    addressTitle: 'Adresa',
+    transportTitle: 'Doprava',
+    transportStop: 'Zastávka: Lipanská',
+    transportTrams: 'Tramvaje: 5, 9, 15, 26',
+    openingHoursTitle: 'Otevírací doba',
+    weekdaysHours: 'Pondělí - Pátek: 9:00 - 19:00',
+    saturdayHours: 'Sobota: 10:30 - 17:30',
+
+    // Pricelist page
+    pricelistTitle: 'Oprava zařízení Apple v Praze',
+    pricelistContentTitle: 'Oprava Apple v Praze',
+    pricelistCategoryQuestion: 'Které zařízení potřebuje opravu? Znalost modelu vašeho zařízení nám pomůže přesněji určit cenu a dobu opravy.',
+    pricelistIntro: 'Váš iPhone, iPad nebo MacBook přestal se zapínat, rozbil se, utopiL se nebo začal fungovat nestabilně? Vítejte v servisním centru HackLab.',
+    pricelistWhyUs: 'Proč právě my?',
+    pricelistWhyUsText1: 'Provádíme rychlou a profesionální opravu všech zařízení Apple jakékoli složitosti. Naši specialisté odstraní jakékoli závady, přesně určí příčiny poruchy a vrátí vašemu zařízení dokonalý provoz. HackLab je v Praze známý svou rychlostí a kvalitou služeb — naléhavá výměna displeje, baterie, tlačítek nebo kabelů trvá od 30 minut.',
+    pricelistWhyUsText2: 'S technikou Apple pracujeme již více než 10 let a nashromáždili jsme obrovské zkušenosti s obnovou iPhonů, iPadů a MacBooků. Spolupracujeme pouze s ověřenými dodavateli originálních náhradních dílů, což zaručuje spolehlivost a trvanlivost oprav.',
+    pricelistWhyUsText3: 'Ceníme si vašeho času a chápeme, jak obtížné je být bez komunikace. Proto, pokud nemůžete osobně přivézt zařízení do našeho servisu, objednejte si kurýra HackLab — vyzvednem gadget, opravíme ho a vrátíme zpět co nejdříve.',
+    pricelistFooter: 'HackLab — rychle, kvalitně a s péčí o vaše zařízení.',
 
     // Footer
     footerAbout: 'HackLab poskytuje exkluzivní servis a opravy produktů; konkrétně iPhone, iPad, MacBook a Apple Watch.',

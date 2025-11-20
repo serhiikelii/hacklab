@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { useParams, notFound } from "next/navigation"
-import { Calendar, ArrowLeft } from "lucide-react"
+import { Calendar, ArrowLeft, Home } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { articles } from "@/data/articles"
 import { Header } from "@/components/layout/Header"
@@ -52,7 +52,8 @@ export default function ArticlePage() {
               <nav className="mb-6">
                 <ol className="flex items-center space-x-2 text-sm text-gray-600">
                   <li>
-                    <Link href="/" className="hover:text-gray-900 transition-colors">
+                    <Link href="/" className="hover:text-gray-900 transition-colors flex items-center gap-1">
+                      <Home className="w-4 h-4" />
                       {t.home}
                     </Link>
                   </li>

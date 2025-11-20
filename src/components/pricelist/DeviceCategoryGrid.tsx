@@ -4,6 +4,8 @@ import React from 'react';
 import Link from 'next/link';
 import { DeviceCategory, DEVICE_CATEGORIES, type CategoryInfo } from '@/types/pricelist';
 import type { Category } from '@/types/database';
+import { useLocale } from '@/contexts/LocaleContext';
+import { getTranslations } from '@/lib/i18n';
 
 export interface DeviceCategoryGridProps {
   categories?: Category[] | CategoryInfo[];
@@ -26,13 +28,15 @@ export function DeviceCategoryGrid({
   categories = Object.values(DEVICE_CATEGORIES),
   onCategorySelect,
 }: DeviceCategoryGridProps) {
+  const { locale } = useLocale();
+  const t = getTranslations(locale);
   // Трансформируем данные из БД в формат CategoryInfo
   const transformedCategories = transformCategories(categories);
   return (
     <div className="w-full max-w-6xl mx-auto px-4 py-8">
       <div className="text-center mb-8">
         <p className="text-lg text-gray-600">
-          Какое устройство нужно отремонтировать? Зная модель вашего устройства, мы точнее определим стоимость и сроки ремонта.
+          {t.pricelistCategoryQuestion}
         </p>
       </div>
 

@@ -6,6 +6,10 @@ import Link from 'next/link';
 import { Home, ChevronRight } from 'lucide-react';
 import { getTranslations, getServiceName, formatMessage, getCategoryName } from '@/lib/i18n';
 import { useLocale } from '@/contexts/LocaleContext';
+import { useState } from 'react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 
 export interface ServicePriceTableProps {
   model: DeviceModel;
@@ -33,6 +37,11 @@ export function ServicePriceTable({
 
   // Получаем переводы для текущего языка
   const t = getTranslations(locale);
+
+  // State для диалога Live Stream
+  const [isLiveStreamDialogOpen, setIsLiveStreamDialogOpen] = useState(false);
+  const [login, setLogin] = useState('');
+  const [password, setPassword] = useState('');
 
   // Создаем map цен для быстрого доступа
   const priceMap = new Map(
@@ -73,7 +82,7 @@ export function ServicePriceTable({
           {model.name}
         </h1>
         <p className="text-lg text-gray-600">
-          {t.pricelistTitle}
+          {t.servicePriceTableTitle}
         </p>
       </div>
 
@@ -190,44 +199,109 @@ export function ServicePriceTable({
         {/* Правая колонка - изображение модели (1/3 ширины) */}
         <div className="lg:col-span-1">
           <div className="sticky top-8">
-            {model.image_url ? (
-              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-300">
-                <div className="relative aspect-square w-full mb-4">
+            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-300">
+              {/* Изображение или плейсхолдер */}
+              <div className="relative aspect-square w-full mb-4">
+                {model.image_url ? (
                   <Image
                     src={model.image_url}
                     alt={model.name}
                     fill
                     className="object-contain"
                   />
-                </div>
-                <div className="text-center">
-                  <p className="text-lg font-semibold text-gray-900">
-                    {t.repairLiveTitle}
-                  </p>
-                  <p className="text-sm text-gray-600 mt-2">
-                    {t.repairLiveDescription}
-                  </p>
-                </div>
+                ) : (
+                  <div className="w-full h-full bg-gray-50 rounded-lg flex items-center justify-center">
+                    <div className="text-center">
+                      <Image
+                        src="/images/device-placeholder.webp"
+                        alt="Device placeholder"
+                        width={360}
+                        height={360}
+                        className="mx-auto opacity-80 object-contain"
+                      />
+                      <p className="text-gray-500 text-sm mt-2">
+                        {t.imageSoon}
+                      </p>
+                    </div>
+                  </div>
+                )}
               </div>
-            ) : (
-              <div className="bg-gray-50 rounded-lg border border-gray-200 p-6 aspect-square flex items-center justify-center">
-                <div className="text-center">
-                  <Image
-                    src="/images/device-placeholder.svg"
-                    alt="Device placeholder"
-                    width={120}
-                    height={120}
-                    className="mx-auto mb-3 opacity-60"
-                  />
-                  <p className="text-gray-500 text-sm">
-                    {t.imageSoon}
-                  </p>
-                </div>
+
+              {/* Live Stream секция - всегда показывается */}
+              <div className="text-center">
+                <p className="text-lg font-semibold text-gray-900">
+                  {t.repairLiveTitle}
+                </p>
+                <p className="text-sm text-gray-600 mt-2 mb-4">
+                  {t.repairLiveDescription}
+                </p>
+                <Button
+                  onClick={() => setIsLiveStreamDialogOpen(true)}
+                  className="w-full bg-[#052533] hover:bg-[#041d28] text-white"
+                >
+                  {t.bookLiveStream}
+                </Button>
               </div>
-            )}
+            </div>
           </div>
         </div>
       </div>
+
+      {/* Dialog для Live Stream доступа */}
+      <Dialog open={isLiveStreamDialogOpen} onOpenChange={setIsLiveStreamDialogOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>{t.liveStreamFormTitle}</DialogTitle>
+            <DialogDescription>
+              {t.liveStreamFormDescription}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Input
+                type="text"
+                placeholder={t.loginPlaceholder}
+                value={login}
+                onChange={(e) => setLogin(e.target.value)}
+                className="w-full"
+              />
+            </div>
+            <div className="space-y-2">
+              <Input
+                type="password"
+                placeholder={t.passwordPlaceholder}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full"
+              />
+            </div>
+          </div>
+          <div className="flex gap-3 justify-end">
+            <Button
+              variant="outline"
+              onClick={() => {
+                setIsLiveStreamDialogOpen(false);
+                setLogin('');
+                setPassword('');
+              }}
+            >
+              {t.cancel}
+            </Button>
+            <Button
+              className="bg-[#052533] hover:bg-[#041d28] text-white"
+              onClick={() => {
+                // TODO: Здесь будет логика аутентификации для Live Stream
+                console.log('Login:', login, 'Password:', password);
+                setIsLiveStreamDialogOpen(false);
+                setLogin('');
+                setPassword('');
+              }}
+            >
+              {t.submitAccess}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
 
     </div>
   );
