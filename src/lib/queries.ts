@@ -52,7 +52,7 @@ function transformDeviceModel(dbModel: any): DeviceModel {
     series: dbModel.series || undefined,
     release_year: dbModel.release_year || undefined,
     image_url: dbModel.image_url || undefined,
-    is_popular: dbModel.is_popular || false,
+    is_popular: false, // Feature removed - was never in DB schema
   };
 }
 
@@ -89,7 +89,7 @@ function transformPrice(dbPrice: DBPrice): ServicePrice {
     note_ru: dbPrice.note_ru || undefined,
     note_en: dbPrice.note_en || undefined,
     note_cz: dbPrice.note_cz || undefined,
-    is_active: dbPrice.is_active ?? true,
+    // is_active: removed - field doesn't exist in prices table
   };
 }
 

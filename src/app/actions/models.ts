@@ -1,9 +1,9 @@
 'use server'
 
 import { z } from 'zod'
-import { createClient } from '@supabase/supabase-js'
+import { createServerClient } from '@supabase/ssr'
+import { cookies } from 'next/headers'
 import { revalidatePath } from 'next/cache'
-import { redirect } from 'next/navigation'
 
 // Zod schema for device model validation
 const DeviceModelSchema = z.object({
@@ -28,9 +28,7 @@ const DeviceModelSchema = z.object({
     .max(2030, 'Год должен быть не больше 2030')
     .optional()
     .nullable(),
-  image_url: z.string().url('Неверный формат URL').optional().nullable(),
-  is_popular: z.boolean().default(false),
-  is_active: z.boolean().default(true),
+  image_url: z.string().url('Неверный формат URL').optional().nullable().or(z.literal('')),
 })
 
 export type FormState = {
@@ -50,11 +48,35 @@ export async function createDeviceModel(
   prevState: FormState,
   formData: FormData
 ): Promise<FormState> {
-  // Create Supabase client with service role for admin operations
-  const supabase = createClient(
+  // Create Supabase client with cookies for authenticated operations
+  const cookieStore = await cookies()
+
+  const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll() {
+          return cookieStore.getAll()
+        },
+        setAll(cookiesToSet) {
+          cookiesToSet.forEach(({ name, value, options }) => {
+            cookieStore.set(name, value, options)
+          })
+        },
+      },
+    }
   )
+
+  // Check auth
+  const { data: { user } } = await supabase.auth.getUser()
+
+  if (!user) {
+    return {
+      message: 'Необходима авторизация',
+      success: false,
+    }
+  }
 
   // Parse and validate form data
   const rawFormData = {
@@ -66,9 +88,9 @@ export async function createDeviceModel(
       ? parseInt(formData.get('release_year') as string)
       : null,
     image_url: formData.get('image_url') as string | null,
-    is_popular: formData.get('is_popular') === 'on',
-    is_active: formData.get('is_active') === 'on',
   }
+
+  console.log('📋 Raw FormData received:', rawFormData)
 
   // Validate form fields
   const validatedFields = DeviceModelSchema.safeParse(rawFormData)
@@ -128,8 +150,6 @@ export async function createDeviceModel(
         series: data.series || null,
         release_year: data.release_year || null,
         image_url: data.image_url || null,
-        is_popular: data.is_popular,
-        is_active: data.is_active,
       })
       .select()
       .single()
@@ -162,7 +182,6 @@ export async function createDeviceModel(
         price_type: 'on_request' as const,
         duration_minutes: null,
         warranty_months: 24,
-        is_active: true,
       }))
 
       const { error: pricesError } = await supabase
@@ -179,13 +198,200 @@ export async function createDeviceModel(
     revalidatePath('/admin/models')
     revalidatePath(`/pricelist/${data.category_id}`)
 
-    // 7. Redirect to models list
-    redirect('/admin/models')
+    // 7. Return success (redirect happens on client side)
+    return {
+      message: 'Модель успешно создана',
+      success: true,
+    }
   } catch (error) {
     console.error('Unexpected error:', error)
     return {
       message: 'Произошла непредвиденная ошибка',
       success: false,
+    }
+  }
+}
+
+export async function updateDeviceModel(
+  modelId: string,
+  prevState: FormState,
+  formData: FormData
+): Promise<FormState> {
+  const cookieStore = await cookies()
+
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll() {
+          return cookieStore.getAll()
+        },
+        setAll(cookiesToSet) {
+          cookiesToSet.forEach(({ name, value, options }) => {
+            cookieStore.set(name, value, options)
+          })
+        },
+      },
+    }
+  )
+
+  // Check auth
+  const { data: { user } } = await supabase.auth.getUser()
+
+  if (!user) {
+    return {
+      message: 'Необходима авторизация',
+      success: false,
+    }
+  }
+
+  const rawFormData = {
+    category_id: formData.get('category_id') as string,
+    name: formData.get('name') as string,
+    slug: formData.get('slug') as string,
+    series: formData.get('series') as string | null,
+    release_year: formData.get('release_year')
+      ? parseInt(formData.get('release_year') as string)
+      : null,
+    image_url: formData.get('image_url') as string | null,
+  }
+
+  console.log('=== UPDATE MODEL DEBUG ===')
+  console.log('modelId:', modelId)
+  console.log('rawFormData:', rawFormData)
+
+  const validatedFields = DeviceModelSchema.safeParse(rawFormData)
+
+  console.log('validation success:', validatedFields.success)
+  if (!validatedFields.success) {
+    console.log('validation errors:', validatedFields.error.flatten())
+  }
+
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors as any,
+      message: 'Проверьте правильность заполнения полей',
+      success: false,
+    }
+  }
+
+  const data = validatedFields.data
+
+  try {
+    // category_id is already a UUID from the form, no need to look it up
+    const categoryUUID = data.category_id
+
+    // Check if slug exists for other models
+    const { data: existingModel } = await supabase
+      .from('device_models')
+      .select('id')
+      .eq('slug', data.slug)
+      .neq('id', modelId)
+      .single()
+
+    if (existingModel) {
+      return {
+        errors: {
+          slug: 'Модель с таким slug уже существует',
+        },
+        success: false,
+      }
+    }
+
+    // Update model
+    const { error: updateError } = await supabase
+      .from('device_models')
+      .update({
+        category_id: categoryUUID,
+        name: data.name,
+        slug: data.slug,
+        series: data.series || null,
+        release_year: data.release_year || null,
+        image_url: data.image_url || null,
+      })
+      .eq('id', modelId)
+
+    if (updateError) {
+      console.error('Update error:', updateError)
+      return {
+        message: `Ошибка обновления: ${updateError.message}`,
+        success: false,
+      }
+    }
+
+    revalidatePath('/admin/models')
+    revalidatePath(`/admin/models/${modelId}/edit`)
+
+    return {
+      message: 'Модель успешно обновлена',
+      success: true,
+    }
+  } catch (error) {
+    console.error('Unexpected error:', error)
+    return {
+      message: 'Произошла непредвиденная ошибка',
+      success: false,
+    }
+  }
+}
+
+export async function deleteDeviceModel(modelId: string): Promise<{ success: boolean; error?: string }> {
+  const cookieStore = await cookies()
+
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll() {
+          return cookieStore.getAll()
+        },
+        setAll(cookiesToSet) {
+          cookiesToSet.forEach(({ name, value, options }) => {
+            cookieStore.set(name, value, options)
+          })
+        },
+      },
+    }
+  )
+
+  // Check auth
+  const { data: { user } } = await supabase.auth.getUser()
+
+  if (!user) {
+    return {
+      success: false,
+      error: 'Необходима авторизация',
+    }
+  }
+
+  try {
+    // Delete model (cascade will delete related prices)
+    const { error: deleteError } = await supabase
+      .from('device_models')
+      .delete()
+      .eq('id', modelId)
+
+    if (deleteError) {
+      console.error('Delete error:', deleteError)
+      return {
+        success: false,
+        error: `Ошибка удаления: ${deleteError.message}`,
+      }
+    }
+
+    // Revalidate pages
+    revalidatePath('/admin/models')
+
+    return {
+      success: true,
+    }
+  } catch (error) {
+    console.error('Unexpected error during delete:', error)
+    return {
+      success: false,
+      error: 'Произошла непредвиденная ошибка при удалении',
     }
   }
 }

@@ -4,7 +4,7 @@ const SUPABASE_ACCESS_TOKEN = 'sbp_d7c69b05f0883145037aa88c3f0638bdf07fbf4d';
 const PROJECT_REF = 'leiornbrnenbaabeqawk';
 
 console.log('📥 Читаю миграцию...');
-const sql = readFileSync('supabase/migrations/012_add_apple_watch_prices.sql', 'utf-8');
+const sql = readFileSync('supabase/migrations/030_allow_anon_update_images.sql', 'utf-8');
 
 console.log('🚀 Отправляю SQL через Management API...\n');
 

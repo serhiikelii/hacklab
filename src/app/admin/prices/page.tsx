@@ -4,16 +4,13 @@ import { useEffect, useState } from 'react'
 import { createClient } from '@supabase/supabase-js'
 import Link from 'next/link'
 
-interface Price {
+interface DeviceModel {
   id: string
-  price: number | null
-  price_type: 'fixed' | 'from' | 'free' | 'on_request'
-  is_active: boolean
-  device_models: {
-    name: string
-    slug: string
-  }
-  services: {
+  name: string
+  slug: string
+  release_year: number | null
+  category_id: string
+  device_categories: {
     name_ru: string
     slug: string
   }
@@ -26,12 +23,10 @@ interface Category {
 }
 
 export default function AdminPricesPage() {
-  const [prices, setPrices] = useState<Price[]>([])
+  const [models, setModels] = useState<DeviceModel[]>([])
   const [categories, setCategories] = useState<Category[]>([])
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
   const [loading, setLoading] = useState(true)
-  const [editingPrice, setEditingPrice] = useState<string | null>(null)
-  const [editValue, setEditValue] = useState<number | null>(null)
 
   const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -40,7 +35,8 @@ export default function AdminPricesPage() {
 
   useEffect(() => {
     loadCategories()
-    loadPrices()
+    loadModels()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedCategory])
 
   async function loadCategories() {
@@ -48,7 +44,6 @@ export default function AdminPricesPage() {
       const { data, error } = await supabase
         .from('device_categories')
         .select('id, name_ru, slug')
-        .eq('is_active', true)
         .order('order')
 
       if (error) throw error
@@ -58,25 +53,20 @@ export default function AdminPricesPage() {
     }
   }
 
-  async function loadPrices() {
+  async function loadModels() {
     try {
       let query = supabase
-        .from('prices')
+        .from('device_models')
         .select(
           `
           *,
-          device_models (
-            name,
-            slug,
-            category_id
-          ),
-          services (
+          device_categories (
             name_ru,
             slug
           )
         `
         )
-        .order('id')
+        .order('created_at', { ascending: false })
 
       const { data, error } = await query
 
@@ -86,72 +76,15 @@ export default function AdminPricesPage() {
       let filteredData = data || []
       if (selectedCategory !== 'all') {
         filteredData = filteredData.filter(
-          (price) =>
-            price.device_models?.category_id === selectedCategory
+          (model) => model.category_id === selectedCategory
         )
       }
 
-      setPrices(filteredData)
+      setModels(filteredData)
     } catch (error) {
-      console.error('Error loading prices:', error)
+      console.error('Error loading models:', error)
     } finally {
       setLoading(false)
-    }
-  }
-
-  async function updatePrice(priceId: string, newPrice: number | null) {
-    try {
-      const { error } = await supabase
-        .from('prices')
-        .update({ price: newPrice })
-        .eq('id', priceId)
-
-      if (error) throw error
-      await loadPrices()
-      setEditingPrice(null)
-      setEditValue(null)
-    } catch (error) {
-      console.error('Error updating price:', error)
-      alert('Ошибка при обновлении цены')
-    }
-  }
-
-  async function toggleActive(priceId: string, currentState: boolean) {
-    try {
-      const { error } = await supabase
-        .from('prices')
-        .update({ is_active: !currentState })
-        .eq('id', priceId)
-
-      if (error) throw error
-      await loadPrices()
-    } catch (error) {
-      console.error('Error updating price:', error)
-      alert('Ошибка при обновлении цены')
-    }
-  }
-
-  function startEditing(priceId: string, currentPrice: number | null) {
-    setEditingPrice(priceId)
-    setEditValue(currentPrice)
-  }
-
-  function saveEdit(priceId: string) {
-    updatePrice(priceId, editValue)
-  }
-
-  function formatPrice(price: Price): string {
-    switch (price.price_type) {
-      case 'fixed':
-        return `${price.price} CZK`
-      case 'from':
-        return `от ${price.price} CZK`
-      case 'free':
-        return 'Бесплатно'
-      case 'on_request':
-        return 'По запросу'
-      default:
-        return '-'
     }
   }
 
@@ -201,7 +134,7 @@ export default function AdminPricesPage() {
           </select>
         </div>
 
-        {/* Prices Table */}
+        {/* Models Table */}
         <div className="bg-white shadow overflow-hidden sm:rounded-lg">
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
@@ -210,13 +143,10 @@ export default function AdminPricesPage() {
                   Модель
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Услуга
+                  Категория
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Цена
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Статус
+                  Год выпуска
                 </th>
                 <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Действия
@@ -224,94 +154,39 @@ export default function AdminPricesPage() {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {prices.length === 0 ? (
+              {models.length === 0 ? (
                 <tr>
                   <td
-                    colSpan={5}
+                    colSpan={4}
                     className="px-6 py-4 text-center text-gray-500"
                   >
-                    Цены не найдены
+                    Модели не найдены
                   </td>
                 </tr>
               ) : (
-                prices.map((price) => (
-                  <tr key={price.id} className="hover:bg-gray-50">
+                models.map((model) => (
+                  <tr key={model.id} className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm font-medium text-gray-900">
-                        {price.device_models?.name}
+                        {model.name}
                       </div>
+                      <div className="text-sm text-gray-500">{model.slug}</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm text-gray-900">
-                        {price.services?.name_ru}
+                        {model.device_categories?.name_ru}
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      {editingPrice === price.id ? (
-                        <div className="flex items-center space-x-2">
-                          <input
-                            type="number"
-                            value={editValue || ''}
-                            onChange={(e) =>
-                              setEditValue(
-                                e.target.value
-                                  ? parseFloat(e.target.value)
-                                  : null
-                              )
-                            }
-                            className="w-24 px-2 py-1 border border-gray-300 rounded text-sm"
-                          />
-                          <button
-                            onClick={() => saveEdit(price.id)}
-                            className="text-green-600 hover:text-green-900 text-sm"
-                          >
-                            ✓
-                          </button>
-                          <button
-                            onClick={() => {
-                              setEditingPrice(null)
-                              setEditValue(null)
-                            }}
-                            className="text-red-600 hover:text-red-900 text-sm"
-                          >
-                            ✗
-                          </button>
-                        </div>
-                      ) : (
-                        <div className="text-sm text-gray-900">
-                          {formatPrice(price)}
-                        </div>
-                      )}
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {model.release_year || '-'}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span
-                        className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                          price.is_active
-                            ? 'bg-green-100 text-green-800'
-                            : 'bg-red-100 text-red-800'
-                        }`}
+                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                      <Link
+                        href={`/admin/prices/${model.id}/edit`}
+                        className="text-indigo-600 hover:text-indigo-900"
                       >
-                        {price.is_active ? 'Активна' : 'Неактивна'}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
-                      {price.price_type !== 'free' &&
-                        price.price_type !== 'on_request' && (
-                          <button
-                            onClick={() =>
-                              startEditing(price.id, price.price)
-                            }
-                            className="text-indigo-600 hover:text-indigo-900"
-                          >
-                            Изменить
-                          </button>
-                        )}
-                      <button
-                        onClick={() => toggleActive(price.id, price.is_active)}
-                        className="text-yellow-600 hover:text-yellow-900"
-                      >
-                        {price.is_active ? 'Деактивировать' : 'Активировать'}
-                      </button>
+                        Редактировать цены
+                      </Link>
                     </td>
                   </tr>
                 ))
@@ -322,7 +197,7 @@ export default function AdminPricesPage() {
 
         {/* Stats */}
         <div className="mt-4 text-sm text-gray-500">
-          Всего цен: {prices.length}
+          Всего моделей: {models.length}
         </div>
       </div>
     </div>

@@ -1,8 +1,15 @@
+'use client'
+
 import { Card } from "@/components/ui/card"
 import { MapPin, Train, Clock, Star } from "lucide-react"
 import { MapSection } from "./MapSection"
+import { useLocale } from "@/contexts/LocaleContext"
+import { getTranslations } from "@/lib/i18n"
 
 export function ContactSection() {
+  const { locale } = useLocale()
+  const t = getTranslations(locale)
+
   return (
     <section className="py-16 bg-white">
       <div className="container mx-auto px-4">
@@ -14,7 +21,7 @@ export function ContactSection() {
                 <MapPin className="w-6 h-6 text-gray-700" />
               </div>
               <div>
-                <h3 className="font-bold text-gray-900 mb-2">Адрес</h3>
+                <h3 className="font-bold text-gray-900 mb-2">{t.addressTitle}</h3>
                 <p className="text-gray-700">MojService</p>
                 <p className="text-gray-700">Seifertova 83</p>
                 <p className="text-gray-700">Praha 3 - Žižkov</p>
@@ -27,9 +34,9 @@ export function ContactSection() {
                 <Train className="w-6 h-6 text-gray-700" />
               </div>
               <div>
-                <h3 className="font-bold text-gray-900 mb-2">Транспорт</h3>
-                <p className="text-gray-700">Остановка: Lipanská</p>
-                <p className="text-gray-700">Трамваи: 5, 9, 15, 26</p>
+                <h3 className="font-bold text-gray-900 mb-2">{t.transportTitle}</h3>
+                <p className="text-gray-700">{t.transportStop}</p>
+                <p className="text-gray-700">{t.transportTrams}</p>
               </div>
             </div>
 
@@ -38,9 +45,9 @@ export function ContactSection() {
                 <Clock className="w-6 h-6 text-orange-500" />
               </div>
               <div>
-                <h3 className="font-bold text-gray-900 mb-2">Часы работы</h3>
-                <p className="text-gray-700">Понедельник - Пятница: 9:00 - 19:00</p>
-                <p className="text-gray-700">Суббота: 10:30 - 17:30</p>
+                <h3 className="font-bold text-gray-900 mb-2">{t.openingHoursTitle}</h3>
+                <p className="text-gray-700">{t.weekdaysHours}</p>
+                <p className="text-gray-700">{t.saturdayHours}</p>
               </div>
             </div>
 

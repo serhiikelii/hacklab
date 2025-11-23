@@ -41,7 +41,7 @@ export interface DeviceModel {
   series?: string | null; // Например: "iPhone 15", "iPad Air"
   release_year?: number | null;
   image_url?: string | null;
-  is_popular?: boolean;
+  is_popular?: boolean; // @deprecated - field never existed in DB schema, kept for compatibility
 }
 
 // ========== Услуги и цены ==========
@@ -74,7 +74,7 @@ export interface ServicePrice {
   note_ru?: string | null; // Дополнительная информация (русский)
   note_en?: string | null; // Дополнительная информация (английский)
   note_cz?: string | null; // Дополнительная информация (чешский)
-  is_active?: boolean; // Активность цены
+  // is_active REMOVED - field doesn't exist in prices table
 }
 
 // ========== Связи категорий и услуг ==========
@@ -104,7 +104,7 @@ export interface Discount {
   conditions_cz?: string;
   valid_from?: string | null;
   valid_until?: string | null;
-  is_active?: boolean;
+  is_active?: boolean; // Used in discounts table (different from prices)
 }
 
 // ========== Компоненты прайс-листа ==========

@@ -33,6 +33,7 @@ export default function AdminUsersPage() {
   useEffect(() => {
     checkAccess()
     loadAdmins()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   async function checkAccess() {

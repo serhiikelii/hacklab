@@ -3,7 +3,6 @@
 ## 🗄️ База данных
 - **Схема:** `supabase/migrations/001_initial_schema.sql`
 - **Данные:** `supabase/migrations/002_seed_data.sql`
-- **Архитектура:** `docs/ARCHITECTURE.md`
 - **Конфигурация:** `.env.local` - Supabase URL и ключи
 - **Проверка связи:** `node check-db.mjs` - Тест подключения к БД
 

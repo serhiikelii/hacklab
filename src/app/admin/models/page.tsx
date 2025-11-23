@@ -1,8 +1,9 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useTransition } from 'react'
 import { createClient } from '@supabase/supabase-js'
 import Link from 'next/link'
+import { deleteDeviceModel } from '@/app/actions/models'
 
 interface DeviceModel {
   id: string
@@ -10,8 +11,6 @@ interface DeviceModel {
   slug: string
   series: string | null
   release_year: number | null
-  is_popular: boolean
-  is_active: boolean
   category_id: string
   device_categories: {
     name_ru: string
@@ -23,6 +22,8 @@ export default function AdminModelsPage() {
   const [models, setModels] = useState<DeviceModel[]>([])
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
+  const [filterCategory, setFilterCategory] = useState('all')
+  const [isPending, startTransition] = useTransition()
 
   const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -31,6 +32,7 @@ export default function AdminModelsPage() {
 
   useEffect(() => {
     loadModels()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   async function loadModels() {
@@ -57,37 +59,7 @@ export default function AdminModelsPage() {
     }
   }
 
-  async function toggleActive(modelId: string, currentState: boolean) {
-    try {
-      const { error } = await supabase
-        .from('device_models')
-        .update({ is_active: !currentState })
-        .eq('id', modelId)
-
-      if (error) throw error
-      await loadModels()
-    } catch (error) {
-      console.error('Error updating model:', error)
-      alert('Ошибка при обновлении модели')
-    }
-  }
-
-  async function togglePopular(modelId: string, currentState: boolean) {
-    try {
-      const { error } = await supabase
-        .from('device_models')
-        .update({ is_popular: !currentState })
-        .eq('id', modelId)
-
-      if (error) throw error
-      await loadModels()
-    } catch (error) {
-      console.error('Error updating model:', error)
-      alert('Ошибка при обновлении модели')
-    }
-  }
-
-  async function deleteModel(modelId: string, modelName: string) {
+  async function handleDelete(modelId: string, modelName: string) {
     if (
       !confirm(
         `Вы уверены, что хотите удалить модель "${modelName}"? Это также удалит все связанные цены.`
@@ -96,27 +68,30 @@ export default function AdminModelsPage() {
       return
     }
 
-    try {
-      const { error } = await supabase
-        .from('device_models')
-        .delete()
-        .eq('id', modelId)
+    startTransition(async () => {
+      const result = await deleteDeviceModel(modelId)
 
-      if (error) throw error
-      await loadModels()
-    } catch (error) {
-      console.error('Error deleting model:', error)
-      alert('Ошибка при удалении модели')
-    }
+      if (result.error) {
+        alert(`Ошибка при удалении: ${result.error}`)
+      } else {
+        // Reload models after successful delete
+        await loadModels()
+      }
+    })
   }
 
-  const filteredModels = models.filter(
-    (model) =>
+  const filteredModels = models.filter((model) => {
+    const matchesSearch =
       model.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       model.slug.toLowerCase().includes(searchTerm.toLowerCase()) ||
       (model.series &&
         model.series.toLowerCase().includes(searchTerm.toLowerCase()))
-  )
+
+    const matchesCategory =
+      filterCategory === 'all' || model.device_categories?.slug === filterCategory
+
+    return matchesSearch && matchesCategory
+  })
 
   if (loading) {
     return (
@@ -155,15 +130,26 @@ export default function AdminModelsPage() {
 
       {/* Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Search */}
-        <div className="mb-6">
+        {/* Search and Filter */}
+        <div className="mb-6 flex gap-4">
           <input
             type="text"
             placeholder="Поиск по названию, slug или серии..."
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
+          <select
+            value={filterCategory}
+            onChange={(e) => setFilterCategory(e.target.value)}
+            className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          >
+            <option value="all">Все категории</option>
+            <option value="iphone">iPhone</option>
+            <option value="ipad">iPad</option>
+            <option value="macbook">MacBook</option>
+            <option value="apple-watch">Apple Watch</option>
+          </select>
         </div>
 
         {/* Models Table */}
@@ -180,9 +166,6 @@ export default function AdminModelsPage() {
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Год выпуска
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Статус
-                </th>
                 <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Действия
                 </th>
@@ -191,7 +174,7 @@ export default function AdminModelsPage() {
             <tbody className="bg-white divide-y divide-gray-200">
               {filteredModels.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="px-6 py-4 text-center text-gray-500">
+                  <td colSpan={4} className="px-6 py-4 text-center text-gray-500">
                     Модели не найдены
                   </td>
                 </tr>
@@ -201,11 +184,6 @@ export default function AdminModelsPage() {
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm font-medium text-gray-900">
                         {model.name}
-                        {model.is_popular && (
-                          <span className="ml-2 text-xs text-yellow-600">
-                            ⭐ Популярная
-                          </span>
-                        )}
                       </div>
                       <div className="text-sm text-gray-500">{model.slug}</div>
                       {model.series && (
@@ -222,35 +200,17 @@ export default function AdminModelsPage() {
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       {model.release_year || '-'}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span
-                        className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                          model.is_active
-                            ? 'bg-green-100 text-green-800'
-                            : 'bg-red-100 text-red-800'
-                        }`}
-                      >
-                        {model.is_active ? 'Активна' : 'Неактивна'}
-                      </span>
-                    </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
-                      <button
-                        onClick={() => toggleActive(model.id, model.is_active)}
+                      <Link
+                        href={`/admin/models/${model.id}/edit`}
                         className="text-indigo-600 hover:text-indigo-900"
                       >
-                        {model.is_active ? 'Деактивировать' : 'Активировать'}
-                      </button>
+                        Редактировать
+                      </Link>
                       <button
-                        onClick={() =>
-                          togglePopular(model.id, model.is_popular)
-                        }
-                        className="text-yellow-600 hover:text-yellow-900"
-                      >
-                        {model.is_popular ? 'Снять ⭐' : 'Пометить ⭐'}
-                      </button>
-                      <button
-                        onClick={() => deleteModel(model.id, model.name)}
+                        onClick={() => handleDelete(model.id, model.name)}
                         className="text-red-600 hover:text-red-900"
+                        disabled={isPending}
                       >
                         Удалить
                       </button>

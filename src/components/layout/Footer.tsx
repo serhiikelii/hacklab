@@ -70,11 +70,11 @@ export function Footer() {
                 130 00
               </p>
               <Link
-                href="tel:+420607855558"
+                href="tel:+420721042342"
                 className="flex items-center gap-2 text-sm text-gray-400 hover:text-white transition"
               >
                 <Phone className="w-4 h-4" />
-                607 855 558
+                721 042 342
               </Link>
               <Link
                 href="mailto:info@mojservice.cz"

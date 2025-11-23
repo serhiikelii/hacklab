@@ -71,11 +71,11 @@ export function Header() {
           <div className="hidden lg:flex items-center gap-6">
             {/* Phone */}
             <Link
-              href="tel:+420607855558"
+              href="tel:+420721042342"
               className="flex items-center gap-2 text-white hover:text-gray-300 transition-colors duration-250"
             >
               <Phone className="w-5 h-5" />
-              <span className="font-medium">+420 607 855 558</span>
+              <span className="font-medium">+420 721 042 342</span>
             </Link>
 
             {/* Language Switcher - Simple inline */}
@@ -129,11 +129,11 @@ export function Header() {
 
                 {/* Mobile Phone */}
                 <Link
-                  href="tel:+420607855558"
+                  href="tel:+420721042342"
                   className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-100 transition-colors duration-250"
                 >
                   <Phone className="w-5 h-5 text-gray-700" />
-                  <span className="font-medium">+420 607 855 558</span>
+                  <span className="font-medium">+420 721 042 342</span>
                 </Link>
 
                 {/* Mobile Language Selector */}

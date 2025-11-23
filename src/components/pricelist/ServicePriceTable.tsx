@@ -106,7 +106,7 @@ export function ServicePriceTable({
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <a
-                    href="tel:+420607855558"
+                    href="tel:+420721042342"
                     className="inline-flex items-center justify-center px-6 py-3
                              bg-amber-500 hover:bg-amber-600 text-white font-semibold
                              rounded-lg shadow-sm transition-colors duration-200"
@@ -197,32 +197,29 @@ export function ServicePriceTable({
         </div>
 
         {/* Правая колонка - изображение модели (1/3 ширины) */}
-        <div className="lg:col-span-1">
-          <div className="sticky top-8">
+        <div className="lg:col-span-1 flex justify-center">
+          <div className="sticky top-8 w-full max-w-[280px]">
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-300">
-              {/* Изображение или плейсхолдер */}
-              <div className="relative aspect-square w-full mb-4">
+              {/* Изображение или плейсхолдер - прямоугольная секция */}
+              <div className="relative w-full mb-4 flex items-center justify-center" style={{ height: '260px' }}>
                 {model.image_url ? (
-                  <Image
-                    src={model.image_url}
-                    alt={model.name}
-                    fill
-                    className="object-contain"
-                  />
+                  <div className="relative w-full h-full max-w-[180px] max-h-[260px]">
+                    <Image
+                      src={model.image_url}
+                      alt={model.name}
+                      fill
+                      className="object-contain"
+                    />
+                  </div>
                 ) : (
-                  <div className="w-full h-full bg-gray-50 rounded-lg flex items-center justify-center">
-                    <div className="text-center">
-                      <Image
-                        src="/images/device-placeholder.webp"
-                        alt="Device placeholder"
-                        width={360}
-                        height={360}
-                        className="mx-auto opacity-80 object-contain"
-                      />
-                      <p className="text-gray-500 text-sm mt-2">
-                        {t.imageSoon}
-                      </p>
-                    </div>
+                  <div className="flex items-center justify-center">
+                    <Image
+                      src="/images/device-placeholder.webp"
+                      alt="Device placeholder"
+                      width={180}
+                      height={180}
+                      className="opacity-80 object-contain"
+                    />
                   </div>
                 )}
               </div>

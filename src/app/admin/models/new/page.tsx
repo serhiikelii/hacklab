@@ -1,17 +1,88 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useActionState } from 'react'
 import { createDeviceModel } from '@/app/actions/models'
 import Link from 'next/link'
+import { ImageUpload } from '@/components/admin/ImageUpload'
+import { createClient } from '@supabase/supabase-js'
+
+interface Category {
+  id: string
+  slug: string
+  name_ru: string
+}
+
+// Function to generate slug from name
+function generateSlug(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '') // Remove special characters
+    .replace(/\s+/g, '-') // Replace spaces with hyphens
+    .replace(/-+/g, '-') // Replace multiple hyphens with single
+    .trim()
+}
 
 export default function NewModelPage() {
   const router = useRouter()
   const [state, formAction, pending] = useActionState(createDeviceModel, {
     errors: {},
   })
+  const [categories, setCategories] = useState<Category[]>([])
   const [selectedCategory, setSelectedCategory] = useState('')
+  const [modelName, setModelName] = useState('')
+  const [slug, setSlug] = useState('')
+  const [imageUrl, setImageUrl] = useState<string | null>(null)
+  const [loading, setLoading] = useState(true)
+
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  )
+
+  useEffect(() => {
+    loadCategories()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  useEffect(() => {
+    if (state?.success) {
+      router.push('/admin/models')
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state])
+
+  async function loadCategories() {
+    try {
+      const { data, error } = await supabase
+        .from('device_categories')
+        .select('id, slug, name_ru')
+        .order('order')
+
+      if (error) throw error
+      setCategories(data || [])
+    } catch (error) {
+      console.error('Error loading categories:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  function handleNameChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const name = e.target.value
+    setModelName(name)
+    // Auto-generate slug
+    setSlug(generateSlug(name))
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-lg">Загрузка...</div>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
@@ -43,6 +114,16 @@ export default function NewModelPage() {
               >
                 {state.message}
               </p>
+              {state?.errors && Object.keys(state.errors).length > 0 && (
+                <div className="mt-2 text-xs text-red-700">
+                  <p>Ошибки валидации:</p>
+                  <ul className="list-disc list-inside">
+                    {Object.entries(state.errors).map(([key, value]) => (
+                      <li key={key}>{key}: {JSON.stringify(value)}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
           )}
 
@@ -65,10 +146,11 @@ export default function NewModelPage() {
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm disabled:opacity-50"
               >
                 <option value="">Выберите категорию</option>
-                <option value="iphone">iPhone</option>
-                <option value="ipad">iPad</option>
-                <option value="macbook">MacBook</option>
-                <option value="apple-watch">Apple Watch</option>
+                {categories.map((category) => (
+                  <option key={category.id} value={category.slug}>
+                    {category.name_ru}
+                  </option>
+                ))}
               </select>
               {state?.errors?.category_id && (
                 <p className="mt-1 text-sm text-red-600">
@@ -91,6 +173,8 @@ export default function NewModelPage() {
                 name="name"
                 required
                 disabled={pending}
+                value={modelName}
+                onChange={handleNameChange}
                 placeholder="iPhone 15 Pro Max"
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm disabled:opacity-50"
               />
@@ -102,7 +186,7 @@ export default function NewModelPage() {
               </p>
             </div>
 
-            {/* Slug (auto-generated hint) */}
+            {/* Slug (auto-generated, read-only) */}
             <div>
               <label
                 htmlFor="slug"
@@ -116,40 +200,15 @@ export default function NewModelPage() {
                 name="slug"
                 required
                 disabled={pending}
-                placeholder="iphone-15-pro-max"
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm disabled:opacity-50"
+                value={slug}
+                readOnly
+                className="mt-1 block w-full rounded-md border-gray-300 bg-gray-50 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm disabled:opacity-50"
               />
               {state?.errors?.slug && (
                 <p className="mt-1 text-sm text-red-600">{state.errors.slug}</p>
               )}
               <p className="mt-1 text-sm text-gray-500">
-                Только латиница, цифры и дефисы. Например: iphone-15-pro-max
-              </p>
-            </div>
-
-            {/* Series */}
-            <div>
-              <label
-                htmlFor="series"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Серия (опционально)
-              </label>
-              <input
-                type="text"
-                id="series"
-                name="series"
-                disabled={pending}
-                placeholder="iPhone 15"
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm disabled:opacity-50"
-              />
-              {state?.errors?.series && (
-                <p className="mt-1 text-sm text-red-600">
-                  {state.errors.series}
-                </p>
-              )}
-              <p className="mt-1 text-sm text-gray-500">
-                Для группировки моделей (например, "iPhone 15")
+                Генерируется автоматически из названия модели
               </p>
             </div>
 
@@ -168,7 +227,7 @@ export default function NewModelPage() {
                 min="2000"
                 max="2030"
                 disabled={pending}
-                placeholder="2024"
+                placeholder="Необязательно"
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm disabled:opacity-50"
               />
               {state?.errors?.release_year && (
@@ -178,66 +237,21 @@ export default function NewModelPage() {
               )}
             </div>
 
-            {/* Image URL */}
-            <div>
-              <label
-                htmlFor="image_url"
-                className="block text-sm font-medium text-gray-700"
-              >
-                URL изображения
-              </label>
-              <input
-                type="url"
-                id="image_url"
-                name="image_url"
+            {/* Image Upload */}
+            {slug ? (
+              <ImageUpload
+                modelSlug={slug}
+                currentImageUrl={imageUrl}
+                onImageUrlChange={setImageUrl}
                 disabled={pending}
-                placeholder="https://example.com/image.png"
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm disabled:opacity-50"
               />
-              {state?.errors?.image_url && (
-                <p className="mt-1 text-sm text-red-600">
-                  {state.errors.image_url}
+            ) : (
+              <div className="p-4 bg-yellow-50 rounded-md border border-yellow-200">
+                <p className="text-sm text-yellow-800">
+                  ℹ️ Введите название модели для загрузки изображения
                 </p>
-              )}
-              <p className="mt-1 text-sm text-gray-500">
-                Полный URL изображения устройства
-              </p>
-            </div>
-
-            {/* Is Popular */}
-            <div className="flex items-center">
-              <input
-                type="checkbox"
-                id="is_popular"
-                name="is_popular"
-                disabled={pending}
-                className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 disabled:opacity-50"
-              />
-              <label
-                htmlFor="is_popular"
-                className="ml-2 block text-sm text-gray-700"
-              >
-                Популярная модель (отображается в начале списка)
-              </label>
-            </div>
-
-            {/* Is Active */}
-            <div className="flex items-center">
-              <input
-                type="checkbox"
-                id="is_active"
-                name="is_active"
-                defaultChecked
-                disabled={pending}
-                className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 disabled:opacity-50"
-              />
-              <label
-                htmlFor="is_active"
-                className="ml-2 block text-sm text-gray-700"
-              >
-                Активна (отображается на сайте)
-              </label>
-            </div>
+              </div>
+            )}
 
             {/* Submit Buttons */}
             <div className="flex items-center justify-end gap-x-4 pt-6 border-t">
@@ -263,8 +277,8 @@ export default function NewModelPage() {
             </h3>
             <p className="text-sm text-blue-700">
               После создания модели система автоматически создаст цены для всех
-              услуг выбранной категории со статусом "По запросу". Вы сможете
-              отредактировать цены в разделе "Цены".
+              услуг выбранной категории со статусом &quot;По запросу&quot;. Вы сможете
+              отредактировать цены в разделе &quot;Цены&quot;.
             </p>
           </div>
         </div>

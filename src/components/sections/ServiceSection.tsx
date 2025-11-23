@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import { CheckCircle2 } from "lucide-react"
 import { useLocale } from "@/contexts/LocaleContext"
 import { getTranslations } from "@/lib/i18n"
@@ -22,8 +23,15 @@ export function ServiceSection() {
         <div className="grid md:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
           {/* Left - Image */}
           <div className="relative">
-            <div className="aspect-square bg-gradient-to-br from-primary/20 to-accent/20 rounded-3xl flex items-center justify-center">
-              <div className="text-8xl">📱</div>
+            <div className="aspect-square rounded-3xl overflow-hidden bg-gray-100">
+              <Image
+                src="/images/service-transparency.webp"
+                alt="HACKLAB - We don't hack, we fix"
+                width={600}
+                height={600}
+                className="w-full h-full object-cover"
+                priority
+              />
             </div>
           </div>
 
