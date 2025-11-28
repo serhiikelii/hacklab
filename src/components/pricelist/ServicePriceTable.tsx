@@ -10,6 +10,7 @@ import { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { parseModelName, formatDuration } from '@/lib/utils';
 
 export interface ServicePriceTableProps {
   model: DeviceModel;
@@ -17,6 +18,7 @@ export interface ServicePriceTableProps {
   prices: ServicePrice[];
   onReserve?: (service: Service, model: DeviceModel) => void;
 }
+
 
 /**
  * ServicePriceTable - строгая минималистичная таблица услуг в стиле iFix
@@ -42,6 +44,12 @@ export function ServicePriceTable({
   const [isLiveStreamDialogOpen, setIsLiveStreamDialogOpen] = useState(false);
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
+
+  // State для fallback изображения при ошибке загрузки
+  const [imageError, setImageError] = useState(false);
+
+  // Парсим название модели для iPad/MacBook
+  const { mainName, modelCodes } = parseModelName(model.name, model.category);
 
   // Создаем map цен для быстрого доступа
   const priceMap = new Map(
@@ -77,11 +85,16 @@ export function ServicePriceTable({
       </nav>
 
       {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
-          {model.name}
+      <div className="mb-12">
+        <h1 className="text-xl md:text-3xl lg:text-4xl font-bold text-gray-900">
+          {mainName}
         </h1>
-        <p className="text-lg text-gray-600">
+        {modelCodes && (
+          <p className="text-base md:text-xl font-normal text-gray-600 mt-1">
+            {modelCodes}
+          </p>
+        )}
+        <p className="text-lg text-gray-600 mt-6">
           {t.servicePriceTableTitle}
         </p>
       </div>
@@ -108,7 +121,7 @@ export function ServicePriceTable({
                   <a
                     href="tel:+420721042342"
                     className="inline-flex items-center justify-center px-6 py-3
-                             bg-amber-500 hover:bg-amber-600 text-white font-semibold
+                             bg-primary hover:bg-primary-hover text-white font-semibold
                              rounded-lg shadow-sm transition-colors duration-200"
                   >
                     <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -119,7 +132,7 @@ export function ServicePriceTable({
                   <a
                     href="https://t.me/mojservice"
                     className="inline-flex items-center justify-center px-6 py-3
-                             bg-gray-700 hover:bg-gray-800 text-white font-semibold
+                             bg-secondary hover:bg-secondary-light text-white font-semibold
                              rounded-lg shadow-sm transition-colors duration-200"
                   >
                     <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -158,9 +171,13 @@ export function ServicePriceTable({
                             <div className="font-medium text-gray-900">
                               {getServiceName(service, locale)}
                             </div>
-                            {price.warranty_months && (
-                              <div className="text-sm text-gray-500 mt-1">
-                                {t.warranty}: {price.warranty_months} {t.months}
+                            {price.duration && (
+                              <div className="text-sm text-gray-500 mt-1 flex items-center gap-1">
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                                  <circle cx="12" cy="12" r="10" strokeLinecap="round" strokeLinejoin="round"/>
+                                  <path d="M12 6v6l4 2" strokeLinecap="round" strokeLinejoin="round"/>
+                                </svg>
+                                <span>{formatDuration(price.duration)}</span>
                               </div>
                             )}
                           </div>
@@ -201,14 +218,15 @@ export function ServicePriceTable({
           <div className="sticky top-8 w-full max-w-[280px]">
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-300">
               {/* Изображение или плейсхолдер - прямоугольная секция */}
-              <div className="relative w-full mb-4 flex items-center justify-center" style={{ height: '260px' }}>
-                {model.image_url ? (
+              <div className="relative w-full mb-4 flex items-center justify-center h-[260px]">
+                {model.image_url && !imageError ? (
                   <div className="relative w-full h-full max-w-[180px] max-h-[260px]">
                     <Image
                       src={model.image_url}
                       alt={model.name}
                       fill
                       className="object-contain"
+                      onError={() => setImageError(true)}
                     />
                   </div>
                 ) : (
@@ -234,7 +252,7 @@ export function ServicePriceTable({
                 </p>
                 <Button
                   onClick={() => setIsLiveStreamDialogOpen(true)}
-                  className="w-full bg-[#052533] hover:bg-[#041d28] text-white"
+                  className="w-full bg-primary hover:bg-primary-hover text-white"
                 >
                   {t.bookLiveStream}
                 </Button>
@@ -285,7 +303,7 @@ export function ServicePriceTable({
               {t.cancel}
             </Button>
             <Button
-              className="bg-[#052533] hover:bg-[#041d28] text-white"
+              className="bg-primary hover:bg-primary-hover text-white"
               onClick={() => {
                 // TODO: Здесь будет логика аутентификации для Live Stream
                 console.log('Login:', login, 'Password:', password);

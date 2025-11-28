@@ -166,6 +166,10 @@ export const translations = {
     pricelistWhyUsText3: 'Мы ценим ваше время и понимаем, насколько сложно оставаться без связи. Поэтому, если вы не можете лично привезти устройство в наш сервис, закажите курьера HackLab — мы заберём гаджет, отремонтируем его и вернём обратно в кратчайшие сроки.',
     pricelistFooter: 'HackLab — быстро, качественно и с заботой о вашем устройстве.',
 
+    // DeviceModelGrid
+    selectModelForPriceList: 'Выберите модель для просмотра прайс-листа',
+    modelsNotFound: 'Модели не найдены',
+
     // Footer
     footerAbout: 'HackLab предоставляет эксклюзивный сервис и ремонт продуктов; а именно iPhone, iPad, MacBook и Apple Watch.',
     footerLinksTitle: 'Также посетите',
@@ -336,6 +340,10 @@ export const translations = {
     pricelistWhyUsText3: 'We value your time and understand how difficult it is to be without communication. Therefore, if you cannot personally bring your device to our service, order a HackLab courier — we will pick up the gadget, repair it and return it back as soon as possible.',
     pricelistFooter: 'HackLab — fast, high quality and caring for your device.',
 
+    // DeviceModelGrid
+    selectModelForPriceList: 'Select a model to view the price list',
+    modelsNotFound: 'No models found',
+
     // Footer
     footerAbout: 'HackLab provides exclusive service and repair for products; namely iPhone, iPad, MacBook and Apple Watch.',
     footerLinksTitle: 'Also Visit',
@@ -505,6 +513,10 @@ export const translations = {
     pricelistWhyUsText2: 'S technikou Apple pracujeme již více než 10 let a nashromáždili jsme obrovské zkušenosti s obnovou iPhonů, iPadů a MacBooků. Spolupracujeme pouze s ověřenými dodavateli originálních náhradních dílů, což zaručuje spolehlivost a trvanlivost oprav.',
     pricelistWhyUsText3: 'Ceníme si vašeho času a chápeme, jak obtížné je být bez komunikace. Proto, pokud nemůžete osobně přivézt zařízení do našeho servisu, objednejte si kurýra HackLab — vyzvednem gadget, opravíme ho a vrátíme zpět co nejdříve.',
     pricelistFooter: 'HackLab — rychle, kvalitně a s péčí o vaše zařízení.',
+
+    // DeviceModelGrid
+    selectModelForPriceList: 'Vyberte model pro zobrazení ceníku',
+    modelsNotFound: 'Nenalezeny žádné modely',
 
     // Footer
     footerAbout: 'HackLab poskytuje exkluzivní servis a opravy produktů; konkrétně iPhone, iPad, MacBook a Apple Watch.',

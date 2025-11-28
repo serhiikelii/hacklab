@@ -255,6 +255,7 @@ export async function getModelsForCategory(categorySlug: string): Promise<Device
       .from('device_models')
       .select('*, device_categories(*)')
       .eq('category_id', (category as { id: string }).id)
+      .order('order', { ascending: true, nullsFirst: false })
       .order('release_year', { ascending: false })
       .order('name', { ascending: true });
 

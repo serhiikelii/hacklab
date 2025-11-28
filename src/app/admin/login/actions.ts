@@ -8,7 +8,7 @@ export async function loginAction(formData: FormData) {
   const email = formData.get('email') as string
   const password = formData.get('password') as string
 
-  console.log('[SERVER] Login attempt for:', email)
+  console.log('[SERVER] Login attempt initiated')
 
   const cookieStore = await cookies()
 
@@ -62,7 +62,7 @@ export async function loginAction(formData: FormData) {
       ? Math.ceil((new Date(resetTime).getTime() - new Date().getTime()) / 1000 / 60)
       : 15
 
-    console.log('[SERVER] Rate limit exceeded for:', email, 'Reset in:', timeUntilReset, 'minutes')
+    console.log('[SERVER] Rate limit exceeded. Reset in:', timeUntilReset, 'minutes')
 
     return {
       error: `Слишком много попыток входа. Попробуйте снова через ${timeUntilReset} минут.`,
@@ -84,11 +84,16 @@ export async function loginAction(formData: FormData) {
 
   // STEP 3: Record login attempt
   const loginSuccess = !authError && !!authData.user
-  await supabase.rpc('record_login_attempt', {
+  const { error: recordError } = await supabase.rpc('record_login_attempt', {
     p_email: email,
     p_success: loginSuccess,
     p_ip_address: null, // IP would be captured from headers in production
     p_user_agent: null, // User agent from headers
+  })
+
+  console.log('[SERVER] Record login attempt:', {
+    success: loginSuccess,
+    recordError: recordError?.message
   })
 
   if (authError) {
@@ -131,7 +136,8 @@ export async function loginAction(formData: FormData) {
     return { error: `У вас нет прав администратора` }
   }
 
-  console.log('[SERVER] Login successful for:', email, 'Role:', adminData.role)
+  console.log('[SERVER] Login successful. Role:', adminData.role)
+  console.log('[SERVER] Returning success response')
 
   // Success - redirect will happen in the component
   return { success: true }

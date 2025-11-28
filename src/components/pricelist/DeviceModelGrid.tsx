@@ -5,6 +5,9 @@ import Link from 'next/link';
 import { DeviceCategory, DeviceModel } from '@/types/pricelist';
 import { CategoryNavigation } from './CategoryNavigation';
 import { Home, ChevronRight } from 'lucide-react';
+import { parseModelName } from '@/lib/utils';
+import { useLocale } from '@/contexts/LocaleContext';
+import { getTranslations, getCategoryName } from '@/lib/i18n';
 
 export interface DeviceModelGridProps {
   category: DeviceCategory;
@@ -32,15 +35,12 @@ export function DeviceModelGrid({
   models,
   onModelSelect,
 }: DeviceModelGridProps) {
-  // Сортируем модели: сначала популярные, потом по году выпуска
-  const sortedModels = [...models].sort((a, b) => {
-    if (a.is_popular && !b.is_popular) return -1;
-    if (!a.is_popular && b.is_popular) return 1;
+  // Модели уже отсортированы на сервере по полю 'order', затем по 'release_year'
+  // Клиентская пересортировка не требуется
 
-    const yearA = a.release_year || 0;
-    const yearB = b.release_year || 0;
-    return yearB - yearA; // Новые модели сначала
-  });
+  // Получаем текущий язык и переводы
+  const { locale } = useLocale();
+  const t = getTranslations(locale);
 
   return (
     <>
@@ -53,15 +53,15 @@ export function DeviceModelGrid({
           <nav className="flex items-center gap-2 text-sm text-gray-600">
             <Link href="/" className="hover:text-gray-900 transition flex items-center gap-1">
               <Home className="w-4 h-4" />
-              Главная
+              {t.home}
             </Link>
             <ChevronRight className="w-4 h-4" />
             <Link href="/pricelist" className="hover:text-gray-900 transition">
-              Прайс-лист
+              {t.pricelist}
             </Link>
             <ChevronRight className="w-4 h-4" />
             <span className="text-gray-900 font-medium">
-              Ремонт {getCategoryName(category)}
+              {t.repair} {getCategoryName(category, locale)}
             </span>
           </nav>
         </div>
@@ -69,17 +69,17 @@ export function DeviceModelGrid({
         {/* Page Title */}
         <div className="container max-w-7xl mx-auto mb-8 mt-12">
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
-            {getCategoryName(category)}
+            {getCategoryName(category, locale)}
           </h1>
           <p className="text-lg text-gray-600">
-            Выберите модель для просмотра прайс-листа
+            {t.selectModelForPriceList}
           </p>
         </div>
 
         {/* Models Grid */}
         <div className="container max-w-7xl mx-auto">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {sortedModels.map((model) => (
+            {models.map((model) => (
               <ModelCard
                 key={model.id}
                 model={model}
@@ -93,7 +93,7 @@ export function DeviceModelGrid({
           {models.length === 0 && (
             <div className="text-center py-16">
               <p className="text-gray-500 text-lg">
-                Модели не найдены
+                {t.modelsNotFound}
               </p>
             </div>
           )}
@@ -116,6 +116,8 @@ function ModelCard({ model, category, onClick }: ModelCardProps) {
   const handleClick = () => {
     onClick?.(model);
   };
+
+  const { mainName, modelCodes } = parseModelName(model.name, category);
 
   return (
     <Link href={`/pricelist/${model.category}/${model.slug}`}>
@@ -141,10 +143,15 @@ function ModelCard({ model, category, onClick }: ModelCardProps) {
         </div>
 
         {/* Text Section */}
-        <div className="flex-1 min-w-0">
+        <div className="flex-1 min-w-0 text-center">
           <h3 className="text-base font-medium text-gray-900 line-clamp-2 leading-tight">
-            {model.name}
+            {mainName}
           </h3>
+          {modelCodes && (
+            <p className="text-xs text-gray-500 mt-0.5 font-normal">
+              {modelCodes}
+            </p>
+          )}
         </div>
       </div>
     </Link>
@@ -152,16 +159,6 @@ function ModelCard({ model, category, onClick }: ModelCardProps) {
 }
 
 // ========== Helper Functions ==========
-
-function getCategoryName(category: DeviceCategory): string {
-  const names: Record<DeviceCategory, string> = {
-    iphone: 'iPhone',
-    ipad: 'iPad',
-    macbook: 'MacBook',
-    'apple-watch': 'Apple Watch',
-  };
-  return names[category];
-}
 
 function getCategoryIconSVG(category: DeviceCategory): React.ReactElement {
   const icons: Record<DeviceCategory, React.ReactElement> = {
