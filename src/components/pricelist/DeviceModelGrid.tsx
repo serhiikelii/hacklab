@@ -16,11 +16,11 @@ export interface DeviceModelGridProps {
 }
 
 /**
- * DeviceModelGrid - сетка моделей устройств для категории
+ * DeviceModelGrid - device model grid for category
  *
- * Отображает все модели устройств в выбранной категории.
- * Используется на странице категории (/pricelist/iphone).
- * Responsive: 1 колонка (mobile) → 2 колонки (tablet) → 4 колонки (desktop).
+ * Displays all device models in the selected category.
+ * Used on category page (/pricelist/iphone).
+ * Responsive: 1 column (mobile) → 2 columns (tablet) → 4 columns (desktop).
  *
  * @example
  * ```tsx
@@ -35,10 +35,10 @@ export function DeviceModelGrid({
   models,
   onModelSelect,
 }: DeviceModelGridProps) {
-  // Модели уже отсортированы на сервере по полю 'order', затем по 'release_year'
-  // Клиентская пересортировка не требуется
+  // Models are already sorted on server by 'order' field, then by 'release_year'
+  // Client-side re-sorting is not required
 
-  // Получаем текущий язык и переводы
+  // Get current language and translations
   const { locale } = useLocale();
   const t = getTranslations(locale);
 
@@ -104,7 +104,7 @@ export function DeviceModelGrid({
 }
 
 /**
- * ModelCard - карточка модели устройства
+ * ModelCard - device model card
  */
 interface ModelCardProps {
   model: DeviceModel;

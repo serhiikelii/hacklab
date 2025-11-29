@@ -28,9 +28,9 @@ interface AuditLogParams {
 }
 
 /**
- * Записывает событие в таблицу audit_log
- * @param params - Параметры аудита
- * @returns Promise<boolean> - true если успешно, false если ошибка
+ * Logs event to audit_log table
+ * @param params - Audit parameters
+ * @returns Promise<boolean> - true if successful, false if error
  */
 export async function logAuditEvent(
   params: AuditLogParams
@@ -38,17 +38,13 @@ export async function logAuditEvent(
   try {
     const { adminId, action, tableName, recordId, oldData, newData } = params
 
-    console.log('[logAuditEvent] START:', { action, tableName, adminId, recordId })
-
-    // Валидация обязательных полей
+    // Validation of required fields
     if (!adminId || !action || !tableName) {
-      console.error('[logAuditEvent] Missing required fields:', { adminId, action, tableName })
       return false
     }
 
-    // Создаем серверный клиент с cookies
+    // Create server client with cookies
     const supabase = await createClient()
-    console.log('[logAuditEvent] Server client created, inserting into audit_log...')
 
     const { error } = await supabase.from('audit_log').insert({
       admin_id: adminId,
@@ -60,67 +56,54 @@ export async function logAuditEvent(
     })
 
     if (error) {
-      console.error('[logAuditEvent] Insert error:', error)
       return false
     }
 
-    console.log('[logAuditEvent] ✅ Successfully logged to audit_log')
     return true
   } catch (error) {
-    console.error('[logAuditEvent] Exception:', error)
     return false
   }
 }
 
 /**
- * Вспомогательная функция для получения текущего adminId
- * Использует реальную аутентификацию Supabase через auth.uid()
- * @returns string - user_id текущего аутентифицированного администратора
+ * Helper function to get current adminId
+ * Uses real Supabase authentication via auth.uid()
+ * @returns string - user_id of current authenticated administrator
  */
 export async function getCurrentAdminId(): Promise<string | null> {
   try {
-    console.log('[getCurrentAdminId] START')
-
-    // 1. Создаем серверный клиент с cookies
+    // 1. Create server client with cookies
     const supabase = await createClient()
-    console.log('[getCurrentAdminId] Server client created')
 
-    // 2. Получаем текущего аутентифицированного пользователя
+    // 2. Get current authenticated user
     const { data: { user }, error: authError } = await supabase.auth.getUser()
 
     if (authError || !user) {
-      console.error('[getCurrentAdminId] Not authenticated:', authError?.message || 'No user')
       return null
     }
 
-    console.log('[getCurrentAdminId] User found:', user.email, user.id)
-
-    // 3. Проверяем что этот user_id существует в таблице admins и активен
+    // 3. Verify user_id exists in admins table and is active
     const { data: admin, error: adminError } = await supabase
       .from('admins')
-      .select('id, user_id, role, is_active')  // ✅ Выбираем оба ID!
-      .eq('user_id', user.id)  // ВАЖНО: сравниваем с user_id, НЕ с id!
+      .select('id, user_id, role, is_active')
+      .eq('user_id', user.id)
       .eq('is_active', true)
       .single()
 
     if (adminError || !admin) {
-      console.error('[getCurrentAdminId] User is not an active admin:', adminError?.message || 'Not found')
       return null
     }
 
-    console.log('[getCurrentAdminId] Admin found:', admin.id, admin.role, '(user_id:', admin.user_id, ')')
-    // 4. КРИТИЧНО: Возвращаем admin.id (PK admins), а НЕ user_id!
+    // 4. CRITICAL: Return admin.id (PK admins), NOT user_id!
     // audit_log.admin_id references admins.id, NOT admins.user_id!
-    console.log('[getCurrentAdminId] ✅ Returning admin.id (PK):', admin.id)
     return admin.id
   } catch (error) {
-    console.error('[getCurrentAdminId] Exception:', error)
     return null
   }
 }
 
 /**
- * Обертка для логирования операций создания
+ * Wrapper for logging create operations
  */
 export async function logCreate(
   tableName: AuditTable,
@@ -140,7 +123,7 @@ export async function logCreate(
 }
 
 /**
- * Обертка для логирования операций обновления
+ * Wrapper for logging update operations
  */
 export async function logUpdate(
   tableName: AuditTable,
@@ -162,7 +145,7 @@ export async function logUpdate(
 }
 
 /**
- * Обертка для логирования операций удаления
+ * Wrapper for logging delete operations
  */
 export async function logDelete(
   tableName: AuditTable,

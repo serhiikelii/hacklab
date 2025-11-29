@@ -30,7 +30,7 @@ export async function uploadModelImage(
     if (!allowedTypes.includes(file.type)) {
       return {
         success: false,
-        error: 'Разрешены только файлы форматов: .webp, .png, .jpg'
+        error: 'Only .webp, .png, .jpg file formats are allowed'
       }
     }
 
@@ -38,7 +38,7 @@ export async function uploadModelImage(
     if (file.size > maxSize) {
       return {
         success: false,
-        error: 'Размер файла не должен превышать 5 МБ'
+        error: 'File size must not exceed 5 MB'
       }
     }
 
@@ -68,13 +68,13 @@ export async function uploadModelImage(
       console.error('[uploadModelImage] Not authenticated:', authError?.message)
       return {
         success: false,
-        error: 'Необходима авторизация'
+        error: 'Authentication required'
       }
     }
 
     console.log('[uploadModelImage] Authenticated user:', user.email)
 
-    // 4. Get model info (включая slug для именования файла)
+    // 4. Get model info (including slug for file naming)
     const { data: model, error: modelError } = await supabase
       .from('device_models')
       .select('id, name, slug, image_url')
@@ -85,7 +85,7 @@ export async function uploadModelImage(
       console.error('[uploadModelImage] Model not found:', modelError)
       return {
         success: false,
-        error: 'Модель не найдена'
+        error: 'Model not found'
       }
     }
 
@@ -112,7 +112,7 @@ export async function uploadModelImage(
       }
     }
 
-    // 7. Generate filename based on slug (для SEO и читаемости)
+    // 7. Generate filename based on slug (for SEO and readability)
     const fileExt = file.name.split('.').pop()
     const fileName = `${model.slug}.${fileExt}`
     const filePath = `${categorySlug}/${fileName}`
@@ -133,7 +133,7 @@ export async function uploadModelImage(
       console.error('[uploadModelImage] Upload error:', uploadError)
       return {
         success: false,
-        error: `Ошибка загрузки: ${uploadError.message}`
+        error: `Upload error: ${uploadError.message}`
       }
     }
 
@@ -146,7 +146,7 @@ export async function uploadModelImage(
 
     console.log('[uploadModelImage] Image uploaded:', imageUrl)
 
-    // 9. Update database using AUTHENTICATED client (это ключевой момент!)
+    // 9. Update database using AUTHENTICATED client (this is the key point!)
     const { error: updateError } = await supabase
       .from('device_models')
       .update({ image_url: imageUrl })
@@ -156,7 +156,7 @@ export async function uploadModelImage(
       console.error('[uploadModelImage] DB update error:', updateError)
       return {
         success: false,
-        error: `Ошибка обновления БД: ${updateError.message}`
+        error: `Database update error: ${updateError.message}`
       }
     }
 
@@ -191,7 +191,7 @@ export async function uploadModelImage(
     console.error('[uploadModelImage] Exception:', error)
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Внутренняя ошибка сервера'
+      error: error instanceof Error ? error.message : 'Internal server error'
     }
   }
 }
@@ -231,7 +231,7 @@ export async function removeModelImage(
       console.error('[removeModelImage] Not authenticated:', authError?.message)
       return {
         success: false,
-        error: 'Необходима авторизация'
+        error: 'Authentication required'
       }
     }
 
@@ -246,14 +246,14 @@ export async function removeModelImage(
       console.error('[removeModelImage] Model not found:', modelError)
       return {
         success: false,
-        error: 'Модель не найдена'
+        error: 'Model not found'
       }
     }
 
     if (!model.image_url) {
       return {
         success: true, // Already no image
-        error: 'Изображение уже отсутствует'
+        error: 'Image already absent'
       }
     }
 
@@ -275,7 +275,7 @@ export async function removeModelImage(
     if (!categorySlug) {
       return {
         success: false,
-        error: 'Категория не найдена'
+        error: 'Category not found'
       }
     }
 
@@ -291,7 +291,7 @@ export async function removeModelImage(
 
       if (deleteError) {
         console.error('[removeModelImage] Storage delete error:', deleteError)
-        // Continue даже если не удалось удалить из Storage
+        // Continue even if storage deletion failed
       }
     }
 
@@ -305,7 +305,7 @@ export async function removeModelImage(
       console.error('[removeModelImage] DB update error:', updateError)
       return {
         success: false,
-        error: `Ошибка обновления БД: ${updateError.message}`
+        error: `Database update error: ${updateError.message}`
       }
     }
 
@@ -337,7 +337,7 @@ export async function removeModelImage(
     console.error('[removeModelImage] Exception:', error)
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Внутренняя ошибка сервера'
+      error: error instanceof Error ? error.message : 'Internal server error'
     }
   }
 }

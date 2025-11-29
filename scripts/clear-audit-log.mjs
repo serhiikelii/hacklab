@@ -7,20 +7,20 @@ import { dirname, join } from 'path'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
-// Загружаем .env.local
+// Load .env.local
 config({ path: join(__dirname, '..', '.env.local') })
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
 
 if (!supabaseUrl || !supabaseServiceKey) {
-  console.error('❌ Отсутствуют env переменные!')
-  console.error('   NEXT_PUBLIC_SUPABASE_URL:', supabaseUrl ? '✅' : '❌')
-  console.error('   SUPABASE_SERVICE_ROLE_KEY:', supabaseServiceKey ? '✅' : '❌')
+  console.error('ERROR: Missing env variables!')
+  console.error('   NEXT_PUBLIC_SUPABASE_URL:', supabaseUrl ? 'OK' : 'MISSING')
+  console.error('   SUPABASE_SERVICE_ROLE_KEY:', supabaseServiceKey ? 'OK' : 'MISSING')
   process.exit(1)
 }
 
-console.log('🔧 Подключение к Supabase...')
+console.log('Connecting to Supabase...')
 const supabase = createClient(supabaseUrl, supabaseServiceKey, {
   auth: {
     autoRefreshToken: false,
@@ -28,40 +28,40 @@ const supabase = createClient(supabaseUrl, supabaseServiceKey, {
   },
 })
 
-console.log('🧹 Очистка таблицы audit_log...')
+console.log('Clearing audit_log table...')
 
 try {
-  // Сначала проверим сколько записей
+  // First check how many records
   const { count: totalCount } = await supabase
     .from('audit_log')
     .select('*', { count: 'exact', head: true })
 
-  console.log(`📊 Найдено записей: ${totalCount}`)
+  console.log(`Found records: ${totalCount}`)
 
   if (totalCount === 0) {
-    console.log('✅ Таблица уже пуста!')
+    console.log('Table is already empty!')
     process.exit(0)
   }
 
-  // Удаляем все записи
+  // Delete all records
   const { error } = await supabase
     .from('audit_log')
     .delete()
-    .neq('id', '00000000-0000-0000-0000-000000000000') // Удаляем все
+    .neq('id', '00000000-0000-0000-0000-000000000000') // Delete all
 
   if (error) {
-    console.error('❌ Ошибка при очистке:', error)
+    console.error('ERROR during cleanup:', error)
     process.exit(1)
   }
 
-  // Проверяем результат
+  // Check result
   const { count: afterCount } = await supabase
     .from('audit_log')
     .select('*', { count: 'exact', head: true })
 
-  console.log(`✅ Таблица очищена! Удалено записей: ${totalCount}`)
-  console.log(`📊 Осталось записей: ${afterCount}`)
+  console.log(`Table cleared! Deleted records: ${totalCount}`)
+  console.log(`Remaining records: ${afterCount}`)
 } catch (err) {
-  console.error('❌ Критическая ошибка:', err)
+  console.error('CRITICAL ERROR:', err)
   process.exit(1)
 }

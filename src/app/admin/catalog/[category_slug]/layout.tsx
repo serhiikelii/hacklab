@@ -14,12 +14,12 @@ export default function CategoryLayout({
 
   const tabs = [
     {
-      name: 'Модели',
+      name: 'Models',
       href: `/admin/catalog/${categorySlug}/models`,
       current: pathname?.includes('/models'),
     },
     {
-      name: 'Конфигурация Услуг',
+      name: 'Service Configuration',
       href: `/admin/catalog/${categorySlug}/services`,
       current: pathname?.includes('/services'),
     },
@@ -35,7 +35,7 @@ export default function CategoryLayout({
               href="/admin/catalog"
               className="text-sm text-gray-500 hover:text-gray-700"
             >
-              ← Назад к каталогу
+              ← Back to Catalog
             </Link>
             <h1 className="text-2xl font-bold text-gray-900 mt-2 capitalize">
               {categorySlug.replace('-', ' ')}

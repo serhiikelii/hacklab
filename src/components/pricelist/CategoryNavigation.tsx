@@ -22,8 +22,8 @@ const categories: CategoryConfig[] = [
 ];
 
 /**
- * CategoryNavigation - горизонтальная навигация по категориям устройств
- * Отображается на страницах моделей, текущая категория выделена
+ * CategoryNavigation - horizontal navigation for device categories
+ * Displayed on model pages, current category is highlighted
  */
 export function CategoryNavigation({ currentCategory }: CategoryNavigationProps) {
   return (

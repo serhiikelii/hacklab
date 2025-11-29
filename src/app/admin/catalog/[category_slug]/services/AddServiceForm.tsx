@@ -37,7 +37,7 @@ export function AddServiceForm({
       setIsOpen(false)
       ;(e.target as HTMLFormElement).reset()
     } else {
-      setError(result.error || 'Ошибка при создании услуги')
+      setError(result.error || 'Error creating service')
     }
 
     setLoading(false)
@@ -62,7 +62,7 @@ export function AddServiceForm({
             d="M12 6v6m0 0v6m0-6h6m-6 0H6"
           />
         </svg>
-        Добавить услугу
+        Add Service
       </button>
     )
   }
@@ -73,7 +73,7 @@ export function AddServiceForm({
     <div className="bg-white shadow sm:rounded-lg p-6">
       <div className="flex justify-between items-center mb-4">
         <h3 className="text-lg font-medium text-gray-900">
-          Добавить новую услугу
+          Add New Service
         </h3>
         <button
           onClick={() => {
@@ -100,14 +100,14 @@ export function AddServiceForm({
           </div>
         )}
 
-        {/* Мультиязычные поля */}
+        {/* Multilingual fields */}
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           <div>
             <label
               htmlFor="name_ru"
               className="block text-sm font-medium text-gray-700"
             >
-              Название (RU) *
+              Name (RU) *
             </label>
             <input
               type="text"
@@ -124,7 +124,7 @@ export function AddServiceForm({
               htmlFor="name_en"
               className="block text-sm font-medium text-gray-700"
             >
-              Название (EN) *
+              Name (EN) *
             </label>
             <input
               type="text"
@@ -141,7 +141,7 @@ export function AddServiceForm({
               htmlFor="name_cz"
               className="block text-sm font-medium text-gray-700"
             >
-              Название (CZ) *
+              Name (CZ) *
             </label>
             <input
               type="text"
@@ -160,7 +160,7 @@ export function AddServiceForm({
             htmlFor="service_type"
             className="block text-sm font-medium text-gray-700"
           >
-            Тип услуги
+            Service Type
           </label>
           <select
             name="service_type"
@@ -168,8 +168,8 @@ export function AddServiceForm({
             required
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
           >
-            <option value="main">Main - Ремонт</option>
-            <option value="extra">Extra - Доп. услуга</option>
+            <option value="main">Main - Repair</option>
+            <option value="extra">Extra - Additional Service</option>
           </select>
         </div>
 
@@ -179,7 +179,7 @@ export function AddServiceForm({
             htmlFor="order"
             className="block text-sm font-medium text-gray-700"
           >
-            Порядок сортировки (Order)
+            Sort Order
           </label>
           <input
             type="number"
@@ -192,12 +192,12 @@ export function AddServiceForm({
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
           />
           <p className="mt-1 text-sm text-gray-500">
-            Макс. order: <strong>{maxOrder}</strong>.
-            Рекомендуемое: <strong>{recommendedOrder}</strong> (шаг 10)
+            Max order: <strong>{maxOrder}</strong>.
+            Recommended: <strong>{recommendedOrder}</strong> (step 10)
           </p>
         </div>
 
-        {/* Кнопки */}
+        {/* Buttons */}
         <div className="flex justify-end space-x-3 pt-4">
           <button
             type="button"
@@ -207,7 +207,7 @@ export function AddServiceForm({
             }}
             className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
           >
-            Отмена
+            Cancel
           </button>
           <button
             type="submit"
@@ -235,10 +235,10 @@ export function AddServiceForm({
                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                   />
                 </svg>
-                Создаю...
+                Creating...
               </>
             ) : (
-              'Создать услугу'
+              'Create Service'
             )}
           </button>
         </div>

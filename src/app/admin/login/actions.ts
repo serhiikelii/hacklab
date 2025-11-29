@@ -8,8 +8,6 @@ export async function loginAction(formData: FormData) {
   const email = formData.get('email') as string
   const password = formData.get('password') as string
 
-  console.log('[SERVER] Login attempt initiated')
-
   const cookieStore = await cookies()
 
   const supabase = createServerClient(
@@ -25,14 +23,13 @@ export async function loginAction(formData: FormData) {
             cookieStore.set({ name, value, ...options })
           } catch (error) {
             // Handle cookie setting errors in server action
-            console.error('[SERVER] Error setting cookie:', error)
           }
         },
         remove(name: string, options: CookieOptions) {
           try {
             cookieStore.set({ name, value: '', ...options })
           } catch (error) {
-            console.error('[SERVER] Error removing cookie:', error)
+            // Handle cookie removal errors in server action
           }
         },
       },
@@ -45,10 +42,7 @@ export async function loginAction(formData: FormData) {
     { p_email: email }
   )
 
-  console.log('[SERVER] Rate limit check:', { allowed: rateLimitCheck, error: rateLimitError?.message })
-
   if (rateLimitError) {
-    console.error('[SERVER] Rate limit check failed:', rateLimitError)
     // Continue with login even if rate limit check fails (fail open for availability)
   }
 
@@ -62,10 +56,8 @@ export async function loginAction(formData: FormData) {
       ? Math.ceil((new Date(resetTime).getTime() - new Date().getTime()) / 1000 / 60)
       : 15
 
-    console.log('[SERVER] Rate limit exceeded. Reset in:', timeUntilReset, 'minutes')
-
     return {
-      error: `Слишком много попыток входа. Попробуйте снова через ${timeUntilReset} минут.`,
+      error: `Too many login attempts. Please try again in ${timeUntilReset} minutes.`,
       rateLimited: true
     }
   }
@@ -74,12 +66,6 @@ export async function loginAction(formData: FormData) {
   const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
     email,
     password,
-  })
-
-  console.log('[SERVER] Auth result:', {
-    success: !authError,
-    userId: authData?.user?.id,
-    error: authError?.message
   })
 
   // STEP 3: Record login attempt
@@ -91,18 +77,12 @@ export async function loginAction(formData: FormData) {
     p_user_agent: null, // User agent from headers
   })
 
-  console.log('[SERVER] Record login attempt:', {
-    success: loginSuccess,
-    recordError: recordError?.message
-  })
-
   if (authError) {
-    console.log('[SERVER] Login failed - recording attempt')
     return { error: authError.message }
   }
 
   if (!authData.user) {
-    return { error: 'Ошибка аутентификации' }
+    return { error: 'Authentication error' }
   }
 
   // STEP 4: Check if user is an admin
@@ -112,14 +92,6 @@ export async function loginAction(formData: FormData) {
     .eq('user_id', authData.user.id)
     .eq('is_active', true)
     .single()
-
-  console.log('[SERVER] Admin check:', {
-    found: !!adminData,
-    role: adminData?.role,
-    error: adminError?.message,
-    errorCode: adminError?.code,
-    details: adminError?.details
-  })
 
   if (adminError || !adminData) {
     // User is not an admin - sign them out
@@ -133,11 +105,8 @@ export async function loginAction(formData: FormData) {
       p_user_agent: null,
     })
 
-    return { error: `У вас нет прав администратора` }
+    return { error: 'You do not have administrator privileges' }
   }
-
-  console.log('[SERVER] Login successful. Role:', adminData.role)
-  console.log('[SERVER] Returning success response')
 
   // Success - redirect will happen in the component
   return { success: true }

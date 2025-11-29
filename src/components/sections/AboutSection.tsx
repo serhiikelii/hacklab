@@ -29,12 +29,12 @@ export function AboutSection() {
   return (
     <section id="about" className="py-16 bg-white">
       <div className="container mx-auto px-4 max-w-4xl">
-        {/* Главный заголовок */}
+        {/* Main heading */}
         <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
           {t.aboutTitle}
         </h1>
 
-        {/* Вводные параграфы */}
+        {/* Introduction paragraphs */}
         <p className="text-gray-700 leading-relaxed mb-4">
           {t.aboutIntro1}
         </p>
@@ -43,7 +43,7 @@ export function AboutSection() {
           {t.aboutIntro2}
         </p>
 
-        {/* Блок: Почему выбирают HackLab */}
+        {/* Section: Why choose HackLab */}
         <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mt-12 mb-4">
           {t.whyChooseTitle}
         </h2>
@@ -65,7 +65,7 @@ export function AboutSection() {
           {t.whyChooseOutro}
         </p>
 
-        {/* Блок: Что мы ремонтируем */}
+        {/* Section: What we repair */}
         <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mt-12 mb-4">
           {t.whatWeRepairTitle}
         </h2>
@@ -84,7 +84,7 @@ export function AboutSection() {
           {t.whatWeRepairOutro}
         </p>
 
-        {/* Блок: Профессиональная диагностика и обслуживание */}
+        {/* Section: Professional diagnostics and service */}
         <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mt-12 mb-4">
           {t.diagnosticsTitle}
         </h2>
@@ -101,7 +101,7 @@ export function AboutSection() {
           {t.diagnosticsText3}
         </p>
 
-        {/* Блок: Курьерская доставка */}
+        {/* Section: Courier delivery */}
         <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mt-12 mb-4">
           {t.courierTitle}
         </h2>
@@ -110,7 +110,7 @@ export function AboutSection() {
           {t.courierText}
         </p>
 
-        {/* Заключительный блок */}
+        {/* Final section */}
         <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mt-12 mb-4">
           {t.weFixTitle}
         </h2>

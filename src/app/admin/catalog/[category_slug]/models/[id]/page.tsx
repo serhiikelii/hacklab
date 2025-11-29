@@ -13,10 +13,10 @@ export default async function EditModelPage({
 }) {
   const { category_slug, id } = await params
 
-  // Создаем клиент внутри компонента, НЕ на top-level
+  // Create client inside component, NOT at top-level
   const supabase = await createClient()
 
-  // Получить модель
+  // Get model
   const { data: model, error } = await supabase
     .from('device_models')
     .select('*')
@@ -27,20 +27,20 @@ export default async function EditModelPage({
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="bg-red-50 p-4 rounded-md">
-          <p className="text-sm text-red-800">Модель не найдена</p>
+          <p className="text-sm text-red-800">Model not found</p>
         </div>
       </div>
     )
   }
 
-  // Получить категорию
+  // Get category
   const { data: category } = await supabase
     .from('device_categories')
-    .select('name_ru, slug')
+    .select('name_en, slug')
     .eq('id', model.category_id)
     .single()
 
-  // Получить цены модели с информацией об услугах
+  // Get model prices with service information
   const { data: prices } = await supabase
     .from('prices')
     .select(`
@@ -60,10 +60,10 @@ export default async function EditModelPage({
     .eq('model_id', id)
     .order('service_id')
 
-  // Получить доступные услуги для категории
+  // Get available services for category
   const availableServices = await getActiveServicesForModel(id)
 
-  // ID услуг, для которых уже есть цены
+  // IDs of services that already have prices
   const existingServiceIds = prices?.map((p: any) => p.service_id) || []
 
   return (
@@ -74,14 +74,14 @@ export default async function EditModelPage({
           href="/admin/catalog"
           className="text-gray-500 hover:text-gray-700"
         >
-          Каталог
+          Catalog
         </Link>
         {' / '}
         <Link
           href={`/admin/catalog/${category_slug}/models`}
           className="text-gray-500 hover:text-gray-700"
         >
-          {category?.name_ru}
+          {category?.name_en}
         </Link>
         {' / '}
         <span className="text-gray-900">{model.name}</span>
@@ -90,7 +90,7 @@ export default async function EditModelPage({
       {/* Header */}
       <div className="mb-6">
         <h2 className="text-2xl font-bold text-gray-900">
-          Редактирование модели
+          Edit Model
         </h2>
         <p className="text-sm text-gray-500 mt-1">
           ID: {model.id}
@@ -102,10 +102,10 @@ export default async function EditModelPage({
         <EditModelForm model={model} categorySlug={category_slug} />
       </div>
 
-      {/* Секция: Изображение модели */}
+      {/* Section: Model Image */}
       <div className="mt-6 bg-white shadow sm:rounded-lg p-6">
         <h3 className="text-lg font-medium text-gray-900 mb-4">
-          Изображение модели
+          Model Image
         </h3>
         <ImageUploader
           modelId={model.id}
@@ -114,13 +114,13 @@ export default async function EditModelPage({
         />
       </div>
 
-      {/* Секция: Таблица цен */}
+      {/* Section: Price Table */}
       <div className="mt-6 bg-white shadow sm:rounded-lg p-6">
         <h3 className="text-lg font-medium text-gray-900 mb-4">
-          Таблица цен
+          Price Table
         </h3>
 
-        {/* Форма добавления цены */}
+        {/* Add price form */}
         <AddPriceForm
           modelId={id}
           categorySlug={category_slug}
@@ -128,7 +128,7 @@ export default async function EditModelPage({
           existingServiceIds={existingServiceIds}
         />
 
-        {/* Таблица с ценами */}
+        {/* Prices table */}
         <PricesTable
           prices={(prices || []) as any}
           modelId={id}

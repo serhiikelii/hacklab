@@ -8,18 +8,18 @@ import { redirect } from 'next/navigation'
 
 // Zod schema for service validation
 const ServiceSchema = z.object({
-  slug: z.string().min(2, 'Slug должен содержать минимум 2 символа'),
-  name_en: z.string().min(2, 'Название (EN) обязательно'),
-  name_ru: z.string().min(2, 'Название (RU) обязательно'),
-  name_cz: z.string().min(2, 'Название (CZ) обязательно'),
+  slug: z.string().min(2, 'Slug must contain at least 2 characters'),
+  name_en: z.string().min(2, 'Name (EN) is required'),
+  name_ru: z.string().min(2, 'Name (RU) is required'),
+  name_cz: z.string().min(2, 'Name (CZ) is required'),
   description_ru: z.string().optional().nullable(),
   description_en: z.string().optional().nullable(),
   description_cz: z.string().optional().nullable(),
   service_type: z.enum(['main', 'extra'], {
-    errorMap: () => ({ message: 'Выберите тип услуги' }),
+    errorMap: () => ({ message: 'Select service type' }),
   }),
   order: z.number().int().min(0).optional().nullable(),
-  category_id: z.string().uuid('Категория не выбрана'),
+  category_id: z.string().uuid('Category not selected'),
 })
 
 export type FormState = {
@@ -64,7 +64,7 @@ export async function createService(
 
   if (!user) {
     return {
-      message: 'Необходима авторизация',
+      message: 'Authentication required',
       success: false,
     }
   }
@@ -91,7 +91,7 @@ export async function createService(
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors as any,
-      message: 'Проверьте правильность заполнения полей',
+      message: 'Check field validation',
       success: false,
     }
   }
@@ -109,9 +109,9 @@ export async function createService(
     if (existingService) {
       return {
         errors: {
-          slug: 'Услуга с таким slug уже существует',
+          slug: 'Service with this slug already exists',
         },
-        message: 'Slug должен быть уникальным',
+        message: 'Slug must be unique',
         success: false,
       }
     }
@@ -136,7 +136,7 @@ export async function createService(
     if (insertError) {
       console.error('Insert error:', insertError)
       return {
-        message: `Ошибка создания услуги: ${insertError.message}`,
+        message: `Service creation error: ${insertError.message}`,
         success: false,
       }
     }
@@ -154,7 +154,7 @@ export async function createService(
       // Rollback service creation
       await supabase.from('services').delete().eq('id', newService.id)
       return {
-        message: `Ошибка связывания с категорией: ${csError.message}`,
+        message: `Category linking error: ${csError.message}`,
         success: false,
       }
     }
@@ -196,7 +196,7 @@ export async function createService(
   } catch (error) {
     console.error('Unexpected error:', error)
     return {
-      message: 'Произошла непредвиденная ошибка',
+      message: 'An unexpected error occurred',
       success: false,
     }
   }
@@ -228,7 +228,7 @@ export async function deleteService(serviceId: string): Promise<{ success: boole
   if (!user) {
     return {
       success: false,
-      error: 'Необходима авторизация',
+      error: 'Authentication required',
     }
   }
 
@@ -243,7 +243,7 @@ export async function deleteService(serviceId: string): Promise<{ success: boole
       console.error('Delete error:', deleteError)
       return {
         success: false,
-        error: `Ошибка удаления: ${deleteError.message}`,
+        error: `Delete error: ${deleteError.message}`,
       }
     }
 
@@ -256,7 +256,7 @@ export async function deleteService(serviceId: string): Promise<{ success: boole
     console.error('Unexpected error during delete:', error)
     return {
       success: false,
-      error: 'Произошла непредвиденная ошибка при удалении',
+      error: 'An unexpected error occurred during deletion',
     }
   }
 }

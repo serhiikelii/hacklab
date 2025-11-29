@@ -17,10 +17,10 @@ export default async function ModelsPage({
 }) {
   const { category_slug } = await params
 
-  // Создаем клиент внутри компонента, НЕ на top-level
+  // Create client inside component, NOT at top-level
   const supabase = await createClient()
 
-  // Получить категорию
+  // Get category
   const { data: category, error: categoryError } = await supabase
     .from('device_categories')
     .select('id, name_ru, slug')
@@ -28,10 +28,10 @@ export default async function ModelsPage({
     .single()
 
   if (categoryError || !category) {
-    return <div>Категория не найдена</div>
+    return <div>Category not found</div>
   }
 
-  // Получить модели категории с сортировкой по order
+  // Get category models sorted by order
   const { data: models, error } = await supabase
     .from('device_models')
     .select('*')
@@ -39,30 +39,29 @@ export default async function ModelsPage({
     .order('order', { ascending: true })
 
   if (error) {
-    console.error('Error loading models:', error)
-    return <div>Ошибка загрузки моделей</div>
+    return <div>Error loading models</div>
   }
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      {/* Header с кнопкой добавления */}
+      {/* Header with add button */}
       <div className="mb-6 flex justify-between items-center">
         <div>
           <h2 className="text-2xl font-bold text-gray-900">
-            Модели категории: {category.name_ru}
+            Category Models: {category.name_ru}
           </h2>
           <p className="text-sm text-gray-500 mt-1">
-            Управление устройствами и моделями
+            Device and model management
           </p>
         </div>
       </div>
 
-      {/* Форма добавления модели */}
+      {/* Add model form */}
       <div className="mb-8">
         <AddModelForm categoryId={category.id} categorySlug={category_slug} />
       </div>
 
-      {/* Список моделей с drag-and-drop */}
+      {/* Models list with drag-and-drop */}
       <ModelsList initialModels={models || []} categorySlug={category_slug} />
     </div>
   )

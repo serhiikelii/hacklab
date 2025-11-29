@@ -21,37 +21,37 @@ export interface ServicePriceTableProps {
 
 
 /**
- * ServicePriceTable - строгая минималистичная таблица услуг в стиле iFix
+ * ServicePriceTable - strict minimalist service table in iFix style
  *
- * Дизайн:
- * - Двухколоночный layout: таблица услуг (левая 2/3) + изображение модели (правая 1/3)
- * - Строгий минимализм без анимаций
- * - Цветовая схема: Amber (#f59e0b) + Gray
- * - Информационные блоки: Ремонт LIVE, Ремонт на месте, Гарантия
+ * Design:
+ * - Two-column layout: service table (left 2/3) + model image (right 1/3)
+ * - Strict minimalism without animations
+ * - Color scheme: Amber (#f59e0b) + Gray
+ * - Info blocks: LIVE Repair, On-site Repair, Warranty
  */
 export function ServicePriceTable({
   model,
   services,
   prices,
 }: ServicePriceTableProps) {
-  // Получаем текущий язык из контекста
+  // Get current language from context
   const { locale } = useLocale();
 
-  // Получаем переводы для текущего языка
+  // Get translations for current language
   const t = getTranslations(locale);
 
-  // State для диалога Live Stream
+  // State for Live Stream dialog
   const [isLiveStreamDialogOpen, setIsLiveStreamDialogOpen] = useState(false);
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
 
-  // State для fallback изображения при ошибке загрузки
+  // State for fallback image on load error
   const [imageError, setImageError] = useState(false);
 
-  // Парсим название модели для iPad/MacBook
+  // Parse model name for iPad/MacBook
   const { mainName, modelCodes } = parseModelName(model.name, model.category);
 
-  // Создаем map цен для быстрого доступа
+  // Create price map for quick access
   const priceMap = new Map(
     prices.map((p) => [p.serviceId, p])
   );
@@ -99,11 +99,11 @@ export function ServicePriceTable({
         </p>
       </div>
 
-      {/* Основной контент: двухколоночный layout */}
+      {/* Main content: two-column layout */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 mb-12">
-        {/* Левая колонка - таблица услуг (2/3 ширины) */}
+        {/* Left column - service table (2/3 width) */}
         <div className="lg:col-span-2">
-          {/* Empty State - нет цен */}
+          {/* Empty State - no prices */}
           {!hasPrices && hasServices && (
             <div className="mb-8">
               <div className="bg-gray-50 rounded-lg p-8 text-center border border-gray-200">
@@ -145,7 +145,7 @@ export function ServicePriceTable({
             </div>
           )}
 
-          {/* Таблица услуг */}
+          {/* Service table */}
           {hasPrices && hasServices && (
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow duration-300">
               <table className="w-full">
@@ -195,7 +195,7 @@ export function ServicePriceTable({
             </div>
           )}
 
-          {/* Empty State - нет услуг */}
+          {/* Empty State - no services */}
           {!hasServices && (
             <div className="text-center py-16">
               <svg className="mx-auto mb-4 text-gray-400" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -213,11 +213,11 @@ export function ServicePriceTable({
           )}
         </div>
 
-        {/* Правая колонка - изображение модели (1/3 ширины) */}
+        {/* Right column - model image (1/3 width) */}
         <div className="lg:col-span-1 flex justify-center">
           <div className="sticky top-8 w-full max-w-[280px]">
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-300">
-              {/* Изображение или плейсхолдер - прямоугольная секция */}
+              {/* Image or placeholder - rectangular section */}
               <div className="relative w-full mb-4 flex items-center justify-center h-[260px]">
                 {model.image_url && !imageError ? (
                   <div className="relative w-full h-full max-w-[180px] max-h-[260px]">
@@ -242,7 +242,7 @@ export function ServicePriceTable({
                 )}
               </div>
 
-              {/* Live Stream секция - всегда показывается */}
+              {/* Live Stream section - always visible */}
               <div className="text-center">
                 <p className="text-lg font-semibold text-gray-900">
                   {t.repairLiveTitle}
@@ -262,7 +262,7 @@ export function ServicePriceTable({
         </div>
       </div>
 
-      {/* Dialog для Live Stream доступа */}
+      {/* Dialog for Live Stream access */}
       <Dialog open={isLiveStreamDialogOpen} onOpenChange={setIsLiveStreamDialogOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
@@ -305,8 +305,6 @@ export function ServicePriceTable({
             <Button
               className="bg-primary hover:bg-primary-hover text-white"
               onClick={() => {
-                // TODO: Здесь будет логика аутентификации для Live Stream
-                console.log('Login:', login, 'Password:', password);
                 setIsLiveStreamDialogOpen(false);
                 setLogin('');
                 setPassword('');

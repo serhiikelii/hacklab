@@ -81,19 +81,19 @@ export function AuditLogTable({
     <div className="bg-white shadow overflow-hidden sm:rounded-lg">
       {logs.length === 0 ? (
         <div className="px-4 py-12 text-center text-gray-500">
-          Записей не найдено
+          No records found
         </div>
       ) : (
         <>
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="w-[180px]">Дата и время</TableHead>
-                <TableHead className="w-[100px]">Действие</TableHead>
-                <TableHead className="w-[150px]">Таблица</TableHead>
-                <TableHead className="w-[200px]">Администратор</TableHead>
+                <TableHead className="w-[180px]">Date & Time</TableHead>
+                <TableHead className="w-[100px]">Action</TableHead>
+                <TableHead className="w-[150px]">Table</TableHead>
+                <TableHead className="w-[200px]">Administrator</TableHead>
                 <TableHead className="w-[150px]">Record ID</TableHead>
-                <TableHead className="w-[100px]">Детали</TableHead>
+                <TableHead className="w-[100px]">Details</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -108,7 +108,7 @@ export function AuditLogTable({
                       {log.table_name}
                     </TableCell>
                     <TableCell className="text-sm">
-                      {log.admins?.email || 'Неизвестно'}
+                      {log.admins?.email || 'Unknown'}
                     </TableCell>
                     <TableCell className="text-sm text-gray-600 font-mono">
                       {log.record_id?.substring(0, 8) || '—'}
@@ -119,12 +119,12 @@ export function AuditLogTable({
                         size="sm"
                         onClick={() => toggleRow(log.id)}
                       >
-                        {expandedRow === log.id ? 'Скрыть' : 'Показать'}
+                        {expandedRow === log.id ? 'Hide' : 'Show'}
                       </Button>
                     </TableCell>
                   </TableRow>
 
-                  {/* Развернутая строка с данными */}
+                  {/* Expanded row with data */}
                   {expandedRow === log.id && (
                     <TableRow>
                       <TableCell colSpan={6} className="bg-gray-50 p-4">
@@ -143,7 +143,7 @@ export function AuditLogTable({
                           {log.old_data && (
                             <div>
                               <span className="font-semibold text-sm block mb-1">
-                                Старые данные:
+                                Old Data:
                               </span>
                               <pre className="bg-white p-2 rounded border text-xs overflow-x-auto">
                                 {typeof log.old_data === 'string'
@@ -156,7 +156,7 @@ export function AuditLogTable({
                           {log.new_data && (
                             <div>
                               <span className="font-semibold text-sm block mb-1">
-                                Новые данные:
+                                New Data:
                               </span>
                               <pre className="bg-white p-2 rounded border text-xs overflow-x-auto">
                                 {typeof log.new_data === 'string'
@@ -174,25 +174,25 @@ export function AuditLogTable({
             </TableBody>
           </Table>
 
-          {/* Пагинация */}
+          {/* Pagination */}
           {totalPages > 1 && (
             <div className="px-4 py-3 border-t border-gray-200 sm:px-6">
               <div className="flex items-center justify-between">
                 <div className="text-sm text-gray-700">
-                  Страница {currentPage} из {totalPages}
+                  Page {currentPage} of {totalPages}
                 </div>
                 <div className="flex space-x-2">
                   {currentPage > 1 && (
                     <Link href={`/admin/audit?page=${currentPage - 1}`}>
                       <Button variant="outline" size="sm">
-                        ← Назад
+                        ← Previous
                       </Button>
                     </Link>
                   )}
                   {currentPage < totalPages && (
                     <Link href={`/admin/audit?page=${currentPage + 1}`}>
                       <Button variant="outline" size="sm">
-                        Вперед →
+                        Next →
                       </Button>
                     </Link>
                   )}

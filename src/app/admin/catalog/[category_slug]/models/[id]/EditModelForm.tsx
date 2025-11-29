@@ -34,12 +34,12 @@ export function EditModelForm({ model, categorySlug }: EditModelFormProps) {
 
     if (result.success) {
       setSuccess(true)
-      // Небольшая задержка перед редиректом для показа success message
+      // Small delay before redirect to show success message
       setTimeout(() => {
         router.push(`/admin/catalog/${categorySlug}/models`)
       }, 1000)
     } else {
-      setError(result.error || 'Ошибка при обновлении модели')
+      setError(result.error || 'Error updating model')
     }
 
     setLoading(false)
@@ -47,7 +47,7 @@ export function EditModelForm({ model, categorySlug }: EditModelFormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <h3 className="text-lg font-medium text-gray-900">Основные свойства</h3>
+      <h3 className="text-lg font-medium text-gray-900">Basic Properties</h3>
 
       {error && (
         <div className="rounded-md bg-red-50 p-4">
@@ -58,19 +58,19 @@ export function EditModelForm({ model, categorySlug }: EditModelFormProps) {
       {success && (
         <div className="rounded-md bg-green-50 p-4">
           <p className="text-sm text-green-800">
-            Модель успешно обновлена! Перенаправление...
+            Model successfully updated! Redirecting...
           </p>
         </div>
       )}
 
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
-        {/* Название */}
+        {/* Model name */}
         <div className="sm:col-span-2">
           <label
             htmlFor="name"
             className="block text-sm font-medium text-gray-700"
           >
-            Название модели
+            Model Name
           </label>
           <input
             type="text"
@@ -82,13 +82,13 @@ export function EditModelForm({ model, categorySlug }: EditModelFormProps) {
           />
         </div>
 
-        {/* Год выпуска */}
+        {/* Release year */}
         <div>
           <label
             htmlFor="release_year"
             className="block text-sm font-medium text-gray-700"
           >
-            Год выпуска
+            Release Year
           </label>
           <input
             type="number"
@@ -109,7 +109,7 @@ export function EditModelForm({ model, categorySlug }: EditModelFormProps) {
           htmlFor="order"
           className="block text-sm font-medium text-gray-700"
         >
-          Порядок сортировки (Order)
+          Sort Order
         </label>
         <input
           type="number"
@@ -121,18 +121,18 @@ export function EditModelForm({ model, categorySlug }: EditModelFormProps) {
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
         />
         <p className="mt-1 text-sm text-gray-500">
-          Используется для сортировки моделей в списке
+          Used for sorting models in the list
         </p>
       </div>
 
-      {/* Кнопки */}
+      {/* Buttons */}
       <div className="flex justify-end space-x-3 pt-4">
         <button
           type="button"
           onClick={() => router.back()}
           className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
         >
-          Отмена
+          Cancel
         </button>
         <button
           type="submit"
@@ -160,10 +160,10 @@ export function EditModelForm({ model, categorySlug }: EditModelFormProps) {
                   d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                 />
               </svg>
-              Сохраняю...
+              Saving...
             </>
           ) : (
-            'Сохранить изменения'
+            'Save Changes'
           )}
         </button>
       </div>

@@ -11,12 +11,12 @@ export interface ServiceRowProps {
 }
 
 /**
- * ServiceRow - строка услуги с ценой
+ * ServiceRow - service row with price
  *
- * Отображает отдельную услугу ремонта с:
- * - Названием услуги
- * - Ценой (или статусом "бесплатно"/"по запросу")
- * - Длительностью ремонта (если доступна)
+ * Displays individual repair service with:
+ * - Service name
+ * - Price (or status "free"/"on request")
+ * - Repair duration (if available)
  *
  * @example
  * ```tsx
@@ -83,7 +83,7 @@ export function ServiceRow({ service, price }: ServiceRowProps) {
 }
 
 /**
- * PriceDisplay - отображение цены услуги
+ * PriceDisplay - service price display component
  */
 interface PriceDisplayProps {
   service: Service;
@@ -92,7 +92,7 @@ interface PriceDisplayProps {
 }
 
 function PriceDisplay({ service, price, t }: PriceDisplayProps) {
-  // Если нет данных о цене
+  // No price data available
   if (!price) {
     return (
       <div className="text-gray-400 text-sm">
@@ -101,7 +101,7 @@ function PriceDisplay({ service, price, t }: PriceDisplayProps) {
     );
   }
 
-  // Бесплатно
+  // Free service
   if (service.price_type === 'free') {
     return (
       <div className="text-green-600 font-bold text-lg">
@@ -110,7 +110,7 @@ function PriceDisplay({ service, price, t }: PriceDisplayProps) {
     );
   }
 
-  // По запросу
+  // On request pricing
   if (service.price_type === 'on_request') {
     return (
       <div className="text-gray-700 font-semibold text-base">
@@ -119,7 +119,7 @@ function PriceDisplay({ service, price, t }: PriceDisplayProps) {
     );
   }
 
-  // От (цена)
+  // Starting from (price)
   if (service.price_type === 'from' && price.price !== undefined && price.price !== null) {
     return (
       <div>
@@ -131,7 +131,7 @@ function PriceDisplay({ service, price, t }: PriceDisplayProps) {
     );
   }
 
-  // Фиксированная цена
+  // Fixed price
   if (service.price_type === 'fixed' && price.price !== undefined && price.price !== null) {
     return (
       <div className="text-2xl font-bold text-gray-900">
@@ -151,7 +151,7 @@ function PriceDisplay({ service, price, t }: PriceDisplayProps) {
 // ========== Helper Functions ==========
 
 /**
- * Форматировать длительность в читаемый вид
+ * Format duration in readable format
  */
 function formatDuration(minutes: number, t: ReturnType<typeof getTranslations>): string {
   if (minutes < 60) {
@@ -169,7 +169,7 @@ function formatDuration(minutes: number, t: ReturnType<typeof getTranslations>):
 }
 
 /**
- * Форматировать цену с разделителями тысяч
+ * Format price with thousand separators
  */
 function formatPrice(price: number): string {
   return price.toLocaleString('cs-CZ');

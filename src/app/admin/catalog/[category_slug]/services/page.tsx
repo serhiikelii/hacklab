@@ -20,10 +20,10 @@ export default async function ServicesPage({
 }) {
   const { category_slug } = await params
 
-  // Создаем клиент внутри компонента, НЕ на top-level
+  // Create client inside component, NOT at top-level
   const supabase = await createClient()
 
-  // Получить категорию
+  // Get category
   const { data: category, error: categoryError } = await supabase
     .from('device_categories')
     .select('id, name_ru, slug')
@@ -31,10 +31,10 @@ export default async function ServicesPage({
     .single()
 
   if (categoryError || !category) {
-    return <div>Категория не найдена</div>
+    return <div>Category not found</div>
   }
 
-  // Получить услуги категории из view
+  // Get category services from view
   const { data: services, error } = await supabase
     .from('category_services_view')
     .select('*')
@@ -42,8 +42,7 @@ export default async function ServicesPage({
     .order('order', { ascending: true }) // Fixed: changed from 'service_order' to 'order'
 
   if (error) {
-    console.error('Error loading services:', error)
-    return <div>Ошибка загрузки услуг</div>
+    return <div>Error loading services</div>
   }
 
   return (
@@ -51,23 +50,23 @@ export default async function ServicesPage({
       {/* Header */}
       <div className="mb-6">
         <h2 className="text-2xl font-bold text-gray-900">
-          Конфигурация услуг: {category.name_ru}
+          Services Configuration: {category.name_ru}
         </h2>
         <p className="text-sm text-gray-500 mt-1">
-          Управление доступными услугами для категории устройств
+          Manage available services for device category
         </p>
       </div>
 
-      {/* Форма добавления */}
+      {/* Add form */}
       <div className="mb-8">
         <AddServiceForm categoryId={category.id} categorySlug={category_slug} />
       </div>
 
-      {/* Список услуг с drag-and-drop */}
+      {/* Services list with drag-and-drop */}
       <div className="bg-white shadow overflow-hidden sm:rounded-lg">
         <div className="px-4 py-5 sm:px-6 border-b border-gray-200">
           <h3 className="text-lg font-medium text-gray-900">
-            Список услуг ({services?.length || 0})
+            Services List ({services?.length || 0})
           </h3>
         </div>
 

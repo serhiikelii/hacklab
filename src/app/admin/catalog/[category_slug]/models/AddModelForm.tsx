@@ -14,7 +14,7 @@ export function AddModelForm({ categoryId, categorySlug }: AddModelFormProps) {
   const [error, setError] = useState('')
   const [maxOrder, setMaxOrder] = useState<number>(0)
 
-  // Загрузить максимальный order при открытии формы
+  // Load maximum order when form opens
   useEffect(() => {
     if (isOpen) {
       getMaxOrder(categoryId).then(setMaxOrder)
@@ -32,11 +32,11 @@ export function AddModelForm({ categoryId, categorySlug }: AddModelFormProps) {
     const result = await createModel(formData)
 
     if (result.success) {
-      // Закрыть форму и сбросить состояние
+      // Close form and reset state
       setIsOpen(false)
       ;(e.target as HTMLFormElement).reset()
     } else {
-      setError(result.error || 'Ошибка при создании модели')
+      setError(result.error || 'Error creating model')
     }
 
     setLoading(false)
@@ -61,7 +61,7 @@ export function AddModelForm({ categoryId, categorySlug }: AddModelFormProps) {
             d="M12 6v6m0 0v6m0-6h6m-6 0H6"
           />
         </svg>
-        Добавить модель
+        Add Model
       </button>
     )
   }
@@ -72,7 +72,7 @@ export function AddModelForm({ categoryId, categorySlug }: AddModelFormProps) {
     <div className="bg-white shadow sm:rounded-lg p-6">
       <div className="flex justify-between items-center mb-4">
         <h3 className="text-lg font-medium text-gray-900">
-          Добавить новую модель
+          Add New Model
         </h3>
         <button
           onClick={() => {
@@ -99,31 +99,31 @@ export function AddModelForm({ categoryId, categorySlug }: AddModelFormProps) {
           </div>
         )}
 
-        {/* Название */}
+        {/* Model name */}
         <div>
           <label
             htmlFor="name"
             className="block text-sm font-medium text-gray-700"
           >
-            Название модели
+            Model Name
           </label>
           <input
             type="text"
             name="name"
             id="name"
             required
-            placeholder="например: iPhone 15 Pro"
+            placeholder="e.g.: iPhone 15 Pro"
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
           />
         </div>
 
-        {/* Год выпуска */}
+        {/* Release year */}
         <div>
           <label
             htmlFor="release_year"
             className="block text-sm font-medium text-gray-700"
           >
-            Год выпуска
+            Release Year
           </label>
           <input
             type="number"
@@ -137,13 +137,13 @@ export function AddModelForm({ categoryId, categorySlug }: AddModelFormProps) {
           />
         </div>
 
-        {/* Order с UX Helper */}
+        {/* Order with UX Helper */}
         <div>
           <label
             htmlFor="order"
             className="block text-sm font-medium text-gray-700"
           >
-            Порядок сортировки (Order)
+            Sort Order
           </label>
           <input
             type="number"
@@ -155,12 +155,12 @@ export function AddModelForm({ categoryId, categorySlug }: AddModelFormProps) {
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
           />
           <p className="mt-1 text-sm text-gray-500">
-            Текущий макс. order: <strong>{maxOrder}</strong>.
-            Рекомендуемый: <strong>{recommendedOrder}</strong> (шаг 1)
+            Current max order: <strong>{maxOrder}</strong>.
+            Recommended: <strong>{recommendedOrder}</strong> (step 1)
           </p>
         </div>
 
-        {/* Кнопки */}
+        {/* Buttons */}
         <div className="flex justify-end space-x-3 pt-4">
           <button
             type="button"
@@ -170,7 +170,7 @@ export function AddModelForm({ categoryId, categorySlug }: AddModelFormProps) {
             }}
             className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
           >
-            Отмена
+            Cancel
           </button>
           <button
             type="submit"
@@ -198,10 +198,10 @@ export function AddModelForm({ categoryId, categorySlug }: AddModelFormProps) {
                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                   />
                 </svg>
-                Создаю...
+                Creating...
               </>
             ) : (
-              'Создать модель'
+              'Create Model'
             )}
           </button>
         </div>

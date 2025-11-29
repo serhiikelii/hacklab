@@ -11,18 +11,17 @@ interface DeviceCategory {
 }
 
 export default async function CatalogPage() {
-  // Создаем клиент внутри компонента, НЕ на top-level
+  // Create client inside component, NOT at top-level
   const supabase = await createClient()
 
-  // Загрузка категорий из БД
+  // Load categories from DB
   const { data: categories, error } = await supabase
     .from('device_categories')
     .select('*')
     .order('name_ru')
 
   if (error) {
-    console.error('Error loading categories:', error)
-    return <div>Ошибка загрузки категорий</div>
+    return <div>Error loading categories</div>
   }
 
   return (
@@ -36,10 +35,10 @@ export default async function CatalogPage() {
                 href="/admin"
                 className="text-sm text-gray-500 hover:text-gray-700"
               >
-                ← Назад к панели
+                ← Back to Panel
               </Link>
               <h1 className="text-2xl font-bold text-gray-900 mt-2">
-                Каталог устройств
+                Device Catalog
               </h1>
             </div>
           </div>
@@ -49,7 +48,7 @@ export default async function CatalogPage() {
       {/* Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <p className="text-gray-600 mb-6">
-          Выберите категорию для управления моделями и услугами
+          Select a category to manage models and services
         </p>
 
         {/* Categories Grid */}
@@ -80,7 +79,7 @@ export default async function CatalogPage() {
                     <div className="ml-5 w-0 flex-1">
                       <dl>
                         <dt className="text-sm font-medium text-gray-500 truncate">
-                          Категория
+                          Category
                         </dt>
                         <dd className="text-lg font-medium text-gray-900">
                           {category.name_ru}

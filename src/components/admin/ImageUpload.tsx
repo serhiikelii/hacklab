@@ -32,14 +32,14 @@ export function ImageUpload({
 
     // Validate file type
     if (!file.type.startsWith('image/')) {
-      setError('Файл должен быть изображением')
+      setError('File must be an image')
       return
     }
 
     // Validate file size (5MB)
     const maxSize = 5 * 1024 * 1024
     if (file.size > maxSize) {
-      setError('Размер файла не должен превышать 5MB')
+      setError('File size must not exceed 5MB')
       return
     }
 
@@ -62,12 +62,11 @@ export function ImageUpload({
         onImageUrlChange(result.publicUrl)
         setError(null)
       } else {
-        setError(result.error || 'Ошибка загрузки')
+        setError(result.error || 'Upload failed')
         setPreview(currentImageUrl || null)
       }
     } catch (err) {
-      console.error('Upload error:', err)
-      setError('Произошла ошибка при загрузке')
+      setError('An error occurred during upload')
       setPreview(currentImageUrl || null)
     } finally {
       setIsUploading(false)
@@ -91,7 +90,7 @@ export function ImageUpload({
   return (
     <div className="space-y-2">
       <label className="block text-sm font-medium text-gray-700">
-        Изображение модели
+        Model Image
       </label>
 
       <div className="flex items-start gap-4">
@@ -120,7 +119,7 @@ export function ImageUpload({
                     handleRemove()
                   }}
                   className="absolute top-2 right-2 p-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
-                  title="Удалить изображение"
+                  title="Remove image"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -134,7 +133,7 @@ export function ImageUpload({
                 <>
                   <ImageIcon className="w-12 h-12 mb-2" />
                   <p className="text-xs text-center">
-                    Нажмите для загрузки
+                    Click to upload
                   </p>
                 </>
               )}
@@ -160,11 +159,11 @@ export function ImageUpload({
             className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <Upload className="w-4 h-4 mr-2" />
-            {isUploading ? 'Загрузка...' : 'Выбрать файл'}
+            {isUploading ? 'Uploading...' : 'Choose File'}
           </button>
 
           <p className="text-xs text-gray-500">
-            PNG, JPG, WEBP до 5MB
+            PNG, JPG, WEBP up to 5MB
           </p>
 
           {error && (
@@ -175,7 +174,7 @@ export function ImageUpload({
 
           {preview && !error && (
             <p className="text-sm text-green-600">
-              ✓ Изображение загружено
+              Image uploaded successfully
             </p>
           )}
         </div>

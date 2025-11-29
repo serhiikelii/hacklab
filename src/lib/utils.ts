@@ -6,12 +6,12 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 /**
- * Парсит название модели для iPad/MacBook
- * Извлекает модельные коды из названия для отдельного отображения
+ * Parses model name for iPad/MacBook
+ * Extracts model codes from name for separate display
  *
- * @param name - Полное название модели (например, "iPad 6 (2018) (A1893,A1954)")
- * @param category - Категория устройства
- * @returns Объект с основным названием и опциональными модельными кодами
+ * @param name - Full model name (e.g., "iPad 6 (2018) (A1893,A1954)")
+ * @param category - Device category
+ * @returns Object with main name and optional model codes
  *
  * @example
  * parseModelName("iPad 6 (2018) (A1893,A1954)", "ipad")
@@ -24,13 +24,13 @@ export function parseModelName(
   name: string,
   category: string
 ): { mainName: string; modelCodes?: string } {
-  // Парсим только для iPad и MacBook
+  // Parse only for iPad and MacBook
   if (category !== 'ipad' && category !== 'macbook') {
     return { mainName: name };
   }
 
-  // Регулярка для поиска модельных кодов в скобках в конце строки
-  // Ищем паттерн: (A1234, A5678) или (A1234,A5678) в конце строки
+  // Regex to find model codes in brackets at end of string
+  // Search for pattern: (A1234, A5678) or (A1234,A5678) at end of line
   const modelCodesRegex = /\s*(\([A-Z]\d{4}[,\s]*(?:[A-Z]\d{4}[,\s]*)*\))$/;
   const match = name.match(modelCodesRegex);
 
@@ -44,10 +44,10 @@ export function parseModelName(
 }
 
 /**
- * Форматирует время ремонта из минут в читаемый формат
+ * Formats repair time from minutes to readable format
  *
- * @param minutes - Время в минутах из БД
- * @returns Отформатированная строка времени
+ * @param minutes - Time in minutes from DB
+ * @returns Formatted time string
  *
  * @example
  * formatDuration(30)    // => "30 min"
@@ -61,34 +61,34 @@ export function formatDuration(minutes: number | null | undefined): string {
     return '-';
   }
 
-  // Меньше часа - показываем минуты
+  // Less than hour - show minutes
   if (minutes < 60) {
     return `${minutes} min`;
   }
 
-  // От 1 до 24 часов - показываем часы
+  // From 1 to 24 hours - show hours
   if (minutes < 1440) {
     const hours = Math.floor(minutes / 60);
     const remainingMinutes = minutes % 60;
 
-    // Если точное количество часов без остатка
+    // If exact hours without remainder
     if (remainingMinutes === 0) {
       return `${hours}h`;
     }
 
-    // Если есть остаток - показываем диапазон
+    // If there's remainder - show range
     return `${hours}-${hours + 1}h`;
   }
 
-  // 24 часа и больше - показываем дни
+  // 24 hours and more - show days
   const days = Math.floor(minutes / 1440);
   const remainingHours = (minutes % 1440) / 60;
 
-  // Если точное количество дней без остатка
+  // If exact days without remainder
   if (remainingHours === 0) {
     return `${days}d`;
   }
 
-  // Если есть остаток - показываем диапазон
+  // If there's remainder - show range
   return `${days}-${days + 1}d`;
 }

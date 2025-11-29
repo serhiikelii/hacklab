@@ -90,16 +90,16 @@ function SortableServiceItem({
                   : 'bg-purple-100 text-purple-800'
               }`}
             >
-              {service.service_type === 'main' ? 'Ремонт' : 'Доп. услуга'}
+              {service.service_type === 'main' ? 'Repair' : 'Extra Service'}
             </span>
 
             {/* Service Names */}
             <div>
               <p className="text-sm font-medium text-gray-900">
-                {service.service_name_ru}
+                {service.service_name_en}
               </p>
               <p className="text-xs text-gray-500">
-                EN: {service.service_name_en} • CZ: {service.service_name_cz}
+                RU: {service.service_name_ru} • CZ: {service.service_name_cz}
               </p>
             </div>
           </div>
@@ -167,7 +167,6 @@ export function ServicesList({
       // Refresh to get updated data
       router.refresh()
     } catch (error) {
-      console.error('Error updating order:', error)
       // Revert on error
       setServices(initialServices)
     } finally {
@@ -178,7 +177,7 @@ export function ServicesList({
   if (!services || services.length === 0) {
     return (
       <div className="px-4 py-12 text-center text-gray-500">
-        Услуги не найдены. Добавьте первую услугу выше.
+        No services found. Add the first service above.
       </div>
     )
   }
@@ -207,7 +206,7 @@ export function ServicesList({
                 d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
               />
             </svg>
-            <span className="text-sm text-gray-600">Сохранение...</span>
+            <span className="text-sm text-gray-600">Saving...</span>
           </div>
         </div>
       )}
@@ -235,7 +234,7 @@ export function ServicesList({
 
       <div className="mt-4 px-4 py-3 bg-blue-50 rounded-md">
         <p className="text-sm text-blue-800">
-          💡 <strong>Совет:</strong> Перетащите услуги мышкой для изменения порядка отображения
+          💡 <strong>Tip:</strong> Drag services to reorder display
         </p>
       </div>
     </div>

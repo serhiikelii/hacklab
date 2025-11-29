@@ -93,7 +93,7 @@ export function PricesTable({
   }
 
   const handleDelete = async (priceId: string, serviceName: string) => {
-    if (!confirm(`Удалить цену для услуги "${serviceName}"?`)) {
+    if (!confirm(`Delete price for service "${serviceName}"?`)) {
       return
     }
 
@@ -107,7 +107,7 @@ export function PricesTable({
   if (prices.length === 0) {
     return (
       <div className="text-center py-8 text-gray-500">
-        <p>Цены для этой модели еще не добавлены</p>
+        <p>No prices added for this model yet</p>
       </div>
     )
   }
@@ -117,12 +117,12 @@ export function PricesTable({
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Услуга</TableHead>
-            <TableHead>Тип</TableHead>
-            <TableHead className="text-right">Цена (CZK)</TableHead>
-            <TableHead className="text-right">Время (мин)</TableHead>
-            <TableHead className="text-right">Гарантия (мес)</TableHead>
-            <TableHead className="text-right">Действия</TableHead>
+            <TableHead>Service</TableHead>
+            <TableHead>Type</TableHead>
+            <TableHead className="text-right">Price (CZK)</TableHead>
+            <TableHead className="text-right">Time (min)</TableHead>
+            <TableHead className="text-right">Warranty (months)</TableHead>
+            <TableHead className="text-right">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -132,7 +132,7 @@ export function PricesTable({
             return (
               <TableRow key={price.id}>
                 <TableCell className="font-medium">
-                  {price.services.name_ru}
+                  {price.services.name_en}
                 </TableCell>
                 <TableCell>
                   <span
@@ -142,7 +142,7 @@ export function PricesTable({
                         : 'bg-purple-100 text-purple-800'
                     }`}
                   >
-                    {price.services.service_type === 'main' ? 'Ремонт' : 'Доп. услуга'}
+                    {price.services.service_type === 'main' ? 'Repair' : 'Extra Service'}
                   </span>
                 </TableCell>
                 <TableCell className="text-right">
@@ -221,7 +221,7 @@ export function PricesTable({
                         size="sm"
                         variant="ghost"
                         onClick={() =>
-                          handleDelete(price.id, price.services.name_ru)
+                          handleDelete(price.id, price.services.name_en)
                         }
                       >
                         <Trash2 className="h-4 w-4 text-red-600" />

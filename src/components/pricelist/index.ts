@@ -1,8 +1,8 @@
 /**
- * Pricelist Components - компоненты системы прайс-листа MojService
+ * Pricelist Components - MojService pricelist system components
  *
- * Этот модуль предоставляет все необходимые компоненты для создания
- * полнофункциональной системы прайс-листа с ~102 моделями устройств.
+ * This module provides all necessary components for creating
+ * a full-featured pricelist system with ~102 device models.
  *
  * @example
  * ```tsx

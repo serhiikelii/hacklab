@@ -31,7 +31,7 @@ export async function uploadModelImage(
       console.log('ERROR: No file in formData')
       return {
         success: false,
-        error: 'Файл не выбран'
+        error: 'File not selected'
       }
     }
 
@@ -41,7 +41,7 @@ export async function uploadModelImage(
     if (!file.type.startsWith('image/')) {
       return {
         success: false,
-        error: 'Файл должен быть изображением'
+        error: 'File must be an image'
       }
     }
 
@@ -50,7 +50,7 @@ export async function uploadModelImage(
     if (file.size > maxSize) {
       return {
         success: false,
-        error: 'Размер файла не должен превышать 5MB'
+        error: 'File size must not exceed 5MB'
       }
     }
 
@@ -97,7 +97,7 @@ export async function uploadModelImage(
       console.error('Upload error:', uploadError)
       return {
         success: false,
-        error: `Ошибка загрузки: ${uploadError.message}`
+        error: `Upload error: ${uploadError.message}`
       }
     }
 
@@ -109,7 +109,7 @@ export async function uploadModelImage(
     if (!urlData.publicUrl) {
       return {
         success: false,
-        error: 'Не удалось получить публичный URL'
+        error: 'Failed to get public URL'
       }
     }
 
@@ -121,7 +121,7 @@ export async function uploadModelImage(
     console.error('Unexpected error in uploadModelImage:', error)
     return {
       success: false,
-      error: 'Произошла непредвиденная ошибка при загрузке'
+      error: 'An unexpected error occurred during upload'
     }
   }
 }
@@ -143,7 +143,7 @@ export async function deleteModelImage(
     if (!fileName) {
       return {
         success: false,
-        error: 'Неверный URL изображения'
+        error: 'Invalid image URL'
       }
     }
 
@@ -166,7 +166,7 @@ export async function deleteModelImage(
       console.error('Delete error:', error)
       return {
         success: false,
-        error: `Ошибка удаления: ${error.message}`
+        error: `Delete error: ${error.message}`
       }
     }
 
@@ -177,7 +177,7 @@ export async function deleteModelImage(
     console.error('Unexpected error in deleteModelImage:', error)
     return {
       success: false,
-      error: 'Произошла непредвиденная ошибка при удалении'
+      error: 'An unexpected error occurred during deletion'
     }
   }
 }

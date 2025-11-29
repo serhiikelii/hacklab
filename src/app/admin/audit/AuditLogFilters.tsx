@@ -35,7 +35,7 @@ export function AuditLogFilters({
       params.set(filterType, value)
     }
 
-    // Сбросить страницу при изменении фильтра
+    // Reset page on filter change
     params.delete('page')
 
     router.push(`/admin/audit?${params.toString()}`)
@@ -50,9 +50,9 @@ export function AuditLogFilters({
   return (
     <div className="bg-white shadow sm:rounded-lg p-4">
       <div className="flex flex-wrap items-center gap-4">
-        {/* Фильтр по действию */}
+        {/* Filter by action */}
         <div className="flex items-center space-x-2">
-          <label className="text-sm font-medium text-gray-700">Действие:</label>
+          <label className="text-sm font-medium text-gray-700">Action:</label>
           <select
             value={currentAction || 'all'}
             onChange={(e) => handleFilterChange('action', e.target.value)}

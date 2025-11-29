@@ -7,28 +7,28 @@ import { revalidatePath } from 'next/cache'
 
 // Zod schema for device model validation
 const DeviceModelSchema = z.object({
-  category_id: z.string().min(1, 'Выберите категорию'),
+  category_id: z.string().min(1, 'Select a category'),
   name: z
     .string()
-    .min(2, 'Название должно содержать минимум 2 символа')
-    .max(100, 'Название слишком длинное'),
+    .min(2, 'Name must contain at least 2 characters')
+    .max(100, 'Name is too long'),
   slug: z
     .string()
-    .min(2, 'Slug должен содержать минимум 2 символа')
-    .max(100, 'Slug слишком длинный')
+    .min(2, 'Slug must contain at least 2 characters')
+    .max(100, 'Slug is too long')
     .regex(
       /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
-      'Slug может содержать только строчные латинские буквы, цифры и дефисы'
+      'Slug can only contain lowercase letters, numbers and hyphens'
     ),
-  series: z.string().max(100, 'Серия слишком длинная').optional().nullable(),
+  series: z.string().max(100, 'Series is too long').optional().nullable(),
   release_year: z
     .number()
     .int()
-    .min(2000, 'Год должен быть не меньше 2000')
-    .max(2030, 'Год должен быть не больше 2030')
+    .min(2000, 'Year must be no less than 2000')
+    .max(2030, 'Year must be no greater than 2030')
     .optional()
     .nullable(),
-  image_url: z.string().url('Неверный формат URL').optional().nullable().or(z.literal('')),
+  image_url: z.string().url('Invalid URL format').optional().nullable().or(z.literal('')),
 })
 
 export type FormState = {
@@ -73,7 +73,7 @@ export async function createDeviceModel(
 
   if (!user) {
     return {
-      message: 'Необходима авторизация',
+      message: 'Authentication required',
       success: false,
     }
   }
@@ -99,7 +99,7 @@ export async function createDeviceModel(
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors as any,
-      message: 'Проверьте правильность заполнения полей',
+      message: 'Check field validation',
       success: false,
     }
   }
@@ -116,7 +116,7 @@ export async function createDeviceModel(
 
     if (categoryError || !categoryData) {
       return {
-        message: 'Категория не найдена',
+        message: 'Category not found',
         success: false,
       }
     }
@@ -133,7 +133,7 @@ export async function createDeviceModel(
     if (existingModel) {
       return {
         errors: {
-          slug: 'Модель с таким slug уже существует',
+          slug: 'Model with this slug already exists',
         },
         message: 'Slug должен быть уникальным',
         success: false,
@@ -157,7 +157,7 @@ export async function createDeviceModel(
     if (insertError) {
       console.error('Insert error:', insertError)
       return {
-        message: `Ошибка создания модели: ${insertError.message}`,
+        message: `Model creation error: ${insertError.message}`,
         success: false,
       }
     }
@@ -200,13 +200,13 @@ export async function createDeviceModel(
 
     // 7. Return success (redirect happens on client side)
     return {
-      message: 'Модель успешно создана',
+      message: 'Model created successfully',
       success: true,
     }
   } catch (error) {
     console.error('Unexpected error:', error)
     return {
-      message: 'Произошла непредвиденная ошибка',
+      message: 'An unexpected error occurred',
       success: false,
     }
   }
@@ -241,7 +241,7 @@ export async function updateDeviceModel(
 
   if (!user) {
     return {
-      message: 'Необходима авторизация',
+      message: 'Authentication required',
       success: false,
     }
   }
@@ -271,7 +271,7 @@ export async function updateDeviceModel(
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors as any,
-      message: 'Проверьте правильность заполнения полей',
+      message: 'Check field validation',
       success: false,
     }
   }
@@ -293,7 +293,7 @@ export async function updateDeviceModel(
     if (existingModel) {
       return {
         errors: {
-          slug: 'Модель с таким slug уже существует',
+          slug: 'Model with this slug already exists',
         },
         success: false,
       }
@@ -315,7 +315,7 @@ export async function updateDeviceModel(
     if (updateError) {
       console.error('Update error:', updateError)
       return {
-        message: `Ошибка обновления: ${updateError.message}`,
+        message: `Update error: ${updateError.message}`,
         success: false,
       }
     }
@@ -324,13 +324,13 @@ export async function updateDeviceModel(
     revalidatePath(`/admin/models/${modelId}/edit`)
 
     return {
-      message: 'Модель успешно обновлена',
+      message: 'Model updated successfully',
       success: true,
     }
   } catch (error) {
     console.error('Unexpected error:', error)
     return {
-      message: 'Произошла непредвиденная ошибка',
+      message: 'An unexpected error occurred',
       success: false,
     }
   }
@@ -362,7 +362,7 @@ export async function deleteDeviceModel(modelId: string): Promise<{ success: boo
   if (!user) {
     return {
       success: false,
-      error: 'Необходима авторизация',
+      error: 'Authentication required',
     }
   }
 
@@ -377,7 +377,7 @@ export async function deleteDeviceModel(modelId: string): Promise<{ success: boo
       console.error('Delete error:', deleteError)
       return {
         success: false,
-        error: `Ошибка удаления: ${deleteError.message}`,
+        error: `Delete error: ${deleteError.message}`,
       }
     }
 
@@ -391,7 +391,7 @@ export async function deleteDeviceModel(modelId: string): Promise<{ success: boo
     console.error('Unexpected error during delete:', error)
     return {
       success: false,
-      error: 'Произошла непредвиденная ошибка при удалении',
+      error: 'An unexpected error occurred during deletion',
     }
   }
 }

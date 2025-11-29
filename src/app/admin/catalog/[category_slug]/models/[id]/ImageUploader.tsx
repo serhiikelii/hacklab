@@ -44,27 +44,27 @@ export function ImageUploader({
     setIsUploading(true)
 
     try {
-      // Вызываем Server Action напрямую
+      // Call Server Action directly
       const result = await uploadModelImage(modelId, categorySlug, file)
 
       if (!result.success || !result.imageUrl) {
-        throw new Error(result.error || 'Ошибка загрузки изображения')
+        throw new Error(result.error || 'Error uploading image')
       }
 
-      // Обновляем preview
+      // Update preview
       setPreviewUrl(result.imageUrl)
 
-      // Вызываем callback если есть
+      // Call callback if exists
       if (onUploadSuccess) {
         onUploadSuccess(result.imageUrl)
       }
 
-      // Очищаем input
+      // Clear input
       if (fileInputRef.current) {
         fileInputRef.current.value = ''
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Произошла ошибка')
+      setError(err instanceof Error ? err.message : 'An error occurred')
     } finally {
       setIsUploading(false)
     }
@@ -76,11 +76,11 @@ export function ImageUploader({
     setError(null)
 
     try {
-      // Вызываем Server Action напрямую
+      // Call Server Action directly
       const result = await removeModelImage(modelId)
 
       if (!result.success) {
-        throw new Error(result.error || 'Ошибка удаления изображения')
+        throw new Error(result.error || 'Error removing image')
       }
 
       setPreviewUrl(null)
@@ -89,7 +89,7 @@ export function ImageUploader({
         onUploadSuccess('')
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Произошла ошибка')
+      setError(err instanceof Error ? err.message : 'An error occurred')
     } finally {
       setIsUploading(false)
     }
@@ -112,7 +112,7 @@ export function ImageUploader({
               <button
                 onClick={() => setShowDeleteDialog(true)}
                 className="absolute top-2 right-2 p-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
-                aria-label="Удалить изображение"
+                aria-label="Remove image"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -123,7 +123,7 @@ export function ImageUploader({
             <div className="text-center p-6">
               <Upload className="w-12 h-12 text-gray-400 mx-auto mb-3" />
               <p className="text-sm text-gray-500">
-                Изображение не загружено
+                No image uploaded
               </p>
             </div>
           </div>
@@ -157,12 +157,12 @@ export function ImageUploader({
           {isUploading ? (
             <>
               <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-              Загрузка...
+              Uploading...
             </>
           ) : (
             <>
               <Upload className="w-4 h-4 mr-2" />
-              {previewUrl ? 'Заменить изображение' : 'Загрузить изображение'}
+              {previewUrl ? 'Replace Image' : 'Upload Image'}
             </>
           )}
         </label>
@@ -177,16 +177,16 @@ export function ImageUploader({
 
       {/* Helper Text */}
       <p className="text-xs text-gray-500">
-        Форматы: .webp, .png, .jpg • Максимум 5 МБ
+        Formats: .webp, .png, .jpg • Maximum 5 MB
       </p>
 
       {/* Delete Confirmation Dialog */}
       <Dialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Удалить изображение?</DialogTitle>
+            <DialogTitle>Delete image?</DialogTitle>
             <DialogDescription>
-              Это действие нельзя отменить. Изображение будет удалено из хранилища.
+              This action cannot be undone. The image will be removed from storage.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
@@ -194,13 +194,13 @@ export function ImageUploader({
               onClick={() => setShowDeleteDialog(false)}
               className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             >
-              Отмена
+              Cancel
             </button>
             <button
               onClick={handleRemoveImage}
               className="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
             >
-              Удалить
+              Delete
             </button>
           </DialogFooter>
         </DialogContent>

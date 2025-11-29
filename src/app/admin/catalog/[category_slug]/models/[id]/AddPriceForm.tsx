@@ -41,7 +41,7 @@ export function AddPriceForm({
   const boundAddPrice = addPrice.bind(null, modelId, categorySlug)
   const [state, formAction, isPending] = useActionState(boundAddPrice, null)
 
-  // Фильтровать услуги, для которых уже есть цены
+  // Filter services that already have prices
   const filteredServices = availableServices.filter(
     (service) => !existingServiceIds.includes(service.id)
   )
@@ -53,7 +53,7 @@ export function AddPriceForm({
     }
   }
 
-  // Автоматически закрыть форму при успехе
+  // Automatically close form on success
   if (state?.success && isOpen) {
     handleSuccess()
   }
@@ -62,7 +62,7 @@ export function AddPriceForm({
     return (
       <Button onClick={() => setIsOpen(true)} className="mb-4">
         <Plus className="h-4 w-4 mr-2" />
-        Добавить цену
+        Add Price
       </Button>
     )
   }
@@ -71,7 +71,7 @@ export function AddPriceForm({
     return (
       <div className="mb-4 p-4 bg-yellow-50 rounded-md border border-yellow-200">
         <p className="text-sm text-yellow-800">
-          Все доступные услуги уже добавлены для этой модели
+          All available services already added for this model
         </p>
         <Button
           variant="ghost"
@@ -79,7 +79,7 @@ export function AddPriceForm({
           onClick={() => setIsOpen(false)}
           className="mt-2"
         >
-          Закрыть
+          Close
         </Button>
       </div>
     )
@@ -88,7 +88,7 @@ export function AddPriceForm({
   return (
     <div className="mb-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
       <div className="flex justify-between items-center mb-4">
-        <h4 className="text-lg font-medium">Добавить новую цену</h4>
+        <h4 className="text-lg font-medium">Add New Price</h4>
         <Button
           variant="ghost"
           size="sm"
@@ -100,10 +100,10 @@ export function AddPriceForm({
       </div>
 
       <form action={formAction} className="space-y-4">
-        {/* Выбор услуги */}
+        {/* Service selection */}
         <div>
           <Label htmlFor="service_id">
-            Услуга <span className="text-red-500">*</span>
+            Service <span className="text-red-500">*</span>
           </Label>
           <Select
             name="service_id"
@@ -112,13 +112,13 @@ export function AddPriceForm({
             required
           >
             <SelectTrigger>
-              <SelectValue placeholder="Выберите услугу" />
+              <SelectValue placeholder="Select service" />
             </SelectTrigger>
             <SelectContent>
               {filteredServices.map((service) => (
                 <SelectItem key={service.id} value={service.id}>
                   <div className="flex items-center gap-2">
-                    <span>{service.name_ru}</span>
+                    <span>{service.name_en}</span>
                     <span
                       className={`text-xs px-2 py-0.5 rounded-full ${
                         service.service_type === 'main'
@@ -126,7 +126,7 @@ export function AddPriceForm({
                           : 'bg-purple-100 text-purple-800'
                       }`}
                     >
-                      {service.service_type === 'main' ? 'Ремонт' : 'Доп.'}
+                      {service.service_type === 'main' ? 'Repair' : 'Extra'}
                     </span>
                   </div>
                 </SelectItem>
@@ -140,9 +140,9 @@ export function AddPriceForm({
           )}
         </div>
 
-        {/* Цена */}
+        {/* Price */}
         <div>
-          <Label htmlFor="price">Цена (CZK)</Label>
+          <Label htmlFor="price">Price (CZK)</Label>
           <Input
             id="price"
             name="price"
@@ -157,9 +157,9 @@ export function AddPriceForm({
           )}
         </div>
 
-        {/* Время работы */}
+        {/* Duration */}
         <div>
-          <Label htmlFor="duration_minutes">Время работы (минуты)</Label>
+          <Label htmlFor="duration_minutes">Duration (minutes)</Label>
           <Input
             id="duration_minutes"
             name="duration_minutes"
@@ -176,9 +176,9 @@ export function AddPriceForm({
           )}
         </div>
 
-        {/* Гарантия */}
+        {/* Warranty */}
         <div>
-          <Label htmlFor="warranty_months">Гарантия (месяцы)</Label>
+          <Label htmlFor="warranty_months">Warranty (months)</Label>
           <Input
             id="warranty_months"
             name="warranty_months"
@@ -196,17 +196,17 @@ export function AddPriceForm({
           )}
         </div>
 
-        {/* Сообщение об ошибке */}
+        {/* Error message */}
         {state && !state.success && (
           <div className="p-3 bg-red-50 border border-red-200 rounded-md">
             <p className="text-sm text-red-800">{state.message}</p>
           </div>
         )}
 
-        {/* Кнопки */}
+        {/* Buttons */}
         <div className="flex gap-2">
           <Button type="submit" disabled={isPending || !selectedServiceId}>
-            {isPending ? 'Добавление...' : 'Добавить'}
+            {isPending ? 'Adding...' : 'Add'}
           </Button>
           <Button
             type="button"
@@ -214,7 +214,7 @@ export function AddPriceForm({
             onClick={() => setIsOpen(false)}
             disabled={isPending}
           >
-            Отмена
+            Cancel
           </Button>
         </div>
       </form>

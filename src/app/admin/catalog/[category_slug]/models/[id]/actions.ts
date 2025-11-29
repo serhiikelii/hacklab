@@ -5,28 +5,28 @@ import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 import { logCreate, logUpdate, logDelete } from '@/lib/audit'
 
-// Временный обходной путь для типизации
+// Temporary workaround for typing
 
 
-// ============= Валидация =============
+// ============= Validation =============
 
 const PriceSchema = z.object({
-  service_id: z.string().uuid('Некорректный ID услуги'),
+  service_id: z.string().uuid('Invalid service ID'),
   price: z.coerce
     .number()
-    .positive('Цена должна быть положительной')
+    .positive('Price must be positive')
     .nullable()
     .optional(),
   duration_minutes: z.coerce
     .number()
-    .int('Время должно быть целым числом')
-    .positive('Время должно быть положительным')
+    .int('Duration must be an integer')
+    .positive('Duration must be positive')
     .nullable()
     .optional(),
   warranty_months: z.coerce
     .number()
-    .int('Гарантия должна быть целым числом')
-    .positive('Гарантия должна быть положительной')
+    .int('Warranty must be an integer')
+    .positive('Warranty must be positive')
     .nullable()
     .optional()
     .default(24),
@@ -41,7 +41,7 @@ type ActionState = {
 // ============= Actions =============
 
 /**
- * Добавить новую цену для модели
+ * Add new price for a model
  */
 export async function addPrice(
   modelId: string,
@@ -52,7 +52,7 @@ export async function addPrice(
   try {
     const supabase = await createClient()
 
-    // Валидация входных данных
+    // Validate input data
     const rawData = {
       service_id: formData.get('service_id'),
       price: formData.get('price'),
@@ -65,14 +65,14 @@ export async function addPrice(
     if (!validatedFields.success) {
       return {
         success: false,
-        message: 'Ошибка валидации',
+        message: 'Validation error',
         errors: validatedFields.error.flatten().fieldErrors,
       }
     }
 
     const { service_id, price, duration_minutes, warranty_months } = validatedFields.data
 
-    // Проверить, существует ли уже цена для этой услуги
+    // Check if price already exists for this service
     const { data: existingPrice } = await supabase
       .from('prices')
       .select('id')
@@ -83,11 +83,11 @@ export async function addPrice(
     if (existingPrice) {
       return {
         success: false,
-        message: 'Цена для этой услуги уже существует',
+        message: 'Price for this service already exists',
       }
     }
 
-    // Создать новую цену
+    // Create new price
     const newPriceData = {
       model_id: modelId,
       service_id,
@@ -105,33 +105,31 @@ export async function addPrice(
       .single()
 
     if (error) {
-      console.error('Error adding price:', error)
       return {
         success: false,
-        message: 'Ошибка при добавлении цены',
+        message: 'Error adding price',
       }
     }
 
-    // Логирование
+    // Audit logging
     await logCreate('prices', newPrice.id, newPriceData)
 
     revalidatePath(`/admin/catalog/${categorySlug}/models/${modelId}`)
 
     return {
       success: true,
-      message: 'Цена успешно добавлена',
+      message: 'Price successfully added',
     }
   } catch (error) {
-    console.error('Unexpected error in addPrice:', error)
     return {
       success: false,
-      message: 'Непредвиденная ошибка',
+      message: 'Unexpected error',
     }
   }
 }
 
 /**
- * Обновить существующую цену
+ * Update existing price
  */
 export async function updatePrice(
   priceId: string,
@@ -143,7 +141,7 @@ export async function updatePrice(
   try {
     const supabase = await createClient()
 
-    // Валидация входных данных
+    // Validate input data
     const rawData = {
       service_id: formData.get('service_id'),
       price: formData.get('price'),
@@ -156,21 +154,21 @@ export async function updatePrice(
     if (!validatedFields.success) {
       return {
         success: false,
-        message: 'Ошибка валидации',
+        message: 'Validation error',
         errors: validatedFields.error.flatten().fieldErrors,
       }
     }
 
     const { price, duration_minutes, warranty_months } = validatedFields.data
 
-    // Получить старые данные для аудита
+    // Get old data for audit
     const { data: oldPrice } = await supabase
       .from('prices')
       .select('*')
       .eq('id', priceId)
       .single()
 
-    // Обновить цену
+    // Update price
     const newPriceData = {
       price: price ?? null,
       duration_minutes: duration_minutes ?? null,
@@ -187,11 +185,11 @@ export async function updatePrice(
       console.error('Error updating price:', error)
       return {
         success: false,
-        message: 'Ошибка при обновлении цены',
+        message: 'Error updating price',
       }
     }
 
-    // Логирование
+    // Audit logging
     if (oldPrice) {
       await logUpdate('prices', priceId, oldPrice, newPriceData)
     }
@@ -200,19 +198,19 @@ export async function updatePrice(
 
     return {
       success: true,
-      message: 'Цена успешно обновлена',
+      message: 'Price successfully updated',
     }
   } catch (error) {
     console.error('Unexpected error in updatePrice:', error)
     return {
       success: false,
-      message: 'Непредвиденная ошибка',
+      message: 'Unexpected error',
     }
   }
 }
 
 /**
- * Удалить цену
+ * Delete price
  */
 export async function deletePrice(
   priceId: string,
@@ -222,7 +220,7 @@ export async function deletePrice(
   try {
     const supabase = await createClient()
 
-    // Получить данные для аудита перед удалением
+    // Get data for audit before deletion
     const { data: oldPrice } = await supabase
       .from('prices')
       .select('*')
@@ -235,11 +233,11 @@ export async function deletePrice(
       console.error('Error deleting price:', error)
       return {
         success: false,
-        message: 'Ошибка при удалении цены',
+        message: 'Error deleting price',
       }
     }
 
-    // Логирование
+    // Audit logging
     if (oldPrice) {
       await logDelete('prices', priceId, oldPrice)
     }
@@ -248,25 +246,25 @@ export async function deletePrice(
 
     return {
       success: true,
-      message: 'Цена успешно удалена',
+      message: 'Price successfully deleted',
     }
   } catch (error) {
     console.error('Unexpected error in deletePrice:', error)
     return {
       success: false,
-      message: 'Непредвиденная ошибка',
+      message: 'Unexpected error',
     }
   }
 }
 
 /**
- * Получить активные услуги для категории модели
+ * Get active services for model category
  */
 export async function getActiveServicesForModel(modelId: string) {
   try {
     const supabase = await createClient()
 
-    // Получить категорию модели
+    // Get model category
     const { data: model } = await supabase
       .from('device_models')
       .select('category_id')
@@ -277,7 +275,7 @@ export async function getActiveServicesForModel(modelId: string) {
       return []
     }
 
-    // Получить активные услуги для этой категории через category_services
+    // Get active services for this category via category_services
     const { data: services, error } = await supabase
       .from('category_services')
       .select(`
@@ -302,7 +300,7 @@ export async function getActiveServicesForModel(modelId: string) {
       .map((cs: any) => cs.services)
       .filter(Boolean)
       .sort((a: any, b: any) => {
-        // Сортировка: main услуги первыми
+        // Sort: main services first
         if (a.service_type === 'main' && b.service_type !== 'main') return -1
         if (a.service_type !== 'main' && b.service_type === 'main') return 1
         return a.name_ru.localeCompare(b.name_ru)

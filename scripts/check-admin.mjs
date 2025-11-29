@@ -13,7 +13,7 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
 
 if (!supabaseUrl || !supabaseServiceKey) {
-  console.error('❌ Отсутствуют env переменные!')
+  console.error('ERROR: Missing env variables!')
   process.exit(1)
 }
 
@@ -24,31 +24,31 @@ const supabase = createClient(supabaseUrl, supabaseServiceKey, {
   },
 })
 
-console.log('🔍 Проверка таблицы admins...\n')
+console.log('Checking admins table...\n')
 
-// Проверяем всех админов
+// Check all admins
 const { data: admins, error } = await supabase
   .from('admins')
   .select('*')
 
 if (error) {
-  console.error('❌ Ошибка:', error)
+  console.error('ERROR:', error)
   process.exit(1)
 }
 
-console.log(`📊 Найдено администраторов: ${admins?.length || 0}\n`)
+console.log(`Found administrators: ${admins?.length || 0}\n`)
 
 if (admins && admins.length > 0) {
   admins.forEach((admin, i) => {
-    console.log(`${i + 1}. 👤 Admin:`)
+    console.log(`${i + 1}. Admin:`)
     console.log(`   ID (PK):       ${admin.id}`)
     console.log(`   User ID (FK):  ${admin.user_id}`)
     console.log(`   Email:         ${admin.email}`)
     console.log(`   Role:          ${admin.role}`)
-    console.log(`   Active:        ${admin.is_active ? '✅' : '❌'}`)
+    console.log(`   Active:        ${admin.is_active ? 'YES' : 'NO'}`)
     console.log()
   })
 } else {
-  console.log('⚠️  Таблица admins пуста!')
-  console.log('   Нужно создать администратора через миграцию или SQL.')
+  console.log('WARNING: Admins table is empty!')
+  console.log('   Need to create administrator via migration or SQL.')
 }

@@ -3,9 +3,9 @@ import { cookies } from 'next/headers'
 import type { Database } from '@/types/database'
 
 /**
- * Создает серверный Supabase клиент с поддержкой cookies
- * Используется в Server Actions и Server Components
- * ВАЖНО: Этот клиент имеет доступ к user session через cookies!
+ * Creates server Supabase client with cookies support
+ * Used in Server Actions and Server Components
+ * IMPORTANT: This client has access to user session via cookies!
  */
 export async function createClient() {
   const cookieStore = await cookies()
@@ -24,8 +24,8 @@ export async function createClient() {
               cookieStore.set(name, value, options)
             )
           } catch {
-            // Игнорируем ошибки set в Server Components
-            // (они могут происходить в статическом рендеринге)
+            // Ignore set errors in Server Components
+            // (may occur during static rendering)
           }
         },
       },

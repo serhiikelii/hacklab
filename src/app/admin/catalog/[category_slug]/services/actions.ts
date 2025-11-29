@@ -5,14 +5,14 @@ import { z } from 'zod'
 import { revalidatePath } from 'next/cache'
 import { logCreate, logUpdate } from '@/lib/audit'
 
-// Временный обходной путь для типизации
+// Temporary workaround for typing
 
 
-// Схема валидации для создания услуги
+// Validation schema for creating a service
 const createServiceSchema = z.object({
-  name_ru: z.string().min(1, 'Название (RU) обязательно'),
-  name_en: z.string().min(1, 'Название (EN) обязательно'),
-  name_cz: z.string().min(1, 'Название (CZ) обязательно'),
+  name_ru: z.string().min(1, 'Name (RU) is required'),
+  name_en: z.string().min(1, 'Name (EN) is required'),
+  name_cz: z.string().min(1, 'Name (CZ) is required'),
   service_type: z.enum(['main', 'extra']), // Fixed: lowercase to match DB enum
   order: z.string().transform((val) => parseInt(val, 10)),
   category_id: z.string().uuid(),
@@ -31,7 +31,7 @@ export async function createService(formData: FormData) {
       category_id: formData.get('category_id'),
     })
 
-    // 1. Создать или найти услугу в таблице services
+    // 1. Create or find service in services table
     const { data: existingService } = await supabase
       .from('services')
       .select('id')
@@ -43,7 +43,7 @@ export async function createService(formData: FormData) {
     if (existingService) {
       serviceId = existingService.id
     } else {
-      // Создать новую услугу
+      // Create new service
       const { data: newService, error: serviceError } = await supabase
         .from('services')
         .insert({
@@ -57,13 +57,13 @@ export async function createService(formData: FormData) {
         .single()
 
       if (serviceError || !newService) {
-        return { success: false, error: 'Ошибка создания услуги' }
+        return { success: false, error: 'Error creating service' }
       }
 
       serviceId = newService.id
     }
 
-    // 2. Создать связь в category_services
+    // 2. Create link in category_services
     const categoryServiceData = {
       category_id: validatedData.category_id,
       service_id: serviceId,
@@ -79,17 +79,17 @@ export async function createService(formData: FormData) {
       .single()
 
     if (linkError) {
-      return { success: false, error: 'Услуга уже добавлена в категорию' }
+      return { success: false, error: 'Service already added to category' }
     }
 
-    // Логирование
+    // Audit logging
     await logCreate(
       'category_services',
       newCategoryService.id,
       categoryServiceData
     )
 
-    // Ревалидация
+    // Revalidation
     const { data: category } = await supabase
       .from('device_categories')
       .select('slug')
@@ -108,11 +108,11 @@ export async function createService(formData: FormData) {
         error: error.errors.map((e) => e.message).join(', '),
       }
     }
-    return { success: false, error: 'Неизвестная ошибка' }
+    return { success: false, error: 'Unknown error' }
   }
 }
 
-// Toggle is_active для услуги
+// Toggle is_active for service
 export async function toggleServiceActive(
   categoryServiceId: string,
   categorySlug: string
@@ -120,7 +120,7 @@ export async function toggleServiceActive(
   try {
     const supabase = await createClient()
 
-    // Получить текущее значение is_active
+    // Get current is_active value
     const { data: current } = await supabase
       .from('category_services')
       .select('*')
@@ -128,12 +128,12 @@ export async function toggleServiceActive(
       .single()
 
     if (!current) {
-      return { success: false, error: 'Запись не найдена' }
+      return { success: false, error: 'Record not found' }
     }
 
     const newActiveState = !current.is_active
 
-    // Переключить значение
+    // Toggle value
     const { error } = await supabase
       .from('category_services')
       .update({ is_active: newActiveState })
@@ -143,7 +143,7 @@ export async function toggleServiceActive(
       return { success: false, error: error.message }
     }
 
-    // Логирование
+    // Audit logging
     await logUpdate(
       'category_services',
       categoryServiceId,
@@ -154,11 +154,11 @@ export async function toggleServiceActive(
     revalidatePath(`/admin/catalog/${categorySlug}/services`)
     return { success: true }
   } catch (error) {
-    return { success: false, error: 'Ошибка переключения статуса' }
+    return { success: false, error: 'Error toggling status' }
   }
 }
 
-// Получить максимальный order для услуг категории
+// Get maximum order for category services
 export async function getMaxServiceOrder(categoryId: string) {
   const supabase = await createClient()
 
@@ -194,7 +194,7 @@ export async function updateServiceOrder(
       .single()
 
     if (!current) {
-      return { success: false, error: 'Запись не найдена' }
+      return { success: false, error: 'Record not found' }
     }
 
     // Update order
@@ -218,6 +218,6 @@ export async function updateServiceOrder(
     revalidatePath(`/admin/catalog/${categorySlug}/services`)
     return { success: true }
   } catch (error) {
-    return { success: false, error: 'Ошибка обновления порядка' }
+    return { success: false, error: 'Error updating order' }
   }
 }

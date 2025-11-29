@@ -5,9 +5,9 @@ import { z } from 'zod'
 import { revalidatePath } from 'next/cache'
 import { logCreate, logUpdate } from '@/lib/audit'
 
-// Схема валидации для создания модели
+// Validation schema for creating a model
 const createModelSchema = z.object({
-  name: z.string().min(1, 'Название обязательно'),
+  name: z.string().min(1, 'Name is required'),
   release_year: z.string().transform((val) => parseInt(val, 10)),
   order: z.string().transform((val) => parseInt(val, 10)),
   category_id: z.string().uuid(),
@@ -15,10 +15,10 @@ const createModelSchema = z.object({
 
 export async function createModel(formData: FormData) {
   try {
-    // Создаем аутентифицированный клиент
+    // Create authenticated client
     const supabase = await createClient()
 
-    // Валидация
+    // Validation
     const validatedData = createModelSchema.parse({
       name: formData.get('name'),
       release_year: formData.get('release_year'),
@@ -26,7 +26,7 @@ export async function createModel(formData: FormData) {
       category_id: formData.get('category_id'),
     })
 
-    // Вставка в БД
+    // Insert into database
     const modelData = {
       name: validatedData.name,
       release_year: validatedData.release_year,
@@ -41,14 +41,13 @@ export async function createModel(formData: FormData) {
       .single()
 
     if (error) {
-      console.error('Error creating model:', error)
       return { success: false, error: error.message }
     }
 
-    // Логирование
+    // Audit logging
     await logCreate('device_models', data.id, modelData)
 
-    // Ревалидация кэша
+    // Cache revalidation
     const { data: category } = await supabase
       .from('device_categories')
       .select('slug')
@@ -67,14 +66,14 @@ export async function createModel(formData: FormData) {
         error: error.errors.map((e) => e.message).join(', '),
       }
     }
-    return { success: false, error: 'Неизвестная ошибка' }
+    return { success: false, error: 'Unknown error' }
   }
 }
 
-// Схема валидации для редактирования модели
+// Validation schema for updating a model
 const updateModelSchema = z.object({
   id: z.string().uuid(),
-  name: z.string().min(1, 'Название обязательно'),
+  name: z.string().min(1, 'Name is required'),
   release_year: z.string().transform((val) => parseInt(val, 10)),
   order: z.string().transform((val) => parseInt(val, 10)),
   category_slug: z.string(),
@@ -82,7 +81,7 @@ const updateModelSchema = z.object({
 
 export async function updateModel(formData: FormData) {
   try {
-    // Создаем аутентифицированный клиент
+    // Create authenticated client
     const supabase = await createClient()
 
     const validatedData = updateModelSchema.parse({
@@ -93,14 +92,14 @@ export async function updateModel(formData: FormData) {
       category_slug: formData.get('category_slug'),
     })
 
-    // Получить старые данные для аудита
+    // Get old data for audit
     const { data: oldModel } = await supabase
       .from('device_models')
       .select('name, release_year, order')
       .eq('id', validatedData.id)
       .single()
 
-    // Обновление модели
+    // Update model
     const newModelData = {
       name: validatedData.name,
       release_year: validatedData.release_year,
@@ -113,11 +112,10 @@ export async function updateModel(formData: FormData) {
       .eq('id', validatedData.id)
 
     if (error) {
-      console.error('Error updating model:', error)
       return { success: false, error: error.message }
     }
 
-    // Логирование
+    // Audit logging
     if (oldModel) {
       await logUpdate(
         'device_models',
@@ -127,7 +125,7 @@ export async function updateModel(formData: FormData) {
       )
     }
 
-    // Ревалидация
+    // Cache revalidation
     revalidatePath(`/admin/catalog/${validatedData.category_slug}/models`)
     revalidatePath(`/admin/catalog/${validatedData.category_slug}/models/${validatedData.id}`)
 
@@ -139,11 +137,11 @@ export async function updateModel(formData: FormData) {
         error: error.errors.map((e) => e.message).join(', '),
       }
     }
-    return { success: false, error: 'Неизвестная ошибка' }
+    return { success: false, error: 'Unknown error' }
   }
 }
 
-// Получить максимальный order для категории
+// Get maximum order value for a category
 export async function getMaxOrder(categoryId: string) {
   const supabase = await createClient()
 
@@ -162,7 +160,7 @@ export async function getMaxOrder(categoryId: string) {
   return data.order
 }
 
-// Обновить порядок моделей через drag-and-drop
+// Update model order via drag-and-drop
 export async function updateModelOrder(
   updates: Array<{ id: string; order: number }>
 ) {
@@ -188,7 +186,6 @@ export async function updateModelOrder(
 
     return { success: true }
   } catch (error) {
-    console.error('Error in updateModelOrder:', error)
     return { success: false, error: 'Failed to update model order' }
   }
 }

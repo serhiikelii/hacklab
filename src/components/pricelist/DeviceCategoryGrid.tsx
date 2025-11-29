@@ -13,11 +13,11 @@ export interface DeviceCategoryGridProps {
 }
 
 /**
- * DeviceCategoryGrid - сетка категорий устройств (iPhone, iPad, Mac, Watch)
+ * DeviceCategoryGrid - device categories grid (iPhone, iPad, Mac, Watch)
  *
- * Отображает 4 основные категории устройств с иконками и счетчиками моделей.
- * Используется на главной странице прайс-листа (/pricelist).
- * Поддерживает как данные из Supabase, так и fallback на моковые данные.
+ * Displays 4 main device categories with icons and model counters.
+ * Used on main pricelist page (/pricelist).
+ * Supports both Supabase data and fallback to mock data.
  *
  * @example
  * ```tsx
@@ -30,7 +30,7 @@ export function DeviceCategoryGrid({
 }: DeviceCategoryGridProps) {
   const { locale } = useLocale();
   const t = getTranslations(locale);
-  // Трансформируем данные из БД в формат CategoryInfo
+  // Transform DB data to CategoryInfo format
   const transformedCategories = transformCategories(categories);
   return (
     <div className="w-full max-w-6xl mx-auto px-4 py-8">
@@ -53,12 +53,16 @@ export function DeviceCategoryGrid({
       {/* Empty State */}
       {transformedCategories.length === 0 && (
         <div className="text-center py-16">
-          <div className="text-6xl mb-4">📱</div>
+          <div className="text-6xl mb-4">
+            <svg className="w-16 h-16 mx-auto text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" />
+            </svg>
+          </div>
           <p className="text-gray-500 text-lg mb-2">
-            Категории временно недоступны
+            {t.categoriesUnavailable || 'Categories temporarily unavailable'}
           </p>
           <p className="text-gray-400 text-sm">
-            Попробуйте обновить страницу
+            {t.tryRefresh || 'Try refreshing the page'}
           </p>
         </div>
       )}
@@ -67,7 +71,7 @@ export function DeviceCategoryGrid({
 }
 
 /**
- * CategoryCard - карточка категории устройства
+ * CategoryCard - device category card component
  */
 interface CategoryCardProps {
   category: CategoryInfo;
@@ -120,7 +124,7 @@ function CategoryCard({ category, onClick }: CategoryCardProps) {
 // ========== Helper Functions ==========
 
 /**
- * Возвращает SVG иконку для категории в outline стиле
+ * Returns SVG icon for category in outline style
  */
 function getCategoryIconSVG(category: DeviceCategory): React.ReactElement {
   const icons: Record<DeviceCategory, React.ReactElement> = {
@@ -193,14 +197,14 @@ function getCategoryIconSVG(category: DeviceCategory): React.ReactElement {
 }
 
 /**
- * Проверяет, является ли объект категорией из БД
+ * Checks if object is a database category
  */
 function isDBCategory(category: any): category is Category {
   return 'name_ru' in category && 'name_en' in category;
 }
 
 /**
- * Трансформирует категории из БД или возвращает моковые данные
+ * Transforms categories from database or returns mock data
  */
 function transformCategories(categories: Category[] | CategoryInfo[]): CategoryInfo[] {
   if (!categories || categories.length === 0) {
@@ -212,15 +216,15 @@ function transformCategories(categories: Category[] | CategoryInfo[]): CategoryI
     return categories as CategoryInfo[];
   }
 
-  // Трансформируем из формата БД
+  // Transform from database format
   return (categories as Category[]).map((dbCat) => {
     const fallback = DEVICE_CATEGORIES[dbCat.slug as DeviceCategory];
 
     return {
       id: dbCat.slug as DeviceCategory,
       name: dbCat.name_ru || dbCat.name_en || fallback?.name || dbCat.slug,
-      icon: dbCat.icon || fallback?.icon || '📱',
-      description: fallback?.description || `Ремонт ${dbCat.name_ru || dbCat.name_en}`,
+      icon: dbCat.icon || fallback?.icon || 'device',
+      description: fallback?.description || `Repair ${dbCat.name_en || dbCat.name_ru}`,
       modelCount: fallback?.modelCount || 0,
     };
   });

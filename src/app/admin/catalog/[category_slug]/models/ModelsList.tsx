@@ -110,7 +110,7 @@ function SortableModelItem({
                 {model.name}
               </p>
               <p className="text-sm text-gray-500">
-                Год: {model.release_year} • Order: {model.order}
+                Year: {model.release_year} • Order: {model.order}
               </p>
             </div>
           </div>
@@ -177,14 +177,13 @@ export function ModelsList({ initialModels, categorySlug }: ModelsListProps) {
 
       if (!result.success) {
         setModels(models)
-        alert('Ошибка обновления порядка моделей')
+        alert('Error updating model order')
       } else {
         router.refresh()
       }
     } catch (error) {
-      console.error('Error updating model order:', error)
       setModels(models)
-      alert('Ошибка обновления порядка')
+      alert('Error updating order')
     } finally {
       setIsSaving(false)
     }
@@ -194,17 +193,17 @@ export function ModelsList({ initialModels, categorySlug }: ModelsListProps) {
     <div className="bg-white shadow overflow-hidden sm:rounded-lg">
       <div className="px-4 py-5 sm:px-6 border-b border-gray-200">
         <h3 className="text-lg font-medium text-gray-900">
-          Список моделей ({models.length})
+          Models List ({models.length})
         </h3>
         <p className="mt-1 text-sm text-gray-500">
-          Перетащите модели для изменения порядка
-          {isSaving && <span className="ml-2 text-indigo-600">Сохранение...</span>}
+          Drag models to change order
+          {isSaving && <span className="ml-2 text-indigo-600">Saving...</span>}
         </p>
       </div>
 
       {models.length === 0 ? (
         <div className="px-4 py-12 text-center text-gray-500">
-          Модели не найдены. Добавьте первую модель выше.
+          No models found. Add the first model above.
         </div>
       ) : (
         <div className={isSaving ? 'pointer-events-none opacity-60' : ''}>
