@@ -55,3 +55,9 @@ export async function generateStaticParams() {
     { category: 'apple-watch' },
   ];
 }
+
+/**
+ * Enable ISR with 1 hour revalidation
+ * Pages will be statically generated at build time and revalidated every hour
+ */
+export const revalidate = 3600;

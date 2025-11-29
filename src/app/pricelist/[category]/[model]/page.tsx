@@ -64,3 +64,9 @@ export default async function ModelPage({ params }: ModelPageProps) {
     </>
   );
 }
+
+/**
+ * Enable ISR with 30 minute revalidation for model pages
+ * Prices and model data are revalidated more frequently
+ */
+export const revalidate = 1800;

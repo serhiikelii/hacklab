@@ -169,6 +169,8 @@ export const translations = {
     // DeviceModelGrid
     selectModelForPriceList: 'Выберите модель для просмотра прайс-листа',
     modelsNotFound: 'Модели не найдены',
+    categoriesUnavailable: 'Категории временно недоступны',
+    tryRefresh: 'Попробуйте обновить страницу',
 
     // Footer
     footerAbout: 'HackLab предоставляет эксклюзивный сервис и ремонт продуктов; а именно iPhone, iPad, MacBook и Apple Watch.',
@@ -343,6 +345,8 @@ export const translations = {
     // DeviceModelGrid
     selectModelForPriceList: 'Select a model to view the price list',
     modelsNotFound: 'No models found',
+    categoriesUnavailable: 'Categories temporarily unavailable',
+    tryRefresh: 'Try refreshing the page',
 
     // Footer
     footerAbout: 'HackLab provides exclusive service and repair for products; namely iPhone, iPad, MacBook and Apple Watch.',
@@ -517,6 +521,8 @@ export const translations = {
     // DeviceModelGrid
     selectModelForPriceList: 'Vyberte model pro zobrazení ceníku',
     modelsNotFound: 'Nenalezeny žádné modely',
+    categoriesUnavailable: 'Kategorie dočasně nedostupné',
+    tryRefresh: 'Zkuste obnovit stránku',
 
     // Footer
     footerAbout: 'HackLab poskytuje exkluzivní servis a opravy produktů; konkrétně iPhone, iPad, MacBook a Apple Watch.',
