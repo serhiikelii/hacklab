@@ -4,6 +4,7 @@ import Link from "next/link"
 import { Phone, Mail } from "lucide-react"
 import { useLocale } from "@/contexts/LocaleContext"
 import { getTranslations } from "@/lib/i18n"
+import { SocialLinks } from "./SocialLinks"
 
 export function Footer() {
   const { locale } = useLocale()
@@ -83,6 +84,11 @@ export function Footer() {
                 <Mail className="w-4 h-4" />
                 info@mojservice.cz
               </Link>
+
+              {/* Social Media Links */}
+              <div className="pt-2">
+                <SocialLinks variant="footer" />
+              </div>
             </div>
           </div>
         </div>

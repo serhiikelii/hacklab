@@ -7,6 +7,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
 import { useLocale } from "@/contexts/LocaleContext"
 import { Locale, getTranslations } from "@/lib/i18n"
+import { SocialLinks } from "./SocialLinks"
 
 type LanguageConfig = {
   locale: Locale;
@@ -157,6 +158,15 @@ export function Header() {
                       </button>
                     ))}
                   </div>
+                </div>
+
+                {/* Divider */}
+                <div className="border-t border-gray-200" />
+
+                {/* Mobile Social Links */}
+                <div className="px-4">
+                  <p className="text-sm font-semibold text-gray-500 mb-3">Social Media</p>
+                  <SocialLinks variant="header" className="justify-start" />
                 </div>
               </div>
             </SheetContent>
