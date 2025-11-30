@@ -137,19 +137,19 @@ export async function uploadModelImage(
       }
     }
 
-    // 8. Get public URL
+    // 8. Get public URL with cache-busting parameter
     const { data: urlData } = supabaseAdmin.storage
       .from(BUCKET_NAME)
       .getPublicUrl(filePath)
 
-    const imageUrl = urlData.publicUrl
+    const imageUrlWithCacheBust = `${urlData.publicUrl}?v=${Date.now()}`
 
-    console.log('[uploadModelImage] Image uploaded:', imageUrl)
+    console.log('[uploadModelImage] Image uploaded:', imageUrlWithCacheBust)
 
     // 9. Update database using AUTHENTICATED client (this is the key point!)
     const { error: updateError } = await supabase
       .from('device_models')
-      .update({ image_url: imageUrl })
+      .update({ image_url: imageUrlWithCacheBust })
       .eq('id', modelId)
 
     if (updateError) {
@@ -173,7 +173,7 @@ export async function uploadModelImage(
         tableName: 'device_images',
         recordId: modelId,
         newData: {
-          image_url: imageUrl,
+          image_url: imageUrlWithCacheBust,
           file_path: filePath,
           model_name: model.name
         },
@@ -185,7 +185,7 @@ export async function uploadModelImage(
 
     return {
       success: true,
-      imageUrl
+      imageUrl: imageUrlWithCacheBust
     }
   } catch (error) {
     console.error('[uploadModelImage] Exception:', error)

@@ -1,0 +1,43 @@
+{
+  "timestamp": "2025-11-29T22:28:47.744Z",
+  "tables": {
+    "admins": {
+      "row_count": 2,
+      "columns": [
+        "id",
+        "user_id",
+        "email",
+        "role",
+        "is_active",
+        "created_at",
+        "updated_at",
+        "created_by",
+        "last_login_at"
+      ],
+      "sample_data": [
+        {
+          "id": "59cc5775-b518-45a2-a93f-e78606c5c01c",
+          "user_id": "46ac7cf6-6a72-4232-a07e-f448361605c6",
+          "email": "serhii.kelii@gmail.com",
+          "role": "superadmin",
+          "is_active": true,
+          "created_at": "2025-11-17T12:49:43.871563+00:00",
+          "updated_at": "2025-11-17T12:49:43.871563+00:00",
+          "created_by": null,
+          "last_login_at": null
+        },
+        {
+          "id": "e4780acf-2ba1-4a8f-8cf1-29a19f2244e5",
+          "user_id": "28c7e192-fd0f-44e4-8d77-79121490a18a",
+          "email": "proservicemariupol@gmail.com",
+          "role": "admin",
+          "is_active": true,
+          "created_at": "2025-11-27T20:11:13.34707+00:00",
+          "updated_at": "2025-11-27T20:11:13.34707+00:00",
+          "created_by": null,
+          "last_login_at": null
+        }
+      ]
+    }
+  }
+}

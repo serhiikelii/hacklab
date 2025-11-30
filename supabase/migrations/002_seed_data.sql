@@ -1,203 +1,852 @@
--- Seed data for MojService
--- Test data for categories, models, services and prices
--- Date: 2025-11-04
--- Author: Blueprint Architect
+-- ================================================================
+-- MojService Database Rebuild - Seed Data
+-- Generated: 2025-11-30T09:11:27.106Z
+--
+-- This file contains all current production data with:
+-- ✅ Updated model names (iPad/MacBook with years and A-numbers)
+-- ✅ 606 prices
+-- ✅ 111 models
+-- ✅ 15 services
+-- ✅ 24 category-service mappings
+-- ================================================================
 
--- ==========================================
--- 1. DEVICE CATEGORIES
--- ==========================================
-INSERT INTO device_categories (slug, name_ru, name_en, name_cz, "order") VALUES
-  ('iphone', 'iPhone', 'iPhone', 'iPhone', 1),
-  ('ipad', 'iPad', 'iPad', 'iPad', 2),
-  ('macbook', 'MacBook', 'MacBook', 'MacBook', 3),
-  ('apple-watch', 'Apple Watch', 'Apple Watch', 'Apple Watch', 4)
-ON CONFLICT (slug) DO NOTHING;
+BEGIN;
 
--- ==========================================
--- 2. DEVICE MODELS
--- ==========================================
+-- ================================================================
+-- 1. DEVICE CATEGORIES (4 records)
+-- ================================================================
+-- Insert device_categories (4 records)
+INSERT INTO device_categories (id, slug, name_ru, name_en, name_cz, "order", created_at, updated_at)
+VALUES
+  ('5696c2d0-9ed8-4ae4-99f1-a9640e079993', 'iphone', 'iPhone', 'iPhone', 'iPhone', 1, '2025-11-04T21:00:28.92885+00:00', '2025-11-04T21:00:28.92885+00:00'),
+  ('91efcdd5-db15-4786-b697-2a48ee2269a0', 'ipad', 'iPad', 'iPad', 'iPad', 2, '2025-11-04T21:00:28.92885+00:00', '2025-11-04T21:00:28.92885+00:00'),
+  ('0e162a36-f72a-430f-8751-17836739ebc6', 'macbook', 'MacBook', 'MacBook', 'MacBook', 3, '2025-11-04T21:00:28.92885+00:00', '2025-11-04T21:00:28.92885+00:00'),
+  ('77f1d155-100e-4a8e-a9d1-28fa4f7c6040', 'apple-watch', 'Apple Watch', 'Apple Watch', 'Apple Watch', 4, '2025-11-04T21:00:28.92885+00:00', '2025-11-04T21:00:28.92885+00:00');
 
--- iPhone models
-INSERT INTO device_models (category_id, slug, name, release_year, series, "order")
-SELECT id, 'iphone-16-pro-max', 'iPhone 16 Pro Max', 2024, 'iPhone 16', 1 FROM device_categories WHERE slug = 'iphone';
-INSERT INTO device_models (category_id, slug, name, release_year, series, "order")
-SELECT id, 'iphone-16-pro', 'iPhone 16 Pro', 2024, 'iPhone 16', 2 FROM device_categories WHERE slug = 'iphone';
-INSERT INTO device_models (category_id, slug, name, release_year, series, "order")
-SELECT id, 'iphone-15-pro-max', 'iPhone 15 Pro Max', 2023, 'iPhone 15', 3 FROM device_categories WHERE slug = 'iphone';
-INSERT INTO device_models (category_id, slug, name, release_year, series, "order")
-SELECT id, 'iphone-15-pro', 'iPhone 15 Pro', 2023, 'iPhone 15', 4 FROM device_categories WHERE slug = 'iphone';
-INSERT INTO device_models (category_id, slug, name, release_year, series, "order")
-SELECT id, 'iphone-14-pro-max', 'iPhone 14 Pro Max', 2022, 'iPhone 14', 5 FROM device_categories WHERE slug = 'iphone';
-INSERT INTO device_models (category_id, slug, name, release_year, series, "order")
-SELECT id, 'iphone-14-pro', 'iPhone 14 Pro', 2022, 'iPhone 14', 6 FROM device_categories WHERE slug = 'iphone';
+-- ================================================================
+-- 2. DEVICE MODELS (111 records)
+-- Updated names with years and A-numbers for iPad/MacBook
+-- ================================================================
+-- Insert device_models (111 records)
+INSERT INTO device_models (id, category_id, slug, name, series, image_url, release_year, "order", created_at, updated_at)
+VALUES
+  ('517fde25-cc9c-4a16-a566-7011535a02bc', '0e162a36-f72a-430f-8751-17836739ebc6', 'macbook-pro-16-a2991', 'MacBook Pro 16" (2023) (A2991)', 'MacBook Pro', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/macbook/macbook-pro-16-a2991.webp', 2023, 1, '2025-11-13T20:51:45.562313+00:00', '2025-11-30T08:39:06.455441+00:00'),
+  ('39160559-0058-4237-8419-22a40c8e8589', '0e162a36-f72a-430f-8751-17836739ebc6', 'macbook-pro-16-m4-a3403', 'MacBook Pro 16" M4 (2024) (A3403)', 'MacBook Pro M4', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/macbook/macbook-pro-16-m4-a3403.webp', 2024, 2, '2025-11-13T20:51:45.562313+00:00', '2025-11-30T08:39:06.455441+00:00'),
+  ('f7127b6a-d811-4e97-9568-d4a0d7adbb94', '0e162a36-f72a-430f-8751-17836739ebc6', 'macbook-pro-16-a2780', 'MacBook Pro 16" (2023) (A2780)', 'MacBook Pro', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/macbook/macbook-pro-16-a2780.webp', 2023, 3, '2025-11-13T20:51:45.562313+00:00', '2025-11-30T08:39:06.455441+00:00'),
+  ('5f922679-cbdb-4ad4-8602-496138e09db7', '0e162a36-f72a-430f-8751-17836739ebc6', 'macbook-pro-16-m1-a2485', 'MacBook Pro 16" M1 (2021) (A2485)', 'MacBook Pro M1', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/macbook/macbook-pro-16-m1-a2485.webp', 2021, 4, '2025-11-13T20:51:45.562313+00:00', '2025-11-30T08:39:06.455441+00:00'),
+  ('76e87b4e-7c25-4d30-b499-8324b6270e86', '0e162a36-f72a-430f-8751-17836739ebc6', 'macbook-pro-16-a2141', 'MacBook Pro 16" (2019) (A2141)', 'MacBook Pro', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/macbook/macbook-pro-16-a2141.webp', 2019, 5, '2025-11-13T20:51:45.562313+00:00', '2025-11-30T08:39:06.455441+00:00'),
+  ('08bf9b1b-9fd8-4c25-bb63-4a0c9bd4f6a4', '0e162a36-f72a-430f-8751-17836739ebc6', 'macbook-pro-15-a1990', 'MacBook Pro 15" (2018) (A1990)', 'MacBook Pro', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/macbook/macbook-pro-15-a1990.webp', 2018, 6, '2025-11-13T20:51:45.562313+00:00', '2025-11-30T08:39:06.455441+00:00'),
+  ('857d5c69-cd21-4f8d-8f11-ade761c6a287', '0e162a36-f72a-430f-8751-17836739ebc6', 'macbook-pro-15-a1707', 'MacBook Pro 15" (2016) (A1707)', 'MacBook Pro', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/macbook/macbook-pro-15-a1707.webp', 2016, 7, '2025-11-13T20:51:45.562313+00:00', '2025-11-30T08:39:06.455441+00:00'),
+  ('fe54a81d-5e61-4fab-83e0-b145ec6747bb', '0e162a36-f72a-430f-8751-17836739ebc6', 'macbook-pro-15-a1398', 'MacBook Pro 15" (2015) (A1398)', 'MacBook Pro', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/macbook/macbook-pro-15-a1398.webp', 2015, 8, '2025-11-13T20:51:45.562313+00:00', '2025-11-30T08:39:06.455441+00:00'),
+  ('4639c022-383f-4de7-a677-6ee416b81a24', '0e162a36-f72a-430f-8751-17836739ebc6', 'macbook-pro-14-m4-a3401', 'MacBook Pro 14" M4 (2024) (A3401)', 'MacBook Pro M4', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/macbook/macbook-pro-14-m4-a3401.webp', 2024, 9, '2025-11-13T20:51:45.562313+00:00', '2025-11-30T08:39:06.455441+00:00'),
+  ('95700538-ffec-4e9c-9edf-444bf6fa6b59', '0e162a36-f72a-430f-8751-17836739ebc6', 'macbook-pro-14-m4-a3112', 'MacBook Pro 14" M4 (2024) (A3112)', 'MacBook Pro M4', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/macbook/macbook-pro-14-m4-a3112.webp', 2024, 10, '2025-11-13T20:51:45.562313+00:00', '2025-11-30T08:39:06.455441+00:00'),
+  ('a723d8ad-85c2-4c97-884f-7b3a3c409043', '0e162a36-f72a-430f-8751-17836739ebc6', 'macbook-pro-14-m3-a2992', 'MacBook Pro 14" M3 (2023) (A2992)', 'MacBook Pro M3', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/macbook/macbook-pro-14-m3-a2992.webp', 2023, 11, '2025-11-13T20:51:45.562313+00:00', '2025-11-30T08:39:06.455441+00:00'),
+  ('9b7c407c-e901-4a7b-af78-32251db37b4f', '0e162a36-f72a-430f-8751-17836739ebc6', 'macbook-pro-14-m3-a2918', 'MacBook Pro 14" M3 (2023) (A2918)', 'MacBook Pro M3', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/macbook/macbook-pro-14-m3-a2918.webp', 2023, 12, '2025-11-13T20:51:45.562313+00:00', '2025-11-30T08:39:06.455441+00:00'),
+  ('c3da5e10-c4de-4291-9fbe-1e51121b5bde', '0e162a36-f72a-430f-8751-17836739ebc6', 'macbook-pro-14-m2-a2779', 'MacBook Pro 14" M2 (2023) (A2779)', 'MacBook Pro M2', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/macbook/macbook-pro-14-m2-a2779.webp', 2023, 13, '2025-11-13T20:51:45.562313+00:00', '2025-11-30T08:39:06.455441+00:00'),
+  ('6a6013ae-9919-4005-9448-e4d55ff94bfb', '0e162a36-f72a-430f-8751-17836739ebc6', 'macbook-pro-14-m1-a2442', 'MacBook Pro 14" M1 (2021) (A2442)', 'MacBook Pro M1', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/macbook/macbook-pro-14-m1-a2442.webp', 2021, 14, '2025-11-13T20:51:45.562313+00:00', '2025-11-30T08:39:06.455441+00:00'),
+  ('1028faa9-017b-489c-96cb-8ad621bba5f7', '0e162a36-f72a-430f-8751-17836739ebc6', 'macbook-pro-13-m1-m2-a2338', 'MacBook Pro 13" M1/M2 (2022) (A2338)', 'MacBook Pro', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/macbook/macbook-pro-13-m1-m2-a2338.webp', 2022, 15, '2025-11-13T20:51:45.562313+00:00', '2025-11-30T08:39:06.455441+00:00'),
+  ('3e16fe9a-2a7a-422f-af29-aeaa0a01054f', '0e162a36-f72a-430f-8751-17836739ebc6', 'macbook-pro-13-a2251-a2289', 'MacBook Pro 13" (2020) (A2251,A2289)', 'MacBook Pro', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/macbook/macbook-pro-13-a2251-a2289.webp', 2020, 16, '2025-11-13T20:51:45.562313+00:00', '2025-11-30T08:39:06.455441+00:00'),
+  ('233079f8-4178-480c-b64e-224022993b97', '0e162a36-f72a-430f-8751-17836739ebc6', 'macbook-pro-13-a2159', 'MacBook Pro 13" (2019) (A2159)', 'MacBook Pro', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/macbook/macbook-pro-13-a2159.webp', 2019, 17, '2025-11-13T20:51:45.562313+00:00', '2025-11-30T08:39:06.455441+00:00'),
+  ('3b43746b-3cca-44df-b978-aae98f2fe742', '0e162a36-f72a-430f-8751-17836739ebc6', 'macbook-pro-13-a1989', 'MacBook Pro 13" (2018) (A1989)', 'MacBook Pro', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/macbook/macbook-pro-13-a1989.webp', 2018, 18, '2025-11-13T20:51:45.562313+00:00', '2025-11-30T08:39:06.455441+00:00'),
+  ('d8347e13-1405-4000-bb47-fa15cf052829', '0e162a36-f72a-430f-8751-17836739ebc6', 'macbook-pro-13-a1706-a1708', 'MacBook Pro 13" (2017) (A1706,A1708)', 'MacBook Pro', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/macbook/macbook-pro-13-a1706-a1708.webp', 2017, 19, '2025-11-13T20:51:45.562313+00:00', '2025-11-30T08:39:06.455441+00:00'),
+  ('b5ecb87a-c395-4213-8028-053eccf19920', '0e162a36-f72a-430f-8751-17836739ebc6', 'macbook-pro-13-a1425-a1502', 'MacBook Pro 13" (2015) (A1425,A1502)', 'MacBook Pro', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/macbook/macbook-pro-13-a1425-a1502.webp', 2015, 20, '2025-11-13T20:51:45.562313+00:00', '2025-11-30T08:39:06.455441+00:00'),
+  ('48b1f6f0-1898-4101-9cee-41922709060b', '0e162a36-f72a-430f-8751-17836739ebc6', 'macbook-air-15-m3-a3114', 'MacBook Air 15" M3 (2024) (A3114)', 'MacBook Air M3', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/macbook/macbook-air-15-m3-a3114.webp', 2024, 21, '2025-11-13T20:51:45.562313+00:00', '2025-11-30T08:39:06.455441+00:00'),
+  ('c3a620f9-5316-4236-8508-093cb8cee6ac', '0e162a36-f72a-430f-8751-17836739ebc6', 'macbook-air-15-a2941', 'MacBook Air 15" (2023) (A2941)', 'MacBook Air', NULL, 2023, 22, '2025-11-13T20:51:45.562313+00:00', '2025-11-30T08:39:06.455441+00:00'),
+  ('0c037683-b23e-4874-81cc-d177cdfa2f06', '0e162a36-f72a-430f-8751-17836739ebc6', 'macbook-air-13-m3-a3113', 'MacBook Air 13" M3 (2024) (A3113)', 'MacBook Air M3', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/macbook/macbook-air-13-m3-a3113.webp', 2024, 23, '2025-11-13T20:51:45.562313+00:00', '2025-11-30T08:39:06.455441+00:00'),
+  ('a6a4f709-7003-4ebf-bae1-b140a4954031', '0e162a36-f72a-430f-8751-17836739ebc6', 'macbook-air-13-m2-a2681', 'MacBook Air 13" M2 (2022) (A2681)', 'MacBook Air M2', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/macbook/macbook-air-13-m2-a2681.webp', 2022, 24, '2025-11-13T20:51:45.562313+00:00', '2025-11-30T08:39:06.455441+00:00'),
+  ('f59d40d0-5421-46d3-91b8-d1719c781c40', '0e162a36-f72a-430f-8751-17836739ebc6', 'macbook-air-13-m1-a2337', 'MacBook Air 13" M1 (2020) (A2337)', 'MacBook Air M1', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/macbook/macbook-air-13-m1-a2337.webp', 2020, 25, '2025-11-13T20:51:45.562313+00:00', '2025-11-30T08:39:06.455441+00:00'),
+  ('b3a076f7-d5d9-4d41-b066-6adcf7a8a0f4', '0e162a36-f72a-430f-8751-17836739ebc6', 'macbook-air-13-a2179', 'MacBook Air 13" (2020) (A2179)', 'MacBook Air', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/macbook/macbook-air-13-a2179.webp', 2020, 26, '2025-11-13T20:51:45.562313+00:00', '2025-11-30T08:39:06.455441+00:00'),
+  ('9ba1e3d8-a1fc-4638-9025-ea7be8dc6f0b', '0e162a36-f72a-430f-8751-17836739ebc6', 'macbook-air-13-a1932', 'MacBook Air 13" (2018) (A1932)', 'MacBook Air', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/macbook/macbook-air-13-a1932.webp', 2018, 27, '2025-11-13T20:51:45.562313+00:00', '2025-11-30T08:39:06.455441+00:00'),
+  ('6a6b19bd-4827-450c-a5d7-95ed80658fbe', '0e162a36-f72a-430f-8751-17836739ebc6', 'macbook-air-13-a1237-a1466', 'MacBook Air 13" (2015) (A1237,A1304,A1369,A1466)', 'MacBook Air', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/macbook/macbook-air-13-a1237-a1466.webp', 2015, 28, '2025-11-13T20:51:45.562313+00:00', '2025-11-30T08:39:06.455441+00:00'),
+  ('7419ed12-8b2b-45e3-8cea-afa50406192b', '0e162a36-f72a-430f-8751-17836739ebc6', 'macbook-air-11-a1370-a1465', 'MacBook Air 11" (2015) (A1370, A1465)', 'MacBook Air', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/macbook/macbook-air-11-a1370-a1465.webp', 2015, 29, '2025-11-13T20:51:45.562313+00:00', '2025-11-27T20:40:10.468815+00:00'),
+  ('4af1cac2-bedc-41d8-b117-018187c52175', '5696c2d0-9ed8-4ae4-99f1-a9640e079993', 'iphone-17-pro-max', 'iPhone 17 Pro Max', 'iPhone 17', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/iphone/iphone-17-pro-max.webp', 2025, 1, '2025-11-12T21:38:39.05997+00:00', '2025-11-27T20:39:16.180695+00:00'),
+  ('46e9bcf5-c71a-4c0b-80b8-0293aea35c8e', '5696c2d0-9ed8-4ae4-99f1-a9640e079993', 'iphone-17-pro', 'iPhone 17 Pro', 'iPhone 17', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/iphone/iphone-17-pro.webp', 2025, 2, '2025-11-12T21:38:39.05997+00:00', '2025-11-27T20:39:16.146952+00:00'),
+  ('9fe8d5f6-a422-429f-bf3c-da70ce3f7d1a', '5696c2d0-9ed8-4ae4-99f1-a9640e079993', 'iphone-17', 'iPhone 17', 'iPhone 17', NULL, 2025, 3, '2025-11-12T21:38:39.05997+00:00', '2025-11-27T20:39:16.164367+00:00'),
+  ('a832671f-5bd1-47cb-8c67-9930d880c4d6', '5696c2d0-9ed8-4ae4-99f1-a9640e079993', 'iphone-air', 'iPhone Air', 'iPhone 17', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/iphone/iphone-air.webp', 2025, 4, '2025-11-12T21:38:39.05997+00:00', '2025-11-27T20:39:16.166628+00:00'),
+  ('f6f8a84a-8767-4daa-94e0-54e7530b384e', '5696c2d0-9ed8-4ae4-99f1-a9640e079993', 'iphone-16-pro-max', 'iPhone 16 Pro Max', 'iPhone 16', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/iphone/iphone-16-pro-max.webp', 2024, 5, '2025-11-04T21:00:28.92885+00:00', '2025-11-27T20:39:16.16744+00:00'),
+  ('de096624-9775-4b9a-9f5f-89ea71efa77a', '5696c2d0-9ed8-4ae4-99f1-a9640e079993', 'iphone-16-pro', 'iPhone 16 Pro', 'iPhone 16', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/iphone/iphone-16-pro.webp', 2024, 6, '2025-11-04T21:00:28.92885+00:00', '2025-11-27T20:39:16.172485+00:00'),
+  ('654994d8-67fa-4208-ad2d-c638b88c7560', '5696c2d0-9ed8-4ae4-99f1-a9640e079993', 'iphone-16-plus', 'iPhone 16 Plus', 'iPhone 16', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/iphone/iphone-16-plus.webp', 2024, 7, '2025-11-12T21:38:39.05997+00:00', '2025-11-27T20:39:16.175117+00:00'),
+  ('dc726601-80da-4eca-bd08-bdbef33925d4', '5696c2d0-9ed8-4ae4-99f1-a9640e079993', 'iphone-16', 'iPhone 16', 'iPhone 16', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/iphone/iphone-16.webp', 2024, 8, '2025-11-12T21:38:39.05997+00:00', '2025-11-27T20:39:16.136251+00:00'),
+  ('6d275840-e8c3-47ae-a746-0f1ef476b36f', '5696c2d0-9ed8-4ae4-99f1-a9640e079993', 'iphone-16e', 'iPhone 16e', 'iPhone 16', NULL, 2024, 9, '2025-11-12T21:38:39.05997+00:00', '2025-11-27T20:39:16.18202+00:00'),
+  ('c641b17b-0937-41d3-b275-4b2ed1ca0a6e', '5696c2d0-9ed8-4ae4-99f1-a9640e079993', 'iphone-15-pro-max', 'iPhone 15 Pro Max', 'iPhone 15', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/iphone/iphone-15-pro-max.webp', 2023, 10, '2025-11-04T21:00:28.92885+00:00', '2025-11-27T20:39:16.183587+00:00'),
+  ('3199f55d-181a-4c99-b8a5-9419b46b6200', '5696c2d0-9ed8-4ae4-99f1-a9640e079993', 'iphone-15-pro', 'iPhone 15 Pro', 'iPhone 15', NULL, 2023, 11, '2025-11-04T21:00:28.92885+00:00', '2025-11-27T20:39:16.182109+00:00'),
+  ('a9e6e985-c538-4780-af19-16141eb95024', '5696c2d0-9ed8-4ae4-99f1-a9640e079993', 'iphone-15-plus', 'iPhone 15 Plus', 'iPhone 15', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/iphone/iphone-15-plus.webp', 2023, 12, '2025-11-12T21:38:39.05997+00:00', '2025-11-27T20:39:16.171709+00:00'),
+  ('13c0a4c2-3c24-47e0-9d1f-23de1ee6cd40', '5696c2d0-9ed8-4ae4-99f1-a9640e079993', 'iphone-15', 'iPhone 15', 'iPhone 15', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/iphone/iphone-15.webp', 2023, 13, '2025-11-12T21:38:39.05997+00:00', '2025-11-27T20:39:16.176748+00:00'),
+  ('59ed08e2-1bfa-4b57-b39b-95dc0d48fb48', '5696c2d0-9ed8-4ae4-99f1-a9640e079993', 'iphone-14-pro-max', 'iPhone 14 Pro Max', 'iPhone 14', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/iphone/iphone-14-pro-max.webp', 2022, 14, '2025-11-04T21:00:28.92885+00:00', '2025-11-27T20:39:16.167258+00:00'),
+  ('58b11dcb-5f1a-4900-acda-35c449bc0487', '5696c2d0-9ed8-4ae4-99f1-a9640e079993', 'iphone-14-pro', 'iPhone 14 Pro', 'iPhone 14', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/iphone/iphone-14-pro.webp', 2022, 15, '2025-11-04T21:00:28.92885+00:00', '2025-11-27T20:39:16.159763+00:00'),
+  ('8c16ffd3-3d1c-4ab6-bf67-11b43ed20dbb', '5696c2d0-9ed8-4ae4-99f1-a9640e079993', 'iphone-14-plus', 'iPhone 14 Plus', 'iPhone 14', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/iphone/iphone-14-plus.webp', 2022, 16, '2025-11-12T21:38:39.05997+00:00', '2025-11-27T20:39:16.164096+00:00'),
+  ('1a9b5cc2-55c1-4dfc-8364-859c6702a852', '5696c2d0-9ed8-4ae4-99f1-a9640e079993', 'iphone-14', 'iPhone 14', 'iPhone 14', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/iphone/iphone-14.webp', 2022, 17, '2025-11-12T21:38:39.05997+00:00', '2025-11-27T20:39:16.100715+00:00'),
+  ('e0e6bf1b-2fc0-4902-a933-f905a57241f6', '5696c2d0-9ed8-4ae4-99f1-a9640e079993', 'iphone-13-pro-max', 'iPhone 13 Pro Max', 'iPhone 13', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/iphone/iphone-13-pro-max.webp', 2021, 18, '2025-11-12T21:38:39.05997+00:00', '2025-11-27T20:39:16.09309+00:00'),
+  ('af8b2383-8bf1-42a5-9263-71ea3fe4f13e', '5696c2d0-9ed8-4ae4-99f1-a9640e079993', 'iphone-13-pro', 'iPhone 13 Pro', 'iPhone 13', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/iphone/iphone-13-pro.webp', 2021, 19, '2025-11-12T21:38:39.05997+00:00', '2025-11-27T20:39:16.118297+00:00'),
+  ('94b61eae-c6ea-4c22-9c7e-6ed718b9e985', '5696c2d0-9ed8-4ae4-99f1-a9640e079993', 'iphone-13', 'iPhone 13', 'iPhone 13', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/iphone/iphone-13.webp', 2021, 20, '2025-11-12T21:38:39.05997+00:00', '2025-11-27T20:39:16.103494+00:00'),
+  ('8eb4a7d9-6cf0-40bb-ad37-814a28c1201e', '5696c2d0-9ed8-4ae4-99f1-a9640e079993', 'iphone-13-mini', 'iPhone 13 mini', 'iPhone 13', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/iphone/iphone-13-mini.webp', 2021, 21, '2025-11-12T21:38:39.05997+00:00', '2025-11-27T20:39:16.11827+00:00'),
+  ('42881e38-c750-4047-97ac-d3946525a739', '5696c2d0-9ed8-4ae4-99f1-a9640e079993', 'iphone-12-pro-max', 'iPhone 12 Pro Max', 'iPhone 12', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/iphone/iphone-12-pro-max.webp', 2020, 22, '2025-11-12T21:38:39.05997+00:00', '2025-11-27T20:39:16.096551+00:00'),
+  ('c9632bb4-fe1d-4a33-9169-f986b797c0f8', '5696c2d0-9ed8-4ae4-99f1-a9640e079993', 'iphone-12-pro', 'iPhone 12 Pro', 'iPhone 12', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/iphone/iphone-12-pro.webp', 2020, 23, '2025-11-12T21:38:39.05997+00:00', '2025-11-27T20:39:16.104664+00:00'),
+  ('cb711526-9849-40aa-acd5-9f0c8ce3d738', '5696c2d0-9ed8-4ae4-99f1-a9640e079993', 'iphone-12', 'iPhone 12', 'iPhone 12', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/iphone/iphone-12.webp', 2020, 24, '2025-11-12T21:38:39.05997+00:00', '2025-11-27T20:39:16.106761+00:00'),
+  ('a3c5e7eb-d0ef-46ca-b9f7-e72ae1cebcf2', '5696c2d0-9ed8-4ae4-99f1-a9640e079993', 'iphone-12-mini', 'iPhone 12 mini', 'iPhone 12', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/iphone/iphone-12-mini.webp', 2020, 25, '2025-11-12T21:38:39.05997+00:00', '2025-11-27T20:39:16.090631+00:00'),
+  ('125ce0a7-4bfd-4dd0-9bab-34d408e1e6d6', '5696c2d0-9ed8-4ae4-99f1-a9640e079993', 'iphone-11-pro-max', 'iPhone 11 Pro Max', 'iPhone 11', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/iphone/iphone-11-pro-max.webp', 2019, 26, '2025-11-12T21:38:39.05997+00:00', '2025-11-27T20:39:16.167902+00:00'),
+  ('c5ae11ec-9899-4f64-99e9-3c6dad038256', '5696c2d0-9ed8-4ae4-99f1-a9640e079993', 'iphone-11-pro', 'iPhone 11 Pro', 'iPhone 11', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/iphone/iphone-11-pro.webp', 2019, 27, '2025-11-12T21:38:39.05997+00:00', '2025-11-27T20:39:16.178096+00:00'),
+  ('00205ef2-64fe-4d00-9dff-67753ea90268', '5696c2d0-9ed8-4ae4-99f1-a9640e079993', 'iphone-11', 'iPhone 11', 'iPhone 11', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/iphone/iphone-11.webp', 2019, 28, '2025-11-12T21:38:39.05997+00:00', '2025-11-27T20:39:16.178213+00:00'),
+  ('04642049-6f96-4183-8765-8b09647c672a', '5696c2d0-9ed8-4ae4-99f1-a9640e079993', 'iphone-xr', 'iPhone XR', 'iPhone X', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/iphone/iphone-xr.webp', 2018, 29, '2025-11-12T21:38:39.05997+00:00', '2025-11-27T20:39:16.159784+00:00'),
+  ('5a8e99b2-579d-457a-b516-32f46ef52a25', '5696c2d0-9ed8-4ae4-99f1-a9640e079993', 'iphone-xs-max', 'iPhone XS Max', 'iPhone X', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/iphone/iphone-xs-max.webp', 2018, 30, '2025-11-12T21:38:39.05997+00:00', '2025-11-27T20:39:16.183731+00:00'),
+  ('935a80d1-c390-414e-a405-5524f2d3d483', '5696c2d0-9ed8-4ae4-99f1-a9640e079993', 'iphone-xs', 'iPhone XS', 'iPhone X', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/iphone/iphone-xs.webp', 2018, 31, '2025-11-12T21:38:39.05997+00:00', '2025-11-27T20:39:16.189949+00:00'),
+  ('b6e0b1c4-26a5-4b07-b995-f56c5d350d62', '5696c2d0-9ed8-4ae4-99f1-a9640e079993', 'iphone-x', 'iPhone X', 'iPhone X', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/iphone/iphone-x.webp', 2017, 32, '2025-11-12T21:38:39.05997+00:00', '2025-11-27T20:39:16.147951+00:00'),
+  ('8f9c080f-69a8-4aae-b79f-211183c3c7f9', '5696c2d0-9ed8-4ae4-99f1-a9640e079993', 'iphone-8-plus', 'iPhone 8 Plus', 'iPhone 8', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/iphone/iphone-8-plus.webp', 2017, 33, '2025-11-12T21:38:39.05997+00:00', '2025-11-27T20:39:16.170515+00:00'),
+  ('e3c00552-6751-4a79-a10f-4347ccec663d', '5696c2d0-9ed8-4ae4-99f1-a9640e079993', 'iphone-8', 'iPhone 8', 'iPhone 8', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/iphone/iphone-8.webp', 2017, 34, '2025-11-12T21:38:39.05997+00:00', '2025-11-27T20:39:16.165132+00:00'),
+  ('3a4d98d4-71b1-439e-9da3-6b159d1bfc35', '5696c2d0-9ed8-4ae4-99f1-a9640e079993', 'iphone-se-2022', 'iPhone SE (2022)', 'iPhone SE', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/iphone/iphone-se-2022.webp', 2022, 35, '2025-11-12T21:38:39.05997+00:00', '2025-11-27T20:39:16.088478+00:00'),
+  ('33e386d9-1745-4165-94d7-ff666675a76a', '5696c2d0-9ed8-4ae4-99f1-a9640e079993', 'iphone-se-2020', 'iPhone SE (2020)', 'iPhone SE', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/iphone/iphone-se-2020.webp', 2020, 36, '2025-11-12T21:38:39.05997+00:00', '2025-11-27T20:39:16.087888+00:00'),
+  ('0630a583-9e8f-4ef5-a960-d1cae135ece3', '77f1d155-100e-4a8e-a9d1-28fa4f7c6040', 'apple-watch-ultra-49mm', 'Apple Watch Ultra 49mm', 'Ultra', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/apple-watch/apple-watch-ultra-49mm.webp', 2022, 1, '2025-11-12T21:47:40.683558+00:00', '2025-11-22T18:22:27.848261+00:00'),
+  ('92b9870b-e973-4a32-b41a-f3a0fa573110', '77f1d155-100e-4a8e-a9d1-28fa4f7c6040', 'apple-watch-se-2-44mm', 'Apple Watch SE 2 44mm', 'SE 2', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/apple-watch/apple-watch-se-2-44mm.webp', 2022, 2, '2025-11-12T21:47:40.683558+00:00', '2025-11-22T18:22:27.848261+00:00'),
+  ('74649b4f-5d35-4b34-91e0-9ddd2e98d790', '77f1d155-100e-4a8e-a9d1-28fa4f7c6040', 'apple-watch-se-2-40mm', 'Apple Watch SE 2 40mm', 'SE 2', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/apple-watch/apple-watch-se-2-40mm.webp', 2022, 3, '2025-11-12T21:47:40.683558+00:00', '2025-11-22T18:22:27.848261+00:00'),
+  ('c43dd729-54a1-4575-8491-0b243c2e8eee', '77f1d155-100e-4a8e-a9d1-28fa4f7c6040', 'apple-watch-se-44mm', 'Apple Watch SE 44mm', 'SE', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/apple-watch/apple-watch-se-44mm.webp', 2020, 4, '2025-11-12T21:47:40.683558+00:00', '2025-11-22T18:22:27.848261+00:00'),
+  ('2298ebe1-8d8f-472f-979f-06077828b846', '77f1d155-100e-4a8e-a9d1-28fa4f7c6040', 'apple-watch-se-40mm', 'Apple Watch SE 40mm', 'SE', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/apple-watch/apple-watch-se-40mm.webp', 2020, 5, '2025-11-12T21:47:40.683558+00:00', '2025-11-22T18:22:27.848261+00:00'),
+  ('0f230cdf-7cdd-47d3-9dd0-ca7b35779a69', '77f1d155-100e-4a8e-a9d1-28fa4f7c6040', 'apple-watch-series-8-45mm', 'Apple Watch Series 8 45mm', 'Series 8', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/apple-watch/apple-watch-series-8-45mm.webp', 2022, 6, '2025-11-12T21:47:40.683558+00:00', '2025-11-22T18:22:27.848261+00:00'),
+  ('4364284e-36bf-48e0-9010-921e69afeb99', '77f1d155-100e-4a8e-a9d1-28fa4f7c6040', 'apple-watch-series-8-41mm', 'Apple Watch Series 8 41mm', 'Series 8', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/apple-watch/apple-watch-series-8-41mm.webp', 2022, 7, '2025-11-12T21:47:40.683558+00:00', '2025-11-22T18:22:27.848261+00:00'),
+  ('b0c1f092-bfce-4e2b-9e36-7da131f18a33', '77f1d155-100e-4a8e-a9d1-28fa4f7c6040', 'apple-watch-series-7-45mm', 'Apple Watch Series 7 45mm', 'Series 7', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/apple-watch/apple-watch-series-7-45mm.webp', 2021, 8, '2025-11-12T21:47:40.683558+00:00', '2025-11-22T18:22:27.848261+00:00'),
+  ('f86b49fb-ea41-45b7-ab28-491c37dcd35f', '77f1d155-100e-4a8e-a9d1-28fa4f7c6040', 'apple-watch-series-7-41mm', 'Apple Watch Series 7 41mm', 'Series 7', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/apple-watch/apple-watch-series-7-41mm.webp', 2021, 9, '2025-11-12T21:47:40.683558+00:00', '2025-11-22T18:22:27.848261+00:00'),
+  ('af6d5826-a78c-4f9e-9354-b1ef843b16eb', '77f1d155-100e-4a8e-a9d1-28fa4f7c6040', 'apple-watch-series-6-44mm', 'Apple Watch Series 6 44mm', 'Series 6', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/apple-watch/apple-watch-series-6-44mm.webp', 2020, 10, '2025-11-12T21:47:40.683558+00:00', '2025-11-22T18:22:27.848261+00:00'),
+  ('b2d202b1-8b30-4bf8-846f-9a4dd692f07e', '77f1d155-100e-4a8e-a9d1-28fa4f7c6040', 'apple-watch-series-6-40mm', 'Apple Watch Series 6 40mm', 'Series 6', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/apple-watch/apple-watch-series-6-40mm.webp', 2020, 11, '2025-11-12T21:47:40.683558+00:00', '2025-11-22T18:22:27.848261+00:00'),
+  ('cbcc7975-e023-4045-aae0-0f624b0e147b', '77f1d155-100e-4a8e-a9d1-28fa4f7c6040', 'apple-watch-series-5-44mm', 'Apple Watch Series 5 44mm', 'Series 5', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/apple-watch/apple-watch-series-5-44mm.webp', 2019, 12, '2025-11-12T21:47:40.683558+00:00', '2025-11-22T18:22:27.848261+00:00'),
+  ('3c2c996f-3be8-4c49-8dd3-f57354cff8bb', '77f1d155-100e-4a8e-a9d1-28fa4f7c6040', 'apple-watch-series-5-40mm', 'Apple Watch Series 5 40mm', 'Series 5', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/apple-watch/apple-watch-series-5-40mm.webp', 2019, 13, '2025-11-12T21:47:40.683558+00:00', '2025-11-22T18:22:27.848261+00:00'),
+  ('58f49a0d-fff4-41fe-98c1-5ebcf0509e09', '77f1d155-100e-4a8e-a9d1-28fa4f7c6040', 'apple-watch-series-4-44mm', 'Apple Watch Series 4 44mm', 'Series 4', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/apple-watch/apple-watch-series-4-44mm.webp', 2018, 14, '2025-11-12T21:47:40.683558+00:00', '2025-11-22T18:22:27.848261+00:00'),
+  ('4f25abf3-5f9f-4df4-a933-f0af8d734e24', '77f1d155-100e-4a8e-a9d1-28fa4f7c6040', 'apple-watch-series-4-40mm', 'Apple Watch Series 4 40mm', 'Series 4', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/apple-watch/apple-watch-series-4-40mm.webp', 2018, 15, '2025-11-12T21:47:40.683558+00:00', '2025-11-22T18:22:27.848261+00:00'),
+  ('e25d9e77-82a3-4d71-abba-2992b56b85fc', '91efcdd5-db15-4786-b697-2a48ee2269a0', 'ipad-pro-13-2024', 'iPad Pro 13" (2024) (A2925,A2926,A3007)', 'iPad Pro', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/ipad/ipad-pro-13-2024.webp', 2024, 1, '2025-11-12T21:38:39.05997+00:00', '2025-11-22T18:22:27.848261+00:00'),
+  ('9ec1dcc3-cb0e-40be-9fb7-febc4a02e585', '91efcdd5-db15-4786-b697-2a48ee2269a0', 'ipad-pro-12-9-2022', 'iPad Pro 12,9″ (2022) (A2436,A2764,A2437,A2766)', 'iPad Pro', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/ipad/ipad-pro-12-9-2022.webp', 2022, 2, '2025-11-12T21:38:39.05997+00:00', '2025-11-22T18:22:27.848261+00:00'),
+  ('6e4ca6ea-98bb-405b-b9c8-494a14805a23', '91efcdd5-db15-4786-b697-2a48ee2269a0', 'ipad-air-4', 'iPad Air 4 (2020) (A2316, A2324, A2325, A2072)', 'iPad Air', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/ipad/ipad-air-4.webp', 2020, 2, '2025-11-04T21:00:28.92885+00:00', '2025-11-30T08:39:06.455441+00:00'),
+  ('ff855234-219b-4cd5-9e7b-609573e27837', '91efcdd5-db15-4786-b697-2a48ee2269a0', 'ipad-mini-5', 'iPad mini 5 (2019) (A2133, A2124, A2126, A2125)', 'iPad mini', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/ipad/ipad-mini-5.webp', 2019, 3, '2025-11-04T21:00:28.92885+00:00', '2025-11-30T08:39:06.455441+00:00'),
+  ('12c740d8-4f2b-402e-933c-e45278a732ea', '91efcdd5-db15-4786-b697-2a48ee2269a0', 'ipad-pro-12-9-2021', 'iPad Pro 12,9″ (2021) (A2378,A2461,A2379,A2462)', 'iPad Pro', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/ipad/ipad-pro-12-9-2021.webp', 2021, 3, '2025-11-12T21:38:39.05997+00:00', '2025-11-22T18:22:27.848261+00:00'),
+  ('579a867a-422a-41eb-91e6-04325127f597', '91efcdd5-db15-4786-b697-2a48ee2269a0', 'ipad-pro-12-9-2020', 'iPad Pro 12,9″ (2020) (A2229,A2069,A2232,A2233)', 'iPad Pro', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/ipad/ipad-pro-12-9-2020.webp', 2020, 4, '2025-11-12T21:38:39.05997+00:00', '2025-11-22T18:22:27.848261+00:00'),
+  ('c47b19d8-02f0-48ca-baee-ca4db169fa64', '91efcdd5-db15-4786-b697-2a48ee2269a0', 'ipad-pro-12-9-2018', 'iPad Pro 12,9″ (2018) (A1876,A2014,A1895,A1983)', 'iPad Pro', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/ipad/ipad-pro-12-9-2018.webp', 2018, 5, '2025-11-12T21:38:39.05997+00:00', '2025-11-22T18:22:27.848261+00:00'),
+  ('8d692017-1545-49f5-bfd4-d83186b9944b', '91efcdd5-db15-4786-b697-2a48ee2269a0', 'ipad-pro-12-9-2017', 'iPad Pro 12,9″ (2017) (A1670,A1671,A1821)', 'iPad Pro', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/ipad/ipad-pro-12-9-2017.webp', 2017, 6, '2025-11-12T21:38:39.05997+00:00', '2025-11-22T18:22:27.848261+00:00'),
+  ('a2ac6dee-d64e-4cd0-9671-cc7d6b709ca4', '91efcdd5-db15-4786-b697-2a48ee2269a0', 'ipad-pro-12-9-2015', 'iPad Pro 12,9″ (2015) (A1584,A1652)', 'iPad Pro', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/ipad/ipad-pro-12-9-2015.webp', 2015, 7, '2025-11-12T21:38:39.05997+00:00', '2025-11-22T18:22:27.848261+00:00'),
+  ('355296d1-3502-4166-8113-9b7d2e485378', '91efcdd5-db15-4786-b697-2a48ee2269a0', 'ipad-pro-11-2024', 'iPad Pro 11" (2024) (A2836,A2837,A3006)', 'iPad Pro', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/ipad/ipad-pro-11-2024.webp', 2024, 8, '2025-11-12T21:38:39.05997+00:00', '2025-11-22T18:22:27.848261+00:00'),
+  ('b2ba0414-397b-4504-be02-62e5ae2ef90a', '91efcdd5-db15-4786-b697-2a48ee2269a0', 'ipad-pro-11-2022', 'iPad Pro 11″ (2022) (A2759,A2435,A2761,A2762)', 'iPad Pro', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/ipad/ipad-pro-11-2022.webp', 2022, 9, '2025-11-12T21:38:39.05997+00:00', '2025-11-22T18:22:27.848261+00:00'),
+  ('86a640ea-d461-4ad9-a574-e789f3af0ff3', '91efcdd5-db15-4786-b697-2a48ee2269a0', 'ipad-pro-11-2021', 'iPad Pro 11″ (2021) (A2377,A2459,A2301,A2460)', 'iPad Pro', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/ipad/ipad-pro-11-2021.webp', 2021, 10, '2025-11-12T21:38:39.05997+00:00', '2025-11-22T18:22:27.848261+00:00'),
+  ('c7e47230-b3c7-42f8-a1bf-66cafc3e511c', '91efcdd5-db15-4786-b697-2a48ee2269a0', 'ipad-pro-11-2020', 'iPad Pro 11″ (2020) (A2228,A2068,A2230,A2231)', 'iPad Pro', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/ipad/ipad-pro-11-2020.webp', 2020, 11, '2025-11-12T21:38:39.05997+00:00', '2025-11-22T18:22:27.848261+00:00'),
+  ('43de8d9a-0ca4-4cdc-aab8-ec3700bed267', '91efcdd5-db15-4786-b697-2a48ee2269a0', 'ipad-pro-11-2018', 'iPad Pro 11″ (2018) (A1980,A2013,A1934,A1979)', 'iPad Pro', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/ipad/ipad-pro-11-2018.webp', 2018, 12, '2025-11-12T21:38:39.05997+00:00', '2025-11-22T18:22:27.848261+00:00'),
+  ('1ad8925d-2071-4bee-9ee2-38aaecfa2c0f', '91efcdd5-db15-4786-b697-2a48ee2269a0', 'ipad-pro-10-5', 'iPad Pro 10,5″ (2017) (A1701,A1709,A1852)', 'iPad Pro', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/ipad/ipad-pro-10-5.webp', 2017, 13, '2025-11-12T21:38:39.05997+00:00', '2025-11-30T08:39:06.455441+00:00'),
+  ('1fff8deb-3b14-41fe-9338-939cd0a86baf', '91efcdd5-db15-4786-b697-2a48ee2269a0', 'ipad-pro-9-7', 'iPad Pro 9,7″ (2016) (A1673,A1674,A1675)', 'iPad Pro', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/ipad/ipad-pro-9-7.webp', 2016, 14, '2025-11-12T21:38:39.05997+00:00', '2025-11-30T08:39:06.455441+00:00'),
+  ('729417ea-217d-4fe4-84fb-ef6f97824d45', '91efcdd5-db15-4786-b697-2a48ee2269a0', 'ipad-mini-7', 'iPad mini 7 (2024) (A2993,A2995,A2996)', 'iPad mini', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/ipad/ipad-mini-7.webp', 2024, 15, '2025-11-12T21:38:39.05997+00:00', '2025-11-30T08:39:06.455441+00:00'),
+  ('3f86623b-9305-4c1d-bd52-bf4483962b38', '91efcdd5-db15-4786-b697-2a48ee2269a0', 'ipad-mini-6', 'iPad mini 6 (2021) (A2567,A2568,A2569)', 'iPad mini', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/ipad/ipad-mini-6.webp', 2021, 16, '2025-11-12T21:38:39.05997+00:00', '2025-11-30T08:39:06.455441+00:00'),
+  ('833e51d6-2767-4988-9dc6-305cfc9009e2', '91efcdd5-db15-4786-b697-2a48ee2269a0', 'ipad-mini-4', 'iPad mini 4 (2015) (A1538,A1550)', 'iPad mini', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/ipad/ipad-mini-4.webp', 2015, 18, '2025-11-12T21:38:39.05997+00:00', '2025-11-30T08:39:06.455441+00:00'),
+  ('18cd17f5-026d-4e93-a39b-f2e80f2bc274', '91efcdd5-db15-4786-b697-2a48ee2269a0', 'ipad-air-13-2024', 'iPad Air 13" (2024) (A2898,A2899,A2900)', 'iPad Air', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/ipad/ipad-air-13-2024.webp', 2024, 19, '2025-11-12T21:38:39.05997+00:00', '2025-11-22T18:22:27.848261+00:00'),
+  ('4ee869ca-7943-4010-900b-b665d85ef413', '91efcdd5-db15-4786-b697-2a48ee2269a0', 'ipad-air-11-2024', 'iPad Air 11" (2024) (A2902,A2903,A2904)', 'iPad Air', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/ipad/ipad-air-11-2024.webp', 2024, 20, '2025-11-12T21:38:39.05997+00:00', '2025-11-22T18:22:27.848261+00:00'),
+  ('3149221a-4e80-4edb-9e2e-26a1c75c8a36', '91efcdd5-db15-4786-b697-2a48ee2269a0', 'ipad-air-5', 'iPad Air 5 (2022) (A2588,A2589,A2591)', 'iPad Air', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/ipad/ipad-air-5.webp', 2022, 21, '2025-11-12T21:38:39.05997+00:00', '2025-11-30T08:39:06.455441+00:00'),
+  ('a9686cdb-9311-4cd4-9cdd-04a15d627655', '91efcdd5-db15-4786-b697-2a48ee2269a0', 'ipad-air-3', 'iPad Air 3 (2019) (A2152,A2123,A2153,A2154)', 'iPad Air', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/ipad/ipad-air-3.webp', 2019, 23, '2025-11-12T21:38:39.05997+00:00', '2025-11-30T08:39:06.455441+00:00'),
+  ('8543a8a0-96d3-4c57-a738-dc5ae9671a73', '91efcdd5-db15-4786-b697-2a48ee2269a0', 'ipad-air-2', 'iPad Air 2 (2014) (A1566,A1567)', 'iPad Air', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/ipad/ipad-air-2.webp', 2014, 24, '2025-11-12T21:38:39.05997+00:00', '2025-11-30T08:39:06.455441+00:00'),
+  ('73a64d31-2f63-40c7-86eb-70cda983c08c', '91efcdd5-db15-4786-b697-2a48ee2269a0', 'ipad-air', 'iPad Air (2013) (A1474,A1475,A1476)', 'iPad Air', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/ipad/ipad-air.webp', 2013, 25, '2025-11-12T21:38:39.05997+00:00', '2025-11-30T08:39:06.455441+00:00'),
+  ('aa6d866a-5f44-4463-a261-bc482dc86f11', '91efcdd5-db15-4786-b697-2a48ee2269a0', 'ipad-10-2022', 'iPad 10 (2022) (A2696,A2757,A2777)', 'iPad', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/ipad/ipad-10-2022.webp', 2022, 26, '2025-11-12T21:38:39.05997+00:00', '2025-11-22T18:22:27.848261+00:00'),
+  ('303c0737-5703-40a1-a08d-b7b409d6fa27', '91efcdd5-db15-4786-b697-2a48ee2269a0', 'ipad-9-2021', 'iPad 9 (2021) (A2602,A2604,A2603,A2605)', 'iPad', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/ipad/ipad-9-2021.webp', 2021, 27, '2025-11-12T21:38:39.05997+00:00', '2025-11-22T18:22:27.848261+00:00'),
+  ('702da014-a83a-4763-be97-1f25c89150a3', '91efcdd5-db15-4786-b697-2a48ee2269a0', 'ipad-8-2020', 'iPad 8 (2020) (A2270,A2428,A2429,A2430)', 'iPad', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/ipad/ipad-8-2020.webp', 2020, 28, '2025-11-12T21:38:39.05997+00:00', '2025-11-22T18:22:27.848261+00:00'),
+  ('7f0acbae-3926-40e4-99bc-fa8e10caddda', '91efcdd5-db15-4786-b697-2a48ee2269a0', 'ipad-7-2019', 'iPad 7 (2019) (A2197,A2200,A2198)', 'iPad', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/ipad/ipad-7-2019.webp', 2019, 29, '2025-11-12T21:38:39.05997+00:00', '2025-11-22T19:48:02.486093+00:00'),
+  ('33d29147-6187-44dc-bfa2-7b2dbeaace8d', '91efcdd5-db15-4786-b697-2a48ee2269a0', 'ipad-6-2018', 'iPad 6 (2018) (A1893,A1954)', 'iPad', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/ipad/ipad-6-2018.webp', 2018, 30, '2025-11-12T21:38:39.05997+00:00', '2025-11-22T18:22:27.848261+00:00'),
+  ('5e341e25-ce42-436a-ab74-bd35c25cb6e5', '91efcdd5-db15-4786-b697-2a48ee2269a0', 'ipad-5-2017', 'iPad 5 (2017) (A1822,A1823)', 'iPad', 'https://leiornbrnenbaabeqawk.supabase.co/storage/v1/object/public/device-images/ipad/ipad-5-2017%20(1).webp', 2017, 31, '2025-11-12T21:38:39.05997+00:00', '2025-11-22T19:47:22.481258+00:00');
 
--- iPad models
-INSERT INTO device_models (category_id, slug, name, release_year, series, "order")
-SELECT id, 'ipad-pro-12-9', 'iPad Pro 12.9"', 2024, 'iPad Pro', 1 FROM device_categories WHERE slug = 'ipad';
-INSERT INTO device_models (category_id, slug, name, release_year, series, "order")
-SELECT id, 'ipad-air-4', 'iPad Air 4', 2020, 'iPad Air', 2 FROM device_categories WHERE slug = 'ipad';
-INSERT INTO device_models (category_id, slug, name, release_year, series, "order")
-SELECT id, 'ipad-mini-5', 'iPad mini 5', 2019, 'iPad mini', 3 FROM device_categories WHERE slug = 'ipad';
+-- ================================================================
+-- 3. SERVICES (15 records)
+-- Universal services + category-specific services
+-- ================================================================
+-- Insert services (15 records)
+INSERT INTO services (id, slug, name_ru, name_en, name_cz, description_ru, description_en, description_cz, service_type, "order", created_at, updated_at)
+VALUES
+  ('4f29054b-234e-42be-887d-68164fd141b9', 'display-replacement', 'Замена дисплея', 'Display Replacement', 'Výměna displeje', NULL, NULL, NULL, 'main', 9, '2025-11-23T20:08:02.207341+00:00', '2025-11-23T20:33:20.52489+00:00'),
+  ('fa2613af-7b79-4229-8811-a5d9be586a91', 'iphone-display-original-prc', 'Замена дисплея оригинал PRC', 'Display Replacement Original PRC', 'Výměna displeje originál PRC', NULL, NULL, NULL, 'main', 10, '2025-11-04T21:00:28.92885+00:00', '2025-11-23T20:33:25.665904+00:00'),
+  ('25465998-608e-4dc8-9e5a-c7e37a46d3c4', 'glass-replacement', 'Замена стекла', 'Glass Replacement', 'Výměna skla', NULL, NULL, NULL, 'main', 15, '2025-11-23T20:08:02.207341+00:00', '2025-11-23T20:36:26.625818+00:00'),
+  ('fc96c525-d284-45a3-9868-7954401b70c5', 'digitizer-replacement', 'Замена сенсора', 'Digitizer Replacement', 'Výměna senzoru', NULL, NULL, NULL, 'main', 16, '2025-11-23T20:08:02.207341+00:00', '2025-11-23T20:36:51.979634+00:00'),
+  ('b2a78012-b769-4005-acc5-289f05765a56', 'battery-replacement', 'Замена аккумулятора', 'Battery Replacement', 'Výměna baterie', NULL, NULL, NULL, 'main', 20, '2025-11-23T20:08:02.207341+00:00', '2025-11-23T20:34:02.365444+00:00'),
+  ('4c69f94d-a1c1-409d-9700-cc6f4456865b', 'iphone-camera-main', 'Замена основной камеры', 'Main Camera Replacement', 'Výměna hlavní kamery', NULL, NULL, NULL, 'main', 25, '2025-11-04T21:00:28.92885+00:00', '2025-11-23T20:37:25.713121+00:00'),
+  ('ec3f24ab-f9d2-496b-a8d6-dbca628e5908', 'camera-glass-replacement', 'Замена стекла камеры', 'Camera Glass Replacement', 'Výměna skla kamery', NULL, NULL, NULL, 'main', 26, '2025-11-23T10:31:03.91114+00:00', '2025-11-23T20:39:13.021121+00:00'),
+  ('70d5333d-f58e-47ae-b509-8d8a782519c5', 'macbook-keyboard', 'Замена клавиатуры', 'Keyboard Replacement', 'Výměna klávesnice', NULL, NULL, NULL, 'main', 30, '2025-11-04T21:00:28.92885+00:00', '2025-11-04T21:00:28.92885+00:00'),
+  ('6a3ccc76-7905-46ec-a87d-f9d278ffa50f', 'iphone-housing', 'Замена корпуса', 'Housing Replacement', 'Výměna krytu', NULL, NULL, NULL, 'main', 30, '2025-11-04T21:00:28.92885+00:00', '2025-11-23T20:37:39.314264+00:00'),
+  ('26e0fe96-7d72-47ff-93aa-f9acc74e7e6e', 'iphone-back-glass', 'Замена заднего стекла корпуса', 'Back Glass Replacement', 'Výměna zadního skla', NULL, NULL, NULL, 'main', 31, '2025-11-04T21:00:28.92885+00:00', '2025-11-23T20:37:43.159666+00:00'),
+  ('c3bb7245-d1f2-4be9-beef-f31f3819dd97', 'macbook-thermal-paste', 'Чистка, замена термопасты', 'Cleaning, Thermal Paste Replacement', 'Čištění, výměna termální pasty', NULL, NULL, NULL, 'main', 40, '2025-11-04T21:00:28.92885+00:00', '2025-11-04T21:00:28.92885+00:00'),
+  ('943ddf50-01d2-4492-be0a-fb357c40e9e2', 'charging-port-replacement', 'Замена разъема зарядки', 'Charging Port Replacement', 'Výměna nabíjecího portu', NULL, NULL, NULL, 'main', 41, '2025-11-23T20:08:02.207341+00:00', '2025-11-23T20:38:43.800353+00:00'),
+  ('84691035-0765-4ce9-9e06-a809fc3c99c6', 'iphone-charging-cable', 'Замена шлейфа зарядки', 'Charging Cable Replacement', 'Výměna nabíjecího kabelu', NULL, NULL, NULL, 'main', 50, '2025-11-04T21:00:28.92885+00:00', '2025-11-23T20:40:39.25307+00:00'),
+  ('44f2ab94-1b45-4a1f-9301-e5303acf1d7d', 'watch-nfc', 'Восстановление NFC', 'NFC Recovery', 'Obnova NFC', NULL, NULL, NULL, 'main', 50, '2025-11-04T21:00:28.92885+00:00', '2025-11-04T21:00:28.92885+00:00'),
+  ('d3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 'water-damage-recovery', 'Восстановление от повреждения водой', 'Water Damage Recovery', 'Obnova po poškození vodou', NULL, NULL, NULL, 'main', 60, '2025-11-23T20:08:02.207341+00:00', '2025-11-23T20:40:30.071306+00:00');
 
--- MacBook models
-INSERT INTO device_models (category_id, slug, name, release_year, series, "order")
-SELECT id, 'macbook-pro-13-m2-2022', 'MacBook Pro 13" M2', 2022, 'MacBook Pro M2', 1 FROM device_categories WHERE slug = 'macbook';
-INSERT INTO device_models (category_id, slug, name, release_year, series, "order")
-SELECT id, 'macbook-air-13-m2-2022', 'MacBook Air 13" M2', 2022, 'MacBook Air M2', 2 FROM device_categories WHERE slug = 'macbook';
-INSERT INTO device_models (category_id, slug, name, release_year, series, "order")
-SELECT id, 'macbook-pro-14-2021', 'MacBook Pro 14"', 2021, 'MacBook Pro', 3 FROM device_categories WHERE slug = 'macbook';
+-- ================================================================
+-- 4. CATEGORY SERVICES (24 records)
+-- Mapping categories to services with custom order per category
+-- ================================================================
+-- Insert category_services (24 records)
+INSERT INTO category_services (id, category_id, service_id, is_active, "order", created_at, updated_at)
+VALUES
+  ('c13f826f-fb56-4a29-a79b-1847ae70e0ab', '0e162a36-f72a-430f-8751-17836739ebc6', '4f29054b-234e-42be-887d-68164fd141b9', TRUE, 9, '2025-11-23T20:08:41.80089+00:00', '2025-11-26T21:37:02.810661+00:00'),
+  ('20e3541a-2c51-42c4-9f23-90cc929db6dc', '0e162a36-f72a-430f-8751-17836739ebc6', 'b2a78012-b769-4005-acc5-289f05765a56', TRUE, 20, '2025-11-23T20:08:41.80089+00:00', '2025-11-26T21:37:02.810661+00:00'),
+  ('cf3fb99c-82b9-4d13-bbaa-c32391064717', '0e162a36-f72a-430f-8751-17836739ebc6', '70d5333d-f58e-47ae-b509-8d8a782519c5', TRUE, 30, '2025-11-04T21:00:28.92885+00:00', '2025-11-26T21:37:02.810661+00:00'),
+  ('8bae807b-d65b-428b-97ec-781adcea16d3', '0e162a36-f72a-430f-8751-17836739ebc6', 'c3bb7245-d1f2-4be9-beef-f31f3819dd97', TRUE, 40, '2025-11-04T21:00:28.92885+00:00', '2025-11-26T21:37:02.810661+00:00'),
+  ('450bd48b-c9dd-4892-b7bd-b18e0bc07991', '5696c2d0-9ed8-4ae4-99f1-a9640e079993', '4f29054b-234e-42be-887d-68164fd141b9', TRUE, 9, '2025-11-23T20:08:41.80089+00:00', '2025-11-26T21:37:02.810661+00:00'),
+  ('65335f9e-2898-4012-8008-d5529a98a011', '5696c2d0-9ed8-4ae4-99f1-a9640e079993', 'fa2613af-7b79-4229-8811-a5d9be586a91', TRUE, 10, '2025-11-04T21:00:28.92885+00:00', '2025-11-26T21:37:02.810661+00:00'),
+  ('16d58326-8e78-433c-bc7a-e6c2d66e49c0', '5696c2d0-9ed8-4ae4-99f1-a9640e079993', 'b2a78012-b769-4005-acc5-289f05765a56', TRUE, 20, '2025-11-23T20:08:41.80089+00:00', '2025-11-26T21:37:02.810661+00:00'),
+  ('2d1ff955-0742-48ac-9fbf-c40f14e539b1', '5696c2d0-9ed8-4ae4-99f1-a9640e079993', '4c69f94d-a1c1-409d-9700-cc6f4456865b', TRUE, 25, '2025-11-04T21:00:28.92885+00:00', '2025-11-26T21:37:02.810661+00:00'),
+  ('7f5e1547-d06e-4627-af90-bca04cc54597', '5696c2d0-9ed8-4ae4-99f1-a9640e079993', 'ec3f24ab-f9d2-496b-a8d6-dbca628e5908', TRUE, 26, '2025-11-23T10:35:26.204992+00:00', '2025-11-26T21:37:02.810661+00:00'),
+  ('9ec2089d-b070-455d-9d44-11356c1c5fd7', '5696c2d0-9ed8-4ae4-99f1-a9640e079993', '6a3ccc76-7905-46ec-a87d-f9d278ffa50f', TRUE, 30, '2025-11-04T21:00:28.92885+00:00', '2025-11-26T21:37:02.810661+00:00'),
+  ('44cc8194-e3e9-4145-a908-eb160682d861', '5696c2d0-9ed8-4ae4-99f1-a9640e079993', '26e0fe96-7d72-47ff-93aa-f9acc74e7e6e', TRUE, 31, '2025-11-04T21:00:28.92885+00:00', '2025-11-26T21:37:02.810661+00:00'),
+  ('cddfeea2-0b3c-49f4-aede-b9b7d4a94aac', '5696c2d0-9ed8-4ae4-99f1-a9640e079993', '84691035-0765-4ce9-9e06-a809fc3c99c6', TRUE, 50, '2025-11-04T21:00:28.92885+00:00', '2025-11-26T21:37:02.810661+00:00'),
+  ('e4729bee-0535-4535-9053-80c8293dddcb', '5696c2d0-9ed8-4ae4-99f1-a9640e079993', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', TRUE, 60, '2025-11-23T20:08:41.80089+00:00', '2025-11-26T21:37:02.810661+00:00'),
+  ('071e2614-5eb9-44dd-8948-5b897a4a36db', '77f1d155-100e-4a8e-a9d1-28fa4f7c6040', '4f29054b-234e-42be-887d-68164fd141b9', TRUE, 9, '2025-11-23T20:08:41.80089+00:00', '2025-11-26T21:37:02.810661+00:00'),
+  ('9c6f1b80-87c5-42d4-ac05-8b3f6d33c739', '77f1d155-100e-4a8e-a9d1-28fa4f7c6040', '25465998-608e-4dc8-9e5a-c7e37a46d3c4', TRUE, 15, '2025-11-23T20:08:41.80089+00:00', '2025-11-26T21:37:02.810661+00:00'),
+  ('c910d551-56d6-42a4-a6ae-46e4962d03cf', '77f1d155-100e-4a8e-a9d1-28fa4f7c6040', 'fc96c525-d284-45a3-9868-7954401b70c5', TRUE, 16, '2025-11-23T20:08:41.80089+00:00', '2025-11-26T21:37:02.810661+00:00'),
+  ('6a899939-b3f3-4bf0-8e04-3f9594a697e8', '77f1d155-100e-4a8e-a9d1-28fa4f7c6040', 'b2a78012-b769-4005-acc5-289f05765a56', TRUE, 20, '2025-11-23T20:08:41.80089+00:00', '2025-11-26T21:37:02.810661+00:00'),
+  ('5a76ee82-fa41-4530-9451-8dcf5d4c74a8', '77f1d155-100e-4a8e-a9d1-28fa4f7c6040', '44f2ab94-1b45-4a1f-9301-e5303acf1d7d', TRUE, 50, '2025-11-04T21:00:28.92885+00:00', '2025-11-26T21:37:02.810661+00:00'),
+  ('d7689698-439c-4a01-95e5-b8fbf0af5e07', '91efcdd5-db15-4786-b697-2a48ee2269a0', '4f29054b-234e-42be-887d-68164fd141b9', TRUE, 9, '2025-11-23T20:08:41.80089+00:00', '2025-11-26T21:37:02.810661+00:00'),
+  ('f0a6e62a-97b5-44ca-b56d-95b0fa83d1f7', '91efcdd5-db15-4786-b697-2a48ee2269a0', '25465998-608e-4dc8-9e5a-c7e37a46d3c4', TRUE, 15, '2025-11-23T20:08:41.80089+00:00', '2025-11-26T21:37:02.810661+00:00'),
+  ('f4af14f7-04a9-403f-84c5-b2e5bba72f11', '91efcdd5-db15-4786-b697-2a48ee2269a0', 'fc96c525-d284-45a3-9868-7954401b70c5', TRUE, 16, '2025-11-23T20:08:41.80089+00:00', '2025-11-26T21:37:02.810661+00:00'),
+  ('9eda775e-bb19-47a0-a500-ae1d36ad5acc', '91efcdd5-db15-4786-b697-2a48ee2269a0', 'b2a78012-b769-4005-acc5-289f05765a56', TRUE, 20, '2025-11-23T20:08:41.80089+00:00', '2025-11-26T21:37:02.810661+00:00'),
+  ('38209eef-0a71-4ddd-8e29-5c1d1844098c', '91efcdd5-db15-4786-b697-2a48ee2269a0', '943ddf50-01d2-4492-be0a-fb357c40e9e2', TRUE, 41, '2025-11-23T20:08:41.80089+00:00', '2025-11-26T21:37:02.810661+00:00'),
+  ('5d22c049-5860-4c61-aaa5-d76d88799b92', '91efcdd5-db15-4786-b697-2a48ee2269a0', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', TRUE, 60, '2025-11-23T20:08:41.80089+00:00', '2025-11-26T21:37:02.810661+00:00');
 
--- Apple Watch models
-INSERT INTO device_models (category_id, slug, name, release_year, series, "order")
-SELECT id, 'apple-watch-9', 'Apple Watch 9', 2023, 'Apple Watch', 1 FROM device_categories WHERE slug = 'apple-watch';
-INSERT INTO device_models (category_id, slug, name, release_year, series, "order")
-SELECT id, 'apple-watch-se', 'Apple Watch SE', 2020, 'Apple Watch', 2 FROM device_categories WHERE slug = 'apple-watch';
+-- ================================================================
+-- 5. PRICES (606 records)
+-- Full price list for all model-service combinations
+-- ================================================================
+-- Insert prices (606 records)
+INSERT INTO prices (id, model_id, service_id, price, price_type, duration_minutes, warranty_months, note_ru, note_en, note_cz, created_at, updated_at)
+VALUES
+  ('36425e18-c641-443d-bf12-4a18df3502aa', '00205ef2-64fe-4d00-9dff-67753ea90268', '26e0fe96-7d72-47ff-93aa-f9acc74e7e6e', 1670, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('4df0f607-ccfe-491f-ac0b-32216d409c8f', '00205ef2-64fe-4d00-9dff-67753ea90268', '4c69f94d-a1c1-409d-9700-cc6f4456865b', 2270, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('6730e595-f107-4b4c-a097-512db2bf4f56', '00205ef2-64fe-4d00-9dff-67753ea90268', '4f29054b-234e-42be-887d-68164fd141b9', 3270, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('c5513bd3-4f66-49e9-9faa-387193f0c95f', '00205ef2-64fe-4d00-9dff-67753ea90268', '6a3ccc76-7905-46ec-a87d-f9d278ffa50f', 2670, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('7aabd527-4cd5-4d73-86ce-ddc55534bd8c', '00205ef2-64fe-4d00-9dff-67753ea90268', '84691035-0765-4ce9-9e06-a809fc3c99c6', 1770, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('42fdf9fa-cc55-4ab3-a24f-a0583fb25d8d', '00205ef2-64fe-4d00-9dff-67753ea90268', 'b2a78012-b769-4005-acc5-289f05765a56', 1570, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('49c250c1-8615-47e8-bb5a-1945a1200fb4', '00205ef2-64fe-4d00-9dff-67753ea90268', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 1500, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('97a51f5f-8d06-45d6-b16c-7f4cbe4322de', '04642049-6f96-4183-8765-8b09647c672a', '26e0fe96-7d72-47ff-93aa-f9acc74e7e6e', 1470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('3b10ebd9-9813-42c2-bdd7-290d1b8ce1e6', '04642049-6f96-4183-8765-8b09647c672a', '4c69f94d-a1c1-409d-9700-cc6f4456865b', 2070, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('6112a7e5-87d5-423a-b5a2-a5ef04cd1773', '04642049-6f96-4183-8765-8b09647c672a', '4f29054b-234e-42be-887d-68164fd141b9', 2970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('21304a1f-c9b8-43c9-a56f-d7750a819e56', '04642049-6f96-4183-8765-8b09647c672a', '6a3ccc76-7905-46ec-a87d-f9d278ffa50f', 2470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('78e366f0-7d02-4ad9-8ff8-5d8928630bba', '04642049-6f96-4183-8765-8b09647c672a', '84691035-0765-4ce9-9e06-a809fc3c99c6', 1670, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('a25bd122-9f7e-4912-a31a-c25b553d4461', '04642049-6f96-4183-8765-8b09647c672a', 'b2a78012-b769-4005-acc5-289f05765a56', 1470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('772bc68a-e242-4697-8bae-0d37d89175be', '04642049-6f96-4183-8765-8b09647c672a', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 1400, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('f71f9bab-7c31-489f-a0a0-88b275b8c1f4', '0630a583-9e8f-4ef5-a960-d1cae135ece3', '25465998-608e-4dc8-9e5a-c7e37a46d3c4', 2970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('66250499-aaf4-4867-a72e-3eea0ad0c060', '0630a583-9e8f-4ef5-a960-d1cae135ece3', '44f2ab94-1b45-4a1f-9301-e5303acf1d7d', 1970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('9bcaaedc-c9af-4cf4-8cae-7331cba19b5b', '0630a583-9e8f-4ef5-a960-d1cae135ece3', '4f29054b-234e-42be-887d-68164fd141b9', 4970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('507a9f8a-bbdc-494f-b482-f0396b93ed44', '0630a583-9e8f-4ef5-a960-d1cae135ece3', 'b2a78012-b769-4005-acc5-289f05765a56', 2470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('8ac352e2-8319-4753-ac62-1a36f5d2f31d', '0630a583-9e8f-4ef5-a960-d1cae135ece3', 'fc96c525-d284-45a3-9868-7954401b70c5', 3470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('5ec7696d-1098-4831-8551-7efcc76a6455', '08bf9b1b-9fd8-4c25-bb63-4a0c9bd4f6a4', '4f29054b-234e-42be-887d-68164fd141b9', 11970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('6870deb8-08db-4e62-9d37-1a154dd9f9d3', '08bf9b1b-9fd8-4c25-bb63-4a0c9bd4f6a4', '70d5333d-f58e-47ae-b509-8d8a782519c5', 5970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('81e8693a-0008-430b-9e39-e835530f3fe1', '08bf9b1b-9fd8-4c25-bb63-4a0c9bd4f6a4', 'b2a78012-b769-4005-acc5-289f05765a56', 4970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('50c170cf-bccf-4084-a3b2-d35f231983eb', '08bf9b1b-9fd8-4c25-bb63-4a0c9bd4f6a4', 'c3bb7245-d1f2-4be9-beef-f31f3819dd97', 2970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('b02c2ebc-4de8-4b32-9f5f-4fb883be06be', '0c037683-b23e-4874-81cc-d177cdfa2f06', '4f29054b-234e-42be-887d-68164fd141b9', 10970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('45825731-983f-4c89-aedf-5fd43d1ee882', '0c037683-b23e-4874-81cc-d177cdfa2f06', '70d5333d-f58e-47ae-b509-8d8a782519c5', 5470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('11fb6a29-96b4-4736-97c1-0d44bd8ceba8', '0c037683-b23e-4874-81cc-d177cdfa2f06', 'b2a78012-b769-4005-acc5-289f05765a56', 4470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('c081424a-8625-40c4-ab8a-38192373a047', '0c037683-b23e-4874-81cc-d177cdfa2f06', 'c3bb7245-d1f2-4be9-beef-f31f3819dd97', 2670, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('8dbbc7aa-ba63-4a03-9056-34028475c417', '0f230cdf-7cdd-47d3-9dd0-ca7b35779a69', '25465998-608e-4dc8-9e5a-c7e37a46d3c4', 2470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('24ec438e-496a-4ddd-b434-c54267264d18', '0f230cdf-7cdd-47d3-9dd0-ca7b35779a69', '44f2ab94-1b45-4a1f-9301-e5303acf1d7d', 1670, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('a54cce62-f8c3-4397-88fa-899a741f3d9d', '0f230cdf-7cdd-47d3-9dd0-ca7b35779a69', '4f29054b-234e-42be-887d-68164fd141b9', 3970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('803544cc-41f6-4fda-a743-cb165003021c', '0f230cdf-7cdd-47d3-9dd0-ca7b35779a69', 'b2a78012-b769-4005-acc5-289f05765a56', 1970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('f3cd371e-7d16-46b3-b90e-609b251a6afd', '0f230cdf-7cdd-47d3-9dd0-ca7b35779a69', 'fc96c525-d284-45a3-9868-7954401b70c5', 2970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('fedc5491-f614-49bc-84cc-b0a1ad040ea3', '1028faa9-017b-489c-96cb-8ad621bba5f7', '4f29054b-234e-42be-887d-68164fd141b9', 11970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('7869054e-676b-488a-9c11-4238ac728129', '1028faa9-017b-489c-96cb-8ad621bba5f7', '70d5333d-f58e-47ae-b509-8d8a782519c5', 5970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('67219b36-49a2-4823-9f8c-42d590e1a1ac', '1028faa9-017b-489c-96cb-8ad621bba5f7', 'b2a78012-b769-4005-acc5-289f05765a56', 4970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('1497b8ff-4722-44d5-b67c-12575569a8a2', '1028faa9-017b-489c-96cb-8ad621bba5f7', 'c3bb7245-d1f2-4be9-beef-f31f3819dd97', 2970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('4b0de54a-970c-405a-a570-81d781614e6b', '125ce0a7-4bfd-4dd0-9bab-34d408e1e6d6', '26e0fe96-7d72-47ff-93aa-f9acc74e7e6e', 1670, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('a008c435-a503-425c-902d-bfd05f1bcb5d', '125ce0a7-4bfd-4dd0-9bab-34d408e1e6d6', '4c69f94d-a1c1-409d-9700-cc6f4456865b', 2270, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('c9157533-ea25-40f6-a335-72551b714c58', '125ce0a7-4bfd-4dd0-9bab-34d408e1e6d6', '4f29054b-234e-42be-887d-68164fd141b9', 3270, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('b8d8935c-3992-49b7-b2a5-bebc1aa339ae', '125ce0a7-4bfd-4dd0-9bab-34d408e1e6d6', '6a3ccc76-7905-46ec-a87d-f9d278ffa50f', 2670, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('ab5f063b-71a6-4080-84df-57505fe79689', '125ce0a7-4bfd-4dd0-9bab-34d408e1e6d6', '84691035-0765-4ce9-9e06-a809fc3c99c6', 1770, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('a7e38677-0678-49c6-85df-e1e220f1dcce', '125ce0a7-4bfd-4dd0-9bab-34d408e1e6d6', 'b2a78012-b769-4005-acc5-289f05765a56', 1570, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('655740c9-61f6-4ff7-a8b6-b657c654987a', '125ce0a7-4bfd-4dd0-9bab-34d408e1e6d6', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 1500, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('669df38c-ea19-47eb-951a-5fbf2d950983', '12c740d8-4f2b-402e-933c-e45278a732ea', '25465998-608e-4dc8-9e5a-c7e37a46d3c4', 5970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('7fe1f70e-b71e-46ef-b5e6-649cf653ba02', '12c740d8-4f2b-402e-933c-e45278a732ea', '4f29054b-234e-42be-887d-68164fd141b9', 8970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('3a4e13bd-2022-47ae-bf62-be637e0f3d4e', '12c740d8-4f2b-402e-933c-e45278a732ea', '943ddf50-01d2-4492-be0a-fb357c40e9e2', 1970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('095e84ea-1c04-4f6d-bdb4-8ff77ebf3a15', '12c740d8-4f2b-402e-933c-e45278a732ea', 'b2a78012-b769-4005-acc5-289f05765a56', 3970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('8f066f0e-ef3b-497c-adc8-93055551dbfc', '12c740d8-4f2b-402e-933c-e45278a732ea', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 3000, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('19a662e4-f6f1-40e6-819f-a328e7dc2421', '12c740d8-4f2b-402e-933c-e45278a732ea', 'fc96c525-d284-45a3-9868-7954401b70c5', 6970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('a3a3f8b3-e53b-4d50-ad69-d2fc169f5373', '13c0a4c2-3c24-47e0-9d1f-23de1ee6cd40', '26e0fe96-7d72-47ff-93aa-f9acc74e7e6e', 2470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('eb320010-35aa-41cf-af22-9f55a71857a0', '13c0a4c2-3c24-47e0-9d1f-23de1ee6cd40', '4c69f94d-a1c1-409d-9700-cc6f4456865b', 3070, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('02463e21-a7dc-481d-bc3e-f48831b70da1', '13c0a4c2-3c24-47e0-9d1f-23de1ee6cd40', '4f29054b-234e-42be-887d-68164fd141b9', 4670, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('38c12b6a-4cfc-4eaf-b086-b8b30350f104', '13c0a4c2-3c24-47e0-9d1f-23de1ee6cd40', '6a3ccc76-7905-46ec-a87d-f9d278ffa50f', 3470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('d07419c6-16e1-4c2e-9469-092ba4cdf8b7', '13c0a4c2-3c24-47e0-9d1f-23de1ee6cd40', '84691035-0765-4ce9-9e06-a809fc3c99c6', 2170, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('3b1a989f-c9ad-46d4-8a07-c4be6cf7828a', '13c0a4c2-3c24-47e0-9d1f-23de1ee6cd40', 'b2a78012-b769-4005-acc5-289f05765a56', 1970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('371541a9-b692-4e44-968a-007abbb26b3b', '13c0a4c2-3c24-47e0-9d1f-23de1ee6cd40', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 1900, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('b1bb64ca-a8bd-4669-b951-4ffd81476dff', '13c0a4c2-3c24-47e0-9d1f-23de1ee6cd40', 'fa2613af-7b79-4229-8811-a5d9be586a91', 5670, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('6996a329-056c-4351-b858-687e6ebde4cd', '18cd17f5-026d-4e93-a39b-f2e80f2bc274', '25465998-608e-4dc8-9e5a-c7e37a46d3c4', 4970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('168beddd-5505-42da-af60-469ed988d9ef', '18cd17f5-026d-4e93-a39b-f2e80f2bc274', '4f29054b-234e-42be-887d-68164fd141b9', 6970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('8609423e-a5ab-4905-9eee-f09b0ecc780d', '18cd17f5-026d-4e93-a39b-f2e80f2bc274', '943ddf50-01d2-4492-be0a-fb357c40e9e2', 1770, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('b50c9694-5fbe-4b9a-93d3-478495a8cfc9', '18cd17f5-026d-4e93-a39b-f2e80f2bc274', 'b2a78012-b769-4005-acc5-289f05765a56', 2970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('68c8a790-f0f2-4c9c-9471-eca665becdd0', '18cd17f5-026d-4e93-a39b-f2e80f2bc274', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 2500, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('1447c00e-aae1-429c-917f-8ce23f99ccdf', '18cd17f5-026d-4e93-a39b-f2e80f2bc274', 'fc96c525-d284-45a3-9868-7954401b70c5', 5470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('81c5b4c3-2933-4170-aff8-7f2a43e96b3e', '1a9b5cc2-55c1-4dfc-8364-859c6702a852', '26e0fe96-7d72-47ff-93aa-f9acc74e7e6e', 2270, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('1f02239e-cb5a-4bf9-bbc9-9ba771bd8904', '1a9b5cc2-55c1-4dfc-8364-859c6702a852', '4c69f94d-a1c1-409d-9700-cc6f4456865b', 2870, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('9250a12c-5018-4d66-9673-c56ed7221d77', '1a9b5cc2-55c1-4dfc-8364-859c6702a852', '4f29054b-234e-42be-887d-68164fd141b9', 4270, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('6b0a8b5f-0bf6-48c4-a9aa-4933b8cbf616', '1a9b5cc2-55c1-4dfc-8364-859c6702a852', '6a3ccc76-7905-46ec-a87d-f9d278ffa50f', 3270, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('e7a83cd3-d899-493d-9cc4-72e86dae81af', '1a9b5cc2-55c1-4dfc-8364-859c6702a852', '84691035-0765-4ce9-9e06-a809fc3c99c6', 2070, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('11b26dc4-7bfb-4a55-9920-197e704e2036', '1a9b5cc2-55c1-4dfc-8364-859c6702a852', 'b2a78012-b769-4005-acc5-289f05765a56', 1870, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('6f5e7f7a-a096-4653-a1f1-053fab4ae852', '1a9b5cc2-55c1-4dfc-8364-859c6702a852', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 1800, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('d52e4b57-fa59-4f90-9173-a764b0eb8326', '1a9b5cc2-55c1-4dfc-8364-859c6702a852', 'fa2613af-7b79-4229-8811-a5d9be586a91', 5270, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('ea0b3d08-19f7-40a9-8b5a-3a8450c725b1', '1ad8925d-2071-4bee-9ee2-38aaecfa2c0f', '25465998-608e-4dc8-9e5a-c7e37a46d3c4', 5970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('7a5541b9-2420-4bd7-813f-1d3b156ece97', '1ad8925d-2071-4bee-9ee2-38aaecfa2c0f', '4f29054b-234e-42be-887d-68164fd141b9', 8970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('37cb5cc7-b0f1-4d05-93b4-a00d2cc76dc0', '1ad8925d-2071-4bee-9ee2-38aaecfa2c0f', '943ddf50-01d2-4492-be0a-fb357c40e9e2', 1970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('17e4ec37-3c28-4b46-8ead-b98c4fc7d0f8', '1ad8925d-2071-4bee-9ee2-38aaecfa2c0f', 'b2a78012-b769-4005-acc5-289f05765a56', 3970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('c33d177d-5c5e-41f7-bf72-a225cdf153a8', '1ad8925d-2071-4bee-9ee2-38aaecfa2c0f', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 3000, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('07412538-9672-4c18-8e51-a7225b71f8e6', '1ad8925d-2071-4bee-9ee2-38aaecfa2c0f', 'fc96c525-d284-45a3-9868-7954401b70c5', 6970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('8e9fd559-7793-461d-bbed-5f9a3090729f', '1fff8deb-3b14-41fe-9338-939cd0a86baf', '25465998-608e-4dc8-9e5a-c7e37a46d3c4', 5970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('939b4f48-03de-4193-a777-c01b83d5d37f', '1fff8deb-3b14-41fe-9338-939cd0a86baf', '4f29054b-234e-42be-887d-68164fd141b9', 8970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('74590c6f-969b-4c40-974c-b2dbcb317a07', '1fff8deb-3b14-41fe-9338-939cd0a86baf', '943ddf50-01d2-4492-be0a-fb357c40e9e2', 1970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('ea6d841c-16b1-49bf-a575-af2538ea2eb8', '1fff8deb-3b14-41fe-9338-939cd0a86baf', 'b2a78012-b769-4005-acc5-289f05765a56', 3970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('873d24d6-9c0f-41bd-a303-c09bbc2b6f53', '1fff8deb-3b14-41fe-9338-939cd0a86baf', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 3000, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('aa32b9d3-b369-48bd-9000-0863b83cbdd5', '1fff8deb-3b14-41fe-9338-939cd0a86baf', 'fc96c525-d284-45a3-9868-7954401b70c5', 6970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('5d498dca-1718-4ef3-9045-342f3017a3aa', '2298ebe1-8d8f-472f-979f-06077828b846', '25465998-608e-4dc8-9e5a-c7e37a46d3c4', 1970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('8c6511f5-6255-4210-844c-276629cc14d5', '2298ebe1-8d8f-472f-979f-06077828b846', '44f2ab94-1b45-4a1f-9301-e5303acf1d7d', 1370, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('f85a6f94-c225-41c9-9b93-ca7f6bd39e8b', '2298ebe1-8d8f-472f-979f-06077828b846', '4f29054b-234e-42be-887d-68164fd141b9', 2970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('99dad0fc-3eb4-4238-8e9f-8827e5dc01b8', '2298ebe1-8d8f-472f-979f-06077828b846', 'b2a78012-b769-4005-acc5-289f05765a56', 1570, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('442d2dfb-3294-4840-985c-ee1caf20523e', '2298ebe1-8d8f-472f-979f-06077828b846', 'fc96c525-d284-45a3-9868-7954401b70c5', 2270, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('3cb8a0d0-e9a7-47aa-86fc-ed5a32a16419', '233079f8-4178-480c-b64e-224022993b97', '4f29054b-234e-42be-887d-68164fd141b9', 11970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('e7837f8f-f671-4d13-981f-e3ee938c575d', '233079f8-4178-480c-b64e-224022993b97', '70d5333d-f58e-47ae-b509-8d8a782519c5', 5970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('44c467e9-b6b2-4916-be39-1fb61197fb9e', '233079f8-4178-480c-b64e-224022993b97', 'b2a78012-b769-4005-acc5-289f05765a56', 4970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('89d8769b-13ef-4f2a-a9f3-132afa0fd860', '233079f8-4178-480c-b64e-224022993b97', 'c3bb7245-d1f2-4be9-beef-f31f3819dd97', 2970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('960f631b-50ff-43f2-89b5-9eaea3bf2094', '303c0737-5703-40a1-a08d-b7b409d6fa27', '25465998-608e-4dc8-9e5a-c7e37a46d3c4', 2970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('f56a2925-44ec-43b4-ae00-f6a53199c513', '303c0737-5703-40a1-a08d-b7b409d6fa27', '4f29054b-234e-42be-887d-68164fd141b9', 4970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('a08fe6fe-48ce-4887-8566-aeb277605f56', '303c0737-5703-40a1-a08d-b7b409d6fa27', '943ddf50-01d2-4492-be0a-fb357c40e9e2', 1470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('0a1de887-d402-40f6-bf89-b1a44bd49775', '303c0737-5703-40a1-a08d-b7b409d6fa27', 'b2a78012-b769-4005-acc5-289f05765a56', 1970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('5da1a4f4-41d4-4d46-b10c-4d8b5a53881f', '303c0737-5703-40a1-a08d-b7b409d6fa27', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 1500, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('670e3e49-7e25-4da0-8764-e905ca0256eb', '303c0737-5703-40a1-a08d-b7b409d6fa27', 'fc96c525-d284-45a3-9868-7954401b70c5', 3470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('b36fe2ed-7eaa-4596-83f2-733e436409fb', '3149221a-4e80-4edb-9e2e-26a1c75c8a36', '25465998-608e-4dc8-9e5a-c7e37a46d3c4', 4970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('fb45a427-a33a-45bf-9a30-67cee332f4f0', '3149221a-4e80-4edb-9e2e-26a1c75c8a36', '4f29054b-234e-42be-887d-68164fd141b9', 6970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('fb6494eb-de3e-4691-8cab-ece1f89e950c', '3149221a-4e80-4edb-9e2e-26a1c75c8a36', '943ddf50-01d2-4492-be0a-fb357c40e9e2', 1770, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('9c72023f-09f7-47c8-8d45-ff79168be88e', '3149221a-4e80-4edb-9e2e-26a1c75c8a36', 'b2a78012-b769-4005-acc5-289f05765a56', 2970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('558479ff-a624-428b-a459-34954cf1e5ef', '3149221a-4e80-4edb-9e2e-26a1c75c8a36', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 2500, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('5c191ba7-447f-4efa-ae05-be7abb738bda', '3149221a-4e80-4edb-9e2e-26a1c75c8a36', 'fc96c525-d284-45a3-9868-7954401b70c5', 5470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('5d09b8c7-b105-4559-b71c-291f935701dd', '3199f55d-181a-4c99-b8a5-9419b46b6200', '26e0fe96-7d72-47ff-93aa-f9acc74e7e6e', 2470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('9584c800-ac41-4025-89b7-e8a7a5568d7c', '3199f55d-181a-4c99-b8a5-9419b46b6200', '4c69f94d-a1c1-409d-9700-cc6f4456865b', 3070, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('352e7b59-ca56-4df4-8b3f-97b10a0a6b6e', '3199f55d-181a-4c99-b8a5-9419b46b6200', '4f29054b-234e-42be-887d-68164fd141b9', 4670, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('0cdb5c1d-e9ef-476c-bbc2-6b7bf1e7f90f', '3199f55d-181a-4c99-b8a5-9419b46b6200', '6a3ccc76-7905-46ec-a87d-f9d278ffa50f', 3470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('3276f95c-4040-4eb4-872e-1a5e8dfb99e0', '3199f55d-181a-4c99-b8a5-9419b46b6200', '84691035-0765-4ce9-9e06-a809fc3c99c6', 2170, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('ed31a8ff-a3cd-48e4-a17d-50aab1b3b1cd', '3199f55d-181a-4c99-b8a5-9419b46b6200', 'b2a78012-b769-4005-acc5-289f05765a56', 1970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('14d6abfa-09c6-447a-ba3a-7e78c160614d', '3199f55d-181a-4c99-b8a5-9419b46b6200', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 1900, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('becfbc5d-ba9e-41a4-9278-de7bc7b68a4b', '3199f55d-181a-4c99-b8a5-9419b46b6200', 'fa2613af-7b79-4229-8811-a5d9be586a91', 5670, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('35fbbeda-5c05-4982-aada-251283dc9c91', '33d29147-6187-44dc-bfa2-7b2dbeaace8d', '25465998-608e-4dc8-9e5a-c7e37a46d3c4', 2970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('13c8aa2a-4b78-4939-a74d-121c2f3d2cbf', '33d29147-6187-44dc-bfa2-7b2dbeaace8d', '4f29054b-234e-42be-887d-68164fd141b9', 4970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('e3c26d2d-4379-4203-97db-819069cb78ae', '33d29147-6187-44dc-bfa2-7b2dbeaace8d', '943ddf50-01d2-4492-be0a-fb357c40e9e2', 1470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('a5cee891-4d7f-4d9c-b9cb-998ab8f35392', '33d29147-6187-44dc-bfa2-7b2dbeaace8d', 'b2a78012-b769-4005-acc5-289f05765a56', 1970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('38c8fdac-6501-4c54-a968-fa767851387c', '33d29147-6187-44dc-bfa2-7b2dbeaace8d', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 1500, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('f9fa7e65-9242-48d7-860e-db72229c900a', '33d29147-6187-44dc-bfa2-7b2dbeaace8d', 'fc96c525-d284-45a3-9868-7954401b70c5', 3470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('ee818ebe-237e-4845-a03e-584134f318bd', '355296d1-3502-4166-8113-9b7d2e485378', '25465998-608e-4dc8-9e5a-c7e37a46d3c4', 5970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('0046528c-e932-4985-87ca-eed63d70cad5', '355296d1-3502-4166-8113-9b7d2e485378', '4f29054b-234e-42be-887d-68164fd141b9', 8970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('0f825578-5df4-440d-b9f7-b27d81737e4d', '355296d1-3502-4166-8113-9b7d2e485378', '943ddf50-01d2-4492-be0a-fb357c40e9e2', 1970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('349a0d13-5bfe-4979-a984-7b7ebacd6e77', '355296d1-3502-4166-8113-9b7d2e485378', 'b2a78012-b769-4005-acc5-289f05765a56', 3970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('9c337902-5c3b-4d68-ac15-b919fc0f8df5', '355296d1-3502-4166-8113-9b7d2e485378', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 3000, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('2a264190-5553-4274-b064-615bc306584a', '355296d1-3502-4166-8113-9b7d2e485378', 'fc96c525-d284-45a3-9868-7954401b70c5', 6970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('39180bf0-bf62-4bad-83a2-fba950312d5d', '39160559-0058-4237-8419-22a40c8e8589', '4f29054b-234e-42be-887d-68164fd141b9', 11970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('478e3fcb-94d7-4b8c-b460-f76307748dc6', '39160559-0058-4237-8419-22a40c8e8589', '70d5333d-f58e-47ae-b509-8d8a782519c5', 5970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('e0b8a722-21ae-4d31-9244-23cfe824b710', '39160559-0058-4237-8419-22a40c8e8589', 'b2a78012-b769-4005-acc5-289f05765a56', 4970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('0bf2adc7-6614-4e74-ada3-2d76340b3e0d', '39160559-0058-4237-8419-22a40c8e8589', 'c3bb7245-d1f2-4be9-beef-f31f3819dd97', 2970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('100dfc08-4561-4cad-a57d-4268b31af3b9', '3b43746b-3cca-44df-b978-aae98f2fe742', '4f29054b-234e-42be-887d-68164fd141b9', 11970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('e86f1999-ce5a-4f67-8b4e-2a108394111c', '3b43746b-3cca-44df-b978-aae98f2fe742', '70d5333d-f58e-47ae-b509-8d8a782519c5', 5970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('ff936482-7cdd-4791-b42f-0407a2f15ef8', '3b43746b-3cca-44df-b978-aae98f2fe742', 'b2a78012-b769-4005-acc5-289f05765a56', 4970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('0e615aab-86ac-4188-93fe-3ce950efa717', '3b43746b-3cca-44df-b978-aae98f2fe742', 'c3bb7245-d1f2-4be9-beef-f31f3819dd97', 2970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('f1be390e-40fd-49cd-9827-c9a86d2c6a5c', '3e16fe9a-2a7a-422f-af29-aeaa0a01054f', '4f29054b-234e-42be-887d-68164fd141b9', 11970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('ae975cb3-e98e-4c07-860d-933c63462cab', '3e16fe9a-2a7a-422f-af29-aeaa0a01054f', '70d5333d-f58e-47ae-b509-8d8a782519c5', 5970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('3c875e30-59ad-4005-bc5d-b99fd208ac75', '3e16fe9a-2a7a-422f-af29-aeaa0a01054f', 'b2a78012-b769-4005-acc5-289f05765a56', 4970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('7f053ea1-7b97-4263-9880-cc7b897ea710', '3e16fe9a-2a7a-422f-af29-aeaa0a01054f', 'c3bb7245-d1f2-4be9-beef-f31f3819dd97', 2970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('40aa1508-8ab6-408c-a825-b18d379539a5', '3f86623b-9305-4c1d-bd52-bf4483962b38', '25465998-608e-4dc8-9e5a-c7e37a46d3c4', 3970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('898d4dbd-5393-40be-8366-882224e512db', '3f86623b-9305-4c1d-bd52-bf4483962b38', '4f29054b-234e-42be-887d-68164fd141b9', 5970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('7d0e37fa-a812-4320-8725-597154403004', '3f86623b-9305-4c1d-bd52-bf4483962b38', '943ddf50-01d2-4492-be0a-fb357c40e9e2', 1570, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('a5a0514e-9754-4ecc-8ff0-8ae63864d823', '3f86623b-9305-4c1d-bd52-bf4483962b38', 'b2a78012-b769-4005-acc5-289f05765a56', 2470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('47474948-05a3-45fe-a53a-b62155d30bb3', '3f86623b-9305-4c1d-bd52-bf4483962b38', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 2000, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('c8b20d2e-3229-4a3b-965a-3977e9c7ec89', '3f86623b-9305-4c1d-bd52-bf4483962b38', 'fc96c525-d284-45a3-9868-7954401b70c5', 4470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('de414a4e-22d5-4484-8946-f779d21c5bd6', '42881e38-c750-4047-97ac-d3946525a739', '26e0fe96-7d72-47ff-93aa-f9acc74e7e6e', 1870, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('2ae598bf-62ba-4e31-8b4d-476c2bcf9307', '42881e38-c750-4047-97ac-d3946525a739', '4c69f94d-a1c1-409d-9700-cc6f4456865b', 2470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('a4c4eab6-562e-4ae0-be80-437bce2f33fc', '42881e38-c750-4047-97ac-d3946525a739', '4f29054b-234e-42be-887d-68164fd141b9', 3470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('8421d3ea-ba1e-4920-8c05-d0f297e745c7', '42881e38-c750-4047-97ac-d3946525a739', '6a3ccc76-7905-46ec-a87d-f9d278ffa50f', 2870, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('f18251ee-5e4d-4986-aa42-50d0f48c2804', '42881e38-c750-4047-97ac-d3946525a739', '84691035-0765-4ce9-9e06-a809fc3c99c6', 1870, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('22504759-be07-4102-9842-96d18424f4d3', '42881e38-c750-4047-97ac-d3946525a739', 'b2a78012-b769-4005-acc5-289f05765a56', 1670, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('bd0e68bc-f681-4b69-9a51-f938e5116fe0', '42881e38-c750-4047-97ac-d3946525a739', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 1600, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('afc2122d-4920-428d-8025-6cd629e13be5', '42881e38-c750-4047-97ac-d3946525a739', 'fa2613af-7b79-4229-8811-a5d9be586a91', 4470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('c0374893-933e-4769-9e2f-d311bfa6160c', '4364284e-36bf-48e0-9010-921e69afeb99', '25465998-608e-4dc8-9e5a-c7e37a46d3c4', 2470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('37503949-4371-4547-a865-b8e27f379cc1', '4364284e-36bf-48e0-9010-921e69afeb99', '44f2ab94-1b45-4a1f-9301-e5303acf1d7d', 1670, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('164bcebf-2308-4c47-8ec2-d0f57cf3cb1c', '4364284e-36bf-48e0-9010-921e69afeb99', '4f29054b-234e-42be-887d-68164fd141b9', 3970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('868c2282-8979-4668-a82d-ca726db08107', '4364284e-36bf-48e0-9010-921e69afeb99', 'b2a78012-b769-4005-acc5-289f05765a56', 1970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('c813eb67-c2f1-4a47-bc1e-ba849be69380', '4364284e-36bf-48e0-9010-921e69afeb99', 'fc96c525-d284-45a3-9868-7954401b70c5', 2970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('26019199-24d4-4e86-84d5-a286ca036569', '43de8d9a-0ca4-4cdc-aab8-ec3700bed267', '25465998-608e-4dc8-9e5a-c7e37a46d3c4', 5970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('8d212a9a-7de9-4ee0-872b-7f3b1b03a204', '43de8d9a-0ca4-4cdc-aab8-ec3700bed267', '4f29054b-234e-42be-887d-68164fd141b9', 8970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('a0c255b9-0dcb-4b8f-82b1-14ebcc9e56ac', '43de8d9a-0ca4-4cdc-aab8-ec3700bed267', '943ddf50-01d2-4492-be0a-fb357c40e9e2', 1970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('aff07b60-da60-415c-a527-626409bf16ce', '43de8d9a-0ca4-4cdc-aab8-ec3700bed267', 'b2a78012-b769-4005-acc5-289f05765a56', 3970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('77377e5d-30a6-42e5-8b3b-442521998477', '43de8d9a-0ca4-4cdc-aab8-ec3700bed267', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 3000, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('15e1667a-75eb-4df4-b034-7c82c0b70a23', '43de8d9a-0ca4-4cdc-aab8-ec3700bed267', 'fc96c525-d284-45a3-9868-7954401b70c5', 6970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('eed7a950-c65e-4851-8dfa-ece38ce173a7', '4639c022-383f-4de7-a677-6ee416b81a24', '4f29054b-234e-42be-887d-68164fd141b9', 11970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('dff7c26f-7171-4455-9a32-327971bf7874', '4639c022-383f-4de7-a677-6ee416b81a24', '70d5333d-f58e-47ae-b509-8d8a782519c5', 5970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('b0a32a28-2f61-4403-a3ea-8fdbf7e6b07c', '4639c022-383f-4de7-a677-6ee416b81a24', 'b2a78012-b769-4005-acc5-289f05765a56', 4970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('b59be391-6ba7-4034-9e2d-fdd178f67990', '4639c022-383f-4de7-a677-6ee416b81a24', 'c3bb7245-d1f2-4be9-beef-f31f3819dd97', 2970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('06cc549d-1edd-4376-89b5-f54df550f693', '46e9bcf5-c71a-4c0b-80b8-0293aea35c8e', '26e0fe96-7d72-47ff-93aa-f9acc74e7e6e', 3470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('d127cd79-359c-4f0b-bc25-1ae774c88299', '46e9bcf5-c71a-4c0b-80b8-0293aea35c8e', '4c69f94d-a1c1-409d-9700-cc6f4456865b', 4070, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('cd35340e-589e-4a5c-8a0f-8568b50cc182', '46e9bcf5-c71a-4c0b-80b8-0293aea35c8e', '4f29054b-234e-42be-887d-68164fd141b9', 5700, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('eecbcdfa-2794-469d-ad38-e464ca9d3471', '46e9bcf5-c71a-4c0b-80b8-0293aea35c8e', '6a3ccc76-7905-46ec-a87d-f9d278ffa50f', 4470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('fe774936-1e18-4629-815b-54285a72d554', '46e9bcf5-c71a-4c0b-80b8-0293aea35c8e', '84691035-0765-4ce9-9e06-a809fc3c99c6', 2370, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('f2fe54a6-e05f-4374-bdc4-c38fa1b39130', '46e9bcf5-c71a-4c0b-80b8-0293aea35c8e', 'b2a78012-b769-4005-acc5-289f05765a56', 2170, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('44fd73e2-e571-4f91-b7cc-0000f4dac064', '46e9bcf5-c71a-4c0b-80b8-0293aea35c8e', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 2100, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('38a6cedd-3b9d-4434-ad9b-2e8cd41533dc', '46e9bcf5-c71a-4c0b-80b8-0293aea35c8e', 'fa2613af-7b79-4229-8811-a5d9be586a91', 6700, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('41fa6edc-baa9-48c2-96b8-6f6e0742f09e', '48b1f6f0-1898-4101-9cee-41922709060b', '4f29054b-234e-42be-887d-68164fd141b9', 10970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('a6f605f4-d4d9-417f-a88a-3d7702540953', '48b1f6f0-1898-4101-9cee-41922709060b', '70d5333d-f58e-47ae-b509-8d8a782519c5', 5470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('ea6ae169-50bb-4833-8a01-7bfac9f58f8f', '48b1f6f0-1898-4101-9cee-41922709060b', 'b2a78012-b769-4005-acc5-289f05765a56', 4470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('901bd9ca-d3d9-4aa9-91b3-035a4eb3651e', '48b1f6f0-1898-4101-9cee-41922709060b', 'c3bb7245-d1f2-4be9-beef-f31f3819dd97', 2670, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('df747631-629e-4a2e-b106-0ae4d8bc51c7', '4af1cac2-bedc-41d8-b117-018187c52175', '26e0fe96-7d72-47ff-93aa-f9acc74e7e6e', 3470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('0e010976-289b-4ff0-b4de-c09be2e81fe0', '4af1cac2-bedc-41d8-b117-018187c52175', '4c69f94d-a1c1-409d-9700-cc6f4456865b', 4070, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('27d85dc5-7878-4da5-b953-fd5b065c624b', '4af1cac2-bedc-41d8-b117-018187c52175', '4f29054b-234e-42be-887d-68164fd141b9', 5700, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('9ff6ce12-977d-4688-a503-8276d1b3b0bd', '4af1cac2-bedc-41d8-b117-018187c52175', '6a3ccc76-7905-46ec-a87d-f9d278ffa50f', 4470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('51b51b7e-8966-4a2b-a751-3bec1bef9df2', '4af1cac2-bedc-41d8-b117-018187c52175', '84691035-0765-4ce9-9e06-a809fc3c99c6', 2370, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('398db7d0-b657-4004-8488-f1ed37cb1984', '4af1cac2-bedc-41d8-b117-018187c52175', 'b2a78012-b769-4005-acc5-289f05765a56', 2170, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('ff8b7c8d-01ba-4d08-ba77-5647e7091af3', '4af1cac2-bedc-41d8-b117-018187c52175', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 2100, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('d8735b06-9b97-4012-af2a-238173b08704', '4af1cac2-bedc-41d8-b117-018187c52175', 'fa2613af-7b79-4229-8811-a5d9be586a91', 6700, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('b7856eba-ad7f-4959-b6a5-278654fb1deb', '4ee869ca-7943-4010-900b-b665d85ef413', '25465998-608e-4dc8-9e5a-c7e37a46d3c4', 4970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('6e33d6aa-4f9b-4fad-a931-ce6766424829', '4ee869ca-7943-4010-900b-b665d85ef413', '4f29054b-234e-42be-887d-68164fd141b9', 6970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('eab82176-ac5d-4e96-b06d-520ec545a73b', '4ee869ca-7943-4010-900b-b665d85ef413', '943ddf50-01d2-4492-be0a-fb357c40e9e2', 1770, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('974f9985-208c-4926-8e65-5c82d64a9adc', '4ee869ca-7943-4010-900b-b665d85ef413', 'b2a78012-b769-4005-acc5-289f05765a56', 2970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('38b7414e-419b-4613-a5b5-a2ddb6a4e4f1', '4ee869ca-7943-4010-900b-b665d85ef413', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 2500, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('d10d9c62-87ac-4e38-a3e9-6bd43df5703c', '4ee869ca-7943-4010-900b-b665d85ef413', 'fc96c525-d284-45a3-9868-7954401b70c5', 5470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('b2b78cb0-19d5-47fb-b4e1-c5f2a0d10e8f', '517fde25-cc9c-4a16-a566-7011535a02bc', '4f29054b-234e-42be-887d-68164fd141b9', 11970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('a0a63107-df99-492e-be72-995fd1f8883f', '517fde25-cc9c-4a16-a566-7011535a02bc', '70d5333d-f58e-47ae-b509-8d8a782519c5', 5970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('ff19ba93-dae6-47f8-beac-a33e93ea845c', '517fde25-cc9c-4a16-a566-7011535a02bc', 'b2a78012-b769-4005-acc5-289f05765a56', 4970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('eb396b20-2ca5-4a80-b6df-95c7ad50d864', '517fde25-cc9c-4a16-a566-7011535a02bc', 'c3bb7245-d1f2-4be9-beef-f31f3819dd97', 2970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('023430a6-b66c-4081-b64b-e02f88097fc2', '579a867a-422a-41eb-91e6-04325127f597', '25465998-608e-4dc8-9e5a-c7e37a46d3c4', 5970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('0073a18b-93bd-40ba-a130-d70d25025866', '579a867a-422a-41eb-91e6-04325127f597', '4f29054b-234e-42be-887d-68164fd141b9', 8970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('b1b5d711-fe9d-43a9-b4dc-e8c825aee539', '579a867a-422a-41eb-91e6-04325127f597', '943ddf50-01d2-4492-be0a-fb357c40e9e2', 1970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('0deccb4a-29c4-4ea8-9f53-20adf81fb43c', '579a867a-422a-41eb-91e6-04325127f597', 'b2a78012-b769-4005-acc5-289f05765a56', 3970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('7536ca8a-ae7f-45fd-9c44-e1e260bbe5a9', '579a867a-422a-41eb-91e6-04325127f597', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 3000, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('ef9f068c-f181-4c79-94c7-6de68c27ec8c', '579a867a-422a-41eb-91e6-04325127f597', 'fc96c525-d284-45a3-9868-7954401b70c5', 6970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('00912447-7593-4102-88ac-139583158f4b', '58b11dcb-5f1a-4900-acda-35c449bc0487', '26e0fe96-7d72-47ff-93aa-f9acc74e7e6e', 2270, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('4f972c8b-74bd-4e85-85be-6e1e7ef1b1bf', '58b11dcb-5f1a-4900-acda-35c449bc0487', '4c69f94d-a1c1-409d-9700-cc6f4456865b', 2870, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('e76ffa9f-bbea-4e93-bf07-b9c37ef0c196', '58b11dcb-5f1a-4900-acda-35c449bc0487', '4f29054b-234e-42be-887d-68164fd141b9', 4270, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('26b236c0-33bc-4a47-a6c2-6d173ab7fbc5', '58b11dcb-5f1a-4900-acda-35c449bc0487', '6a3ccc76-7905-46ec-a87d-f9d278ffa50f', 3270, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('3a585986-a4b1-4432-b889-8f3eb0cf037f', '58b11dcb-5f1a-4900-acda-35c449bc0487', '84691035-0765-4ce9-9e06-a809fc3c99c6', 2070, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('8c2d25a7-bcd3-43e2-bf4b-5effe413740c', '58b11dcb-5f1a-4900-acda-35c449bc0487', 'b2a78012-b769-4005-acc5-289f05765a56', 1870, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('22ff4fef-4fb7-4bff-9032-5c5a0de03c82', '58b11dcb-5f1a-4900-acda-35c449bc0487', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 1800, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('8eaddb21-7850-4c51-826e-2dd21dc787d2', '58b11dcb-5f1a-4900-acda-35c449bc0487', 'fa2613af-7b79-4229-8811-a5d9be586a91', 5270, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('fdf39b32-30ab-4b65-8434-9454a34dc715', '59ed08e2-1bfa-4b57-b39b-95dc0d48fb48', '26e0fe96-7d72-47ff-93aa-f9acc74e7e6e', 2270, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('9dde115c-2e1d-4ac3-8100-09ddd7dac16e', '59ed08e2-1bfa-4b57-b39b-95dc0d48fb48', '4c69f94d-a1c1-409d-9700-cc6f4456865b', 2870, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('b92c620c-ab70-442f-a8e3-513c7d072b15', '59ed08e2-1bfa-4b57-b39b-95dc0d48fb48', '4f29054b-234e-42be-887d-68164fd141b9', 4270, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('5eccae1b-9e2d-4c96-891f-035778d8f6e6', '59ed08e2-1bfa-4b57-b39b-95dc0d48fb48', '6a3ccc76-7905-46ec-a87d-f9d278ffa50f', 3270, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('61d5b078-c5d6-470e-b339-1a9c7df012ae', '59ed08e2-1bfa-4b57-b39b-95dc0d48fb48', '84691035-0765-4ce9-9e06-a809fc3c99c6', 2070, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('55ff9057-b02e-46fe-b796-09552d78b3f2', '59ed08e2-1bfa-4b57-b39b-95dc0d48fb48', 'b2a78012-b769-4005-acc5-289f05765a56', 1870, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('376b7795-b1f6-415e-89e4-31c55c11829b', '59ed08e2-1bfa-4b57-b39b-95dc0d48fb48', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 1800, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('5572e5c3-fb5f-4043-aaaf-2d69d7f1f8f8', '59ed08e2-1bfa-4b57-b39b-95dc0d48fb48', 'fa2613af-7b79-4229-8811-a5d9be586a91', 5270, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('31bcb846-b7ef-4de8-b5f9-6ef8990fda16', '5a8e99b2-579d-457a-b516-32f46ef52a25', '26e0fe96-7d72-47ff-93aa-f9acc74e7e6e', 1470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('8b587d4f-7a0a-4aae-bc6b-6a2ecf3465d7', '5a8e99b2-579d-457a-b516-32f46ef52a25', '4c69f94d-a1c1-409d-9700-cc6f4456865b', 2070, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('6e57acf9-558f-41e9-9fb5-a9d84c53ec78', '5a8e99b2-579d-457a-b516-32f46ef52a25', '4f29054b-234e-42be-887d-68164fd141b9', 2970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('c17c1f5d-7348-4924-bbe2-20c6cced026f', '5a8e99b2-579d-457a-b516-32f46ef52a25', '6a3ccc76-7905-46ec-a87d-f9d278ffa50f', 2470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('742c4493-b3e2-4ebc-858f-9dc1acd194b6', '5a8e99b2-579d-457a-b516-32f46ef52a25', '84691035-0765-4ce9-9e06-a809fc3c99c6', 1670, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('b982f5aa-af9b-4f91-9426-f549ce379461', '5a8e99b2-579d-457a-b516-32f46ef52a25', 'b2a78012-b769-4005-acc5-289f05765a56', 1470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('611c50bc-e8b6-406c-961c-9197e66640a5', '5a8e99b2-579d-457a-b516-32f46ef52a25', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 1400, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('c3f9d9bb-b91f-4fda-9f59-11231667c41f', '5e341e25-ce42-436a-ab74-bd35c25cb6e5', '25465998-608e-4dc8-9e5a-c7e37a46d3c4', 2970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('a9633de0-f5d8-4a84-ac04-5d67ac54e053', '5e341e25-ce42-436a-ab74-bd35c25cb6e5', '4f29054b-234e-42be-887d-68164fd141b9', 4970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('12529800-007b-4fc8-b9a2-aef8879a2e9e', '5e341e25-ce42-436a-ab74-bd35c25cb6e5', '943ddf50-01d2-4492-be0a-fb357c40e9e2', 1470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('a2d4583d-301d-40fd-82ca-140cba17304b', '5e341e25-ce42-436a-ab74-bd35c25cb6e5', 'b2a78012-b769-4005-acc5-289f05765a56', 1970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('bb1120a8-3b9e-47da-a25f-d2b751eeef0c', '5e341e25-ce42-436a-ab74-bd35c25cb6e5', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 1500, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('c64b625f-f983-41ca-b4d4-7e2bbcc2df1a', '5e341e25-ce42-436a-ab74-bd35c25cb6e5', 'fc96c525-d284-45a3-9868-7954401b70c5', 3470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('74a55a93-f8e1-4b5d-8f91-d865d383bd92', '5f922679-cbdb-4ad4-8602-496138e09db7', '4f29054b-234e-42be-887d-68164fd141b9', 11970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('15d86086-1794-4f4b-bc25-d43ae42ff4c3', '5f922679-cbdb-4ad4-8602-496138e09db7', '70d5333d-f58e-47ae-b509-8d8a782519c5', 5970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('59dc5520-e8a2-42f3-8ac5-3ce72ffb7b71', '5f922679-cbdb-4ad4-8602-496138e09db7', 'b2a78012-b769-4005-acc5-289f05765a56', 4970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('71c0a4a0-c40e-4ed0-84ef-d7baf025d3e4', '5f922679-cbdb-4ad4-8602-496138e09db7', 'c3bb7245-d1f2-4be9-beef-f31f3819dd97', 2970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('01f9b56c-fd6b-45c8-b5c9-63fc5b24a714', '654994d8-67fa-4208-ad2d-c638b88c7560', '26e0fe96-7d72-47ff-93aa-f9acc74e7e6e', 2670, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('2793ac11-6238-46fe-8d78-cc072900f27d', '654994d8-67fa-4208-ad2d-c638b88c7560', '4c69f94d-a1c1-409d-9700-cc6f4456865b', 3270, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('14337cf1-0eb8-4c75-b3df-43c7849981ab', '654994d8-67fa-4208-ad2d-c638b88c7560', '4f29054b-234e-42be-887d-68164fd141b9', 4870, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('0668f921-7a0c-419f-8aba-c67cc0a920d3', '654994d8-67fa-4208-ad2d-c638b88c7560', '6a3ccc76-7905-46ec-a87d-f9d278ffa50f', 3670, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('3a8833fb-3abb-45c4-8824-59f2334b7c50', '654994d8-67fa-4208-ad2d-c638b88c7560', '84691035-0765-4ce9-9e06-a809fc3c99c6', 2270, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('360fccf9-3558-4d25-a9e5-bb9b560aedad', '654994d8-67fa-4208-ad2d-c638b88c7560', 'b2a78012-b769-4005-acc5-289f05765a56', 2070, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('22336ebc-d90f-4d3b-9dce-cfe3c8afd7f1', '654994d8-67fa-4208-ad2d-c638b88c7560', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 2000, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('af3d54b3-dad6-4cda-84e2-3b45fcb6e13d', '654994d8-67fa-4208-ad2d-c638b88c7560', 'fa2613af-7b79-4229-8811-a5d9be586a91', 5870, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('0e90a265-6307-4210-bd56-43cb95c9455f', '6a6013ae-9919-4005-9448-e4d55ff94bfb', '4f29054b-234e-42be-887d-68164fd141b9', 11970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('8efcd863-76b2-4691-8cdc-5c87134d8706', '6a6013ae-9919-4005-9448-e4d55ff94bfb', '70d5333d-f58e-47ae-b509-8d8a782519c5', 5970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('7aa69c6b-6fba-42d4-ae4c-60329c82eb35', '6a6013ae-9919-4005-9448-e4d55ff94bfb', 'b2a78012-b769-4005-acc5-289f05765a56', 4970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('091b22b8-0be5-4e8e-b709-f100f445b265', '6a6013ae-9919-4005-9448-e4d55ff94bfb', 'c3bb7245-d1f2-4be9-beef-f31f3819dd97', 2970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('7a1a5c73-7d7a-4cb7-ade1-13a1dfb523b9', '6a6b19bd-4827-450c-a5d7-95ed80658fbe', '4f29054b-234e-42be-887d-68164fd141b9', 10970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('23ae8878-b252-4bb9-89bb-406c7c32b412', '6a6b19bd-4827-450c-a5d7-95ed80658fbe', '70d5333d-f58e-47ae-b509-8d8a782519c5', 5470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('46ee4003-cc34-4599-8cf2-34e43b308d52', '6a6b19bd-4827-450c-a5d7-95ed80658fbe', 'b2a78012-b769-4005-acc5-289f05765a56', 4470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('527b6fbc-0b2d-4d34-9f85-5380af52e6fd', '6a6b19bd-4827-450c-a5d7-95ed80658fbe', 'c3bb7245-d1f2-4be9-beef-f31f3819dd97', 2670, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('55d3022a-5c45-4695-a9f8-ee5f341d6b64', '6d275840-e8c3-47ae-a746-0f1ef476b36f', '26e0fe96-7d72-47ff-93aa-f9acc74e7e6e', 2670, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('b2e101d5-42b3-49c7-8bfd-7bfbc12d0244', '6d275840-e8c3-47ae-a746-0f1ef476b36f', '4c69f94d-a1c1-409d-9700-cc6f4456865b', 3270, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('e477356c-3632-4c14-8bc5-f132401b076e', '6d275840-e8c3-47ae-a746-0f1ef476b36f', '4f29054b-234e-42be-887d-68164fd141b9', 4870, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('443cc644-a846-4249-aece-795f9b15b5a1', '6d275840-e8c3-47ae-a746-0f1ef476b36f', '6a3ccc76-7905-46ec-a87d-f9d278ffa50f', 3670, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('3915a5e0-d834-4b3d-9d79-cd10dca70322', '6d275840-e8c3-47ae-a746-0f1ef476b36f', '84691035-0765-4ce9-9e06-a809fc3c99c6', 2270, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('e812fe21-5f73-4033-8c2b-4bc05f3ce39d', '6d275840-e8c3-47ae-a746-0f1ef476b36f', 'b2a78012-b769-4005-acc5-289f05765a56', 2070, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('2fc3dd77-022d-431d-ad8e-724663b98fbf', '6d275840-e8c3-47ae-a746-0f1ef476b36f', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 2000, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('da5b7c88-cdc4-4b0b-9ae1-01683a07a905', '6d275840-e8c3-47ae-a746-0f1ef476b36f', 'fa2613af-7b79-4229-8811-a5d9be586a91', 5870, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('3a06b9e6-9232-4155-9b6e-3257175f4255', '6e4ca6ea-98bb-405b-b9c8-494a14805a23', '25465998-608e-4dc8-9e5a-c7e37a46d3c4', 4970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('ed1e8b03-c91b-4f71-b199-989113991922', '6e4ca6ea-98bb-405b-b9c8-494a14805a23', '4f29054b-234e-42be-887d-68164fd141b9', 6970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('7467c210-76bc-41e6-beef-c02ffce2e07e', '6e4ca6ea-98bb-405b-b9c8-494a14805a23', '943ddf50-01d2-4492-be0a-fb357c40e9e2', 1770, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('e6121fe8-0379-4b9e-abdb-49a89ec32a8a', '6e4ca6ea-98bb-405b-b9c8-494a14805a23', 'b2a78012-b769-4005-acc5-289f05765a56', 2970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('48cd461b-e0b5-4270-ae5f-6af8a9ae0c7c', '6e4ca6ea-98bb-405b-b9c8-494a14805a23', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 2500, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('c9e2d672-736a-4c9f-a8bc-80cf25374787', '6e4ca6ea-98bb-405b-b9c8-494a14805a23', 'fc96c525-d284-45a3-9868-7954401b70c5', 5470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('8f3094d8-0b75-460c-b917-e1b33c0e4ce4', '702da014-a83a-4763-be97-1f25c89150a3', '25465998-608e-4dc8-9e5a-c7e37a46d3c4', 2970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('4156ecd3-d599-4be8-b8f0-a3014987eb76', '702da014-a83a-4763-be97-1f25c89150a3', '4f29054b-234e-42be-887d-68164fd141b9', 4970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('f006d66a-3073-4591-bb48-95775d67cad8', '702da014-a83a-4763-be97-1f25c89150a3', '943ddf50-01d2-4492-be0a-fb357c40e9e2', 1470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('52ac38fd-07d9-4c8d-ae88-a7e4c94bbb2b', '702da014-a83a-4763-be97-1f25c89150a3', 'b2a78012-b769-4005-acc5-289f05765a56', 1970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('73b47746-0ee7-46d0-a9f1-27fbbd7e08aa', '702da014-a83a-4763-be97-1f25c89150a3', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 1500, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('f125d9b1-00b1-4b26-b0c5-4bb760944552', '702da014-a83a-4763-be97-1f25c89150a3', 'fc96c525-d284-45a3-9868-7954401b70c5', 3470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('dc33d707-422f-421a-a279-256ee15e3bbe', '729417ea-217d-4fe4-84fb-ef6f97824d45', '25465998-608e-4dc8-9e5a-c7e37a46d3c4', 3970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('8c84048e-3d15-4d17-bead-2240ecfecda2', '729417ea-217d-4fe4-84fb-ef6f97824d45', '4f29054b-234e-42be-887d-68164fd141b9', 5970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('eb16b82a-f070-45e7-b3e6-c152210a34d5', '729417ea-217d-4fe4-84fb-ef6f97824d45', '943ddf50-01d2-4492-be0a-fb357c40e9e2', 1570, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('cd8f168f-06c8-4887-8fa3-749fc2c41c77', '729417ea-217d-4fe4-84fb-ef6f97824d45', 'b2a78012-b769-4005-acc5-289f05765a56', 2470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('40b19176-01fb-4f67-9eaf-9e5d8c0d0ce7', '729417ea-217d-4fe4-84fb-ef6f97824d45', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 2000, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('8c34738e-011c-4876-98e9-c1a5616a7fb7', '729417ea-217d-4fe4-84fb-ef6f97824d45', 'fc96c525-d284-45a3-9868-7954401b70c5', 4470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('14ac3101-510a-4a2d-af56-10bd77d76813', '73a64d31-2f63-40c7-86eb-70cda983c08c', '25465998-608e-4dc8-9e5a-c7e37a46d3c4', 4970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('2c8b4fad-2aad-4393-8425-83272a2996f2', '73a64d31-2f63-40c7-86eb-70cda983c08c', '4f29054b-234e-42be-887d-68164fd141b9', 6970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('17d266be-7ef7-4147-b646-f2cc3991ac8d', '73a64d31-2f63-40c7-86eb-70cda983c08c', '943ddf50-01d2-4492-be0a-fb357c40e9e2', 1770, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('42043617-a42d-4f43-88f2-530e2ddfcb7a', '73a64d31-2f63-40c7-86eb-70cda983c08c', 'b2a78012-b769-4005-acc5-289f05765a56', 2970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('972458b9-e94b-478c-a88a-c7546fc86557', '73a64d31-2f63-40c7-86eb-70cda983c08c', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 2500, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('6282a411-ca77-43ec-9b2d-10e37f40bc95', '73a64d31-2f63-40c7-86eb-70cda983c08c', 'fc96c525-d284-45a3-9868-7954401b70c5', 5470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('3b2a97e2-12cc-488f-900e-6e45ad41edf5', '7419ed12-8b2b-45e3-8cea-afa50406192b', '4f29054b-234e-42be-887d-68164fd141b9', 10970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('3914f679-7dfb-425e-928f-8806a4b65a6d', '7419ed12-8b2b-45e3-8cea-afa50406192b', '70d5333d-f58e-47ae-b509-8d8a782519c5', 5470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('249a98b1-df1d-4079-a083-7c73fa6d9bdd', '7419ed12-8b2b-45e3-8cea-afa50406192b', 'b2a78012-b769-4005-acc5-289f05765a56', 4470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('4ce20b00-9e25-41e0-85b4-82862ca6b491', '7419ed12-8b2b-45e3-8cea-afa50406192b', 'c3bb7245-d1f2-4be9-beef-f31f3819dd97', 2670, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('2c831d10-62c8-4487-8eec-64c5ff893340', '76e87b4e-7c25-4d30-b499-8324b6270e86', '4f29054b-234e-42be-887d-68164fd141b9', 11970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('eb3a3ee0-de97-4e12-bdb6-615aab17121a', '76e87b4e-7c25-4d30-b499-8324b6270e86', '70d5333d-f58e-47ae-b509-8d8a782519c5', 5970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('df19b2ba-2cfb-4140-8824-85059c9f2262', '76e87b4e-7c25-4d30-b499-8324b6270e86', 'b2a78012-b769-4005-acc5-289f05765a56', 4970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('eb83c4a9-3a9c-456a-b065-5dce3d9f42aa', '76e87b4e-7c25-4d30-b499-8324b6270e86', 'c3bb7245-d1f2-4be9-beef-f31f3819dd97', 2970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('5803d83e-3aa4-4ca5-b45c-9133a54c38d9', '7f0acbae-3926-40e4-99bc-fa8e10caddda', '25465998-608e-4dc8-9e5a-c7e37a46d3c4', 2970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('8cbcacd5-37ce-44dc-ad31-85a942191391', '7f0acbae-3926-40e4-99bc-fa8e10caddda', '4f29054b-234e-42be-887d-68164fd141b9', 4970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('568b8751-73b0-499b-8c45-b1f8af526ff8', '7f0acbae-3926-40e4-99bc-fa8e10caddda', '943ddf50-01d2-4492-be0a-fb357c40e9e2', 1470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('b1638f5c-0558-404b-8299-c1802f443f6c', '7f0acbae-3926-40e4-99bc-fa8e10caddda', 'b2a78012-b769-4005-acc5-289f05765a56', 1970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('bee5334d-b3d3-4317-b2c3-39fdb8bc4e3e', '7f0acbae-3926-40e4-99bc-fa8e10caddda', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 1500, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('57c30d66-02ee-478f-8aa2-00827fa90e44', '7f0acbae-3926-40e4-99bc-fa8e10caddda', 'fc96c525-d284-45a3-9868-7954401b70c5', 3470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('c8164666-7d36-4dbf-aca2-8d5b0104cc5b', '833e51d6-2767-4988-9dc6-305cfc9009e2', '25465998-608e-4dc8-9e5a-c7e37a46d3c4', 3970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('a6d9be22-a220-45dc-981a-4a7b2166ea6d', '833e51d6-2767-4988-9dc6-305cfc9009e2', '4f29054b-234e-42be-887d-68164fd141b9', 5970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('8a54ab33-a140-4ebd-b3fe-aa09cf7b7b08', '833e51d6-2767-4988-9dc6-305cfc9009e2', '943ddf50-01d2-4492-be0a-fb357c40e9e2', 1570, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('fb6a7c14-4dc2-46ba-a93d-4b4cfa6789f2', '833e51d6-2767-4988-9dc6-305cfc9009e2', 'b2a78012-b769-4005-acc5-289f05765a56', 2470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('341fdf76-11cb-48f2-a558-f33640ccb7a3', '833e51d6-2767-4988-9dc6-305cfc9009e2', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 2000, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('fe1975a2-430e-4eb7-8473-ae5eed60e8af', '833e51d6-2767-4988-9dc6-305cfc9009e2', 'fc96c525-d284-45a3-9868-7954401b70c5', 4470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('2da00d8b-2ff7-4498-b453-553502650e4f', '8543a8a0-96d3-4c57-a738-dc5ae9671a73', '25465998-608e-4dc8-9e5a-c7e37a46d3c4', 4970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('4da12942-2a95-4a1d-af1f-49eb82354936', '8543a8a0-96d3-4c57-a738-dc5ae9671a73', '4f29054b-234e-42be-887d-68164fd141b9', 6970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('11fe8f03-0d52-4c6f-a00c-ff64e9519c90', '8543a8a0-96d3-4c57-a738-dc5ae9671a73', '943ddf50-01d2-4492-be0a-fb357c40e9e2', 1770, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('f4eacf6d-6768-497a-86cb-f18eee3e6a79', '8543a8a0-96d3-4c57-a738-dc5ae9671a73', 'b2a78012-b769-4005-acc5-289f05765a56', 2970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('030e1fc3-5e29-4497-9d8f-84fbd808a362', '8543a8a0-96d3-4c57-a738-dc5ae9671a73', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 2500, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('d7e951a7-6dd2-4884-ac1c-58db703a55bb', '8543a8a0-96d3-4c57-a738-dc5ae9671a73', 'fc96c525-d284-45a3-9868-7954401b70c5', 5470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('9d9c8237-9618-4e16-993b-3c55bc467c49', '857d5c69-cd21-4f8d-8f11-ade761c6a287', '4f29054b-234e-42be-887d-68164fd141b9', 11970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('d087543a-08e9-4555-aa4e-8cc886f82f98', '857d5c69-cd21-4f8d-8f11-ade761c6a287', '70d5333d-f58e-47ae-b509-8d8a782519c5', 5970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('f17d5fb1-e5bf-449c-a386-d40c5ecff2ff', '857d5c69-cd21-4f8d-8f11-ade761c6a287', 'b2a78012-b769-4005-acc5-289f05765a56', 4970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('a77904b4-7364-421b-ae76-33b58bbbaf5f', '857d5c69-cd21-4f8d-8f11-ade761c6a287', 'c3bb7245-d1f2-4be9-beef-f31f3819dd97', 2970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('8e8a09e3-8b79-4aba-8073-a5effd40b014', '86a640ea-d461-4ad9-a574-e789f3af0ff3', '25465998-608e-4dc8-9e5a-c7e37a46d3c4', 5970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('853203ba-cb13-4365-a15b-bd39b090e070', '86a640ea-d461-4ad9-a574-e789f3af0ff3', '4f29054b-234e-42be-887d-68164fd141b9', 8970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('db73789f-20d9-4d9c-8055-eb3ed80c578c', '86a640ea-d461-4ad9-a574-e789f3af0ff3', '943ddf50-01d2-4492-be0a-fb357c40e9e2', 1970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('5d028bb6-06c7-4605-815d-1b11c19ced19', '86a640ea-d461-4ad9-a574-e789f3af0ff3', 'b2a78012-b769-4005-acc5-289f05765a56', 3970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('530b33b6-0bf8-43d9-9047-615a35fb82e7', '86a640ea-d461-4ad9-a574-e789f3af0ff3', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 3000, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('3d412dee-90ee-48f1-bff8-74d07818ea42', '86a640ea-d461-4ad9-a574-e789f3af0ff3', 'fc96c525-d284-45a3-9868-7954401b70c5', 6970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('352f111e-4ae8-4ddb-9cc8-97fc85202f45', '8c16ffd3-3d1c-4ab6-bf67-11b43ed20dbb', '26e0fe96-7d72-47ff-93aa-f9acc74e7e6e', 2270, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('75ac70ee-71dd-489d-9cb7-9b3ccc84ee03', '8c16ffd3-3d1c-4ab6-bf67-11b43ed20dbb', '4c69f94d-a1c1-409d-9700-cc6f4456865b', 2870, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('82783525-d942-42b4-ac11-56eb677fd9ac', '8c16ffd3-3d1c-4ab6-bf67-11b43ed20dbb', '4f29054b-234e-42be-887d-68164fd141b9', 4270, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('2b5e564f-267d-4d63-a43c-f77af0863bc1', '8c16ffd3-3d1c-4ab6-bf67-11b43ed20dbb', '6a3ccc76-7905-46ec-a87d-f9d278ffa50f', 3270, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('51dfb88e-7bff-49ea-87a4-0345acbf3322', '8c16ffd3-3d1c-4ab6-bf67-11b43ed20dbb', '84691035-0765-4ce9-9e06-a809fc3c99c6', 2070, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('5d34fc84-ea91-4927-99ed-eeca40a82224', '8c16ffd3-3d1c-4ab6-bf67-11b43ed20dbb', 'b2a78012-b769-4005-acc5-289f05765a56', 1870, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('8bbecfcf-a7ec-4d16-9741-be08dc0c5671', '8c16ffd3-3d1c-4ab6-bf67-11b43ed20dbb', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 1800, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('931118c1-0a4b-4833-bdfb-32833fec9ba7', '8c16ffd3-3d1c-4ab6-bf67-11b43ed20dbb', 'fa2613af-7b79-4229-8811-a5d9be586a91', 5270, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('a52ea209-6642-4ae6-8606-11f3344c9dcb', '8d692017-1545-49f5-bfd4-d83186b9944b', '25465998-608e-4dc8-9e5a-c7e37a46d3c4', 5970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('c262e600-92c9-4744-91e8-0b14522c59f1', '8d692017-1545-49f5-bfd4-d83186b9944b', '4f29054b-234e-42be-887d-68164fd141b9', 8970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('bddd1ff7-3581-43e4-bfd3-4ad774b8d7c5', '8d692017-1545-49f5-bfd4-d83186b9944b', '943ddf50-01d2-4492-be0a-fb357c40e9e2', 1970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('405078ae-0aae-4158-8cb7-03974b327ead', '8d692017-1545-49f5-bfd4-d83186b9944b', 'b2a78012-b769-4005-acc5-289f05765a56', 3970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('ca02fa07-cf15-4506-8e58-a6499c22e6f6', '8d692017-1545-49f5-bfd4-d83186b9944b', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 3000, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('58fe0802-f286-47e7-b01b-99103d49b491', '8d692017-1545-49f5-bfd4-d83186b9944b', 'fc96c525-d284-45a3-9868-7954401b70c5', 6970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('e0c80d43-d1e8-4d03-ad78-203b09c782d5', '8eb4a7d9-6cf0-40bb-ad37-814a28c1201e', '26e0fe96-7d72-47ff-93aa-f9acc74e7e6e', 2070, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('c90b7b79-bb1d-4bdf-8a18-a35fced494a4', '8eb4a7d9-6cf0-40bb-ad37-814a28c1201e', '4c69f94d-a1c1-409d-9700-cc6f4456865b', 2670, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('e634b4b6-ba00-4967-98fd-aeaea6e63233', '8eb4a7d9-6cf0-40bb-ad37-814a28c1201e', '4f29054b-234e-42be-887d-68164fd141b9', 3870, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('0252510d-7381-4658-b4e2-c9aeddc91551', '8eb4a7d9-6cf0-40bb-ad37-814a28c1201e', '6a3ccc76-7905-46ec-a87d-f9d278ffa50f', 3070, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('fdb9cd28-ec26-4163-b131-6394feab95fe', '8eb4a7d9-6cf0-40bb-ad37-814a28c1201e', '84691035-0765-4ce9-9e06-a809fc3c99c6', 1970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('e65d433b-baed-45b2-8596-d982d09f85ef', '8eb4a7d9-6cf0-40bb-ad37-814a28c1201e', 'b2a78012-b769-4005-acc5-289f05765a56', 1770, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('401a284c-fec2-49f5-9fb1-d315c12590f4', '8eb4a7d9-6cf0-40bb-ad37-814a28c1201e', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 1700, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('db1f80ac-f9e7-4fed-a54d-37ca502d81cc', '8eb4a7d9-6cf0-40bb-ad37-814a28c1201e', 'fa2613af-7b79-4229-8811-a5d9be586a91', 4870, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('0ae6be39-7ab8-44ac-a62b-2dec168ac30b', '8f9c080f-69a8-4aae-b79f-211183c3c7f9', '26e0fe96-7d72-47ff-93aa-f9acc74e7e6e', 1270, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('eb825b46-5978-4257-921e-c0af2fd1fcb4', '8f9c080f-69a8-4aae-b79f-211183c3c7f9', '4c69f94d-a1c1-409d-9700-cc6f4456865b', 1870, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('c6b1555b-7cac-4957-9338-06f4b3a58747', '8f9c080f-69a8-4aae-b79f-211183c3c7f9', '4f29054b-234e-42be-887d-68164fd141b9', 2470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('5b9c1e0f-25dc-41ca-a635-80ed56d7f12d', '8f9c080f-69a8-4aae-b79f-211183c3c7f9', '6a3ccc76-7905-46ec-a87d-f9d278ffa50f', 2270, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('7e44e365-8109-40ce-b477-53da8c45fa6d', '8f9c080f-69a8-4aae-b79f-211183c3c7f9', '84691035-0765-4ce9-9e06-a809fc3c99c6', 1570, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('d05c0ce5-d108-4442-a86c-4b9242e206ad', '8f9c080f-69a8-4aae-b79f-211183c3c7f9', 'b2a78012-b769-4005-acc5-289f05765a56', 1270, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('8964e65c-52d5-4268-810f-7f07bbb641cf', '8f9c080f-69a8-4aae-b79f-211183c3c7f9', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 1300, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('4e055c0f-cde1-4ced-80d5-316de2917275', '935a80d1-c390-414e-a405-5524f2d3d483', '26e0fe96-7d72-47ff-93aa-f9acc74e7e6e', 1470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('8ff25651-5dcc-4434-8e40-3fdb20f7c2df', '935a80d1-c390-414e-a405-5524f2d3d483', '4c69f94d-a1c1-409d-9700-cc6f4456865b', 2070, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('6816076f-86a6-489b-99a0-e7b9c2b761cd', '935a80d1-c390-414e-a405-5524f2d3d483', '4f29054b-234e-42be-887d-68164fd141b9', 2970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('a49e1d0f-7d13-4942-8478-f9e273622ab1', '935a80d1-c390-414e-a405-5524f2d3d483', '6a3ccc76-7905-46ec-a87d-f9d278ffa50f', 2470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('a9204d37-ac05-4e51-9608-a85ec1635ebf', '935a80d1-c390-414e-a405-5524f2d3d483', '84691035-0765-4ce9-9e06-a809fc3c99c6', 1670, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('31ba5fbc-1666-431f-a7c0-d681d44767d0', '935a80d1-c390-414e-a405-5524f2d3d483', 'b2a78012-b769-4005-acc5-289f05765a56', 1470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('21e918ae-f9ed-4355-bf51-178db8854f45', '935a80d1-c390-414e-a405-5524f2d3d483', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 1400, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('94e2bca8-19ea-475f-9bcc-1dc99a2ecaf4', '94b61eae-c6ea-4c22-9c7e-6ed718b9e985', '26e0fe96-7d72-47ff-93aa-f9acc74e7e6e', 2070, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('864a2cc1-8500-4bb5-83e4-d0925e19ffd7', '94b61eae-c6ea-4c22-9c7e-6ed718b9e985', '4c69f94d-a1c1-409d-9700-cc6f4456865b', 2670, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('72e7793b-7633-4ee4-95a6-a3cef9028511', '94b61eae-c6ea-4c22-9c7e-6ed718b9e985', '4f29054b-234e-42be-887d-68164fd141b9', 3870, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('99bb0ec7-0a0c-4ff3-bc15-94bc96a62734', '94b61eae-c6ea-4c22-9c7e-6ed718b9e985', '6a3ccc76-7905-46ec-a87d-f9d278ffa50f', 3070, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('85fdc97c-e074-4467-abdd-6f305c955cfc', '94b61eae-c6ea-4c22-9c7e-6ed718b9e985', '84691035-0765-4ce9-9e06-a809fc3c99c6', 1970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('b156c823-27b8-48a7-a572-fdb98b7872f2', '94b61eae-c6ea-4c22-9c7e-6ed718b9e985', 'b2a78012-b769-4005-acc5-289f05765a56', 1770, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('46f6220c-7639-446f-8770-70ed0d1b78b2', '94b61eae-c6ea-4c22-9c7e-6ed718b9e985', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 1700, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('b41bc918-64be-4ab0-9784-86b14ff16408', '94b61eae-c6ea-4c22-9c7e-6ed718b9e985', 'fa2613af-7b79-4229-8811-a5d9be586a91', 4870, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('1e19d3aa-ca36-40bb-90ba-67b4cc13e638', '95700538-ffec-4e9c-9edf-444bf6fa6b59', '4f29054b-234e-42be-887d-68164fd141b9', 11970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('e0928898-eaff-4b31-bdba-b82eba8a6d41', '95700538-ffec-4e9c-9edf-444bf6fa6b59', '70d5333d-f58e-47ae-b509-8d8a782519c5', 5970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('2b86e466-b232-45c8-babb-211094f11926', '95700538-ffec-4e9c-9edf-444bf6fa6b59', 'b2a78012-b769-4005-acc5-289f05765a56', 4970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('ff9b9895-3c8b-4d60-bd81-7ec08c07b960', '95700538-ffec-4e9c-9edf-444bf6fa6b59', 'c3bb7245-d1f2-4be9-beef-f31f3819dd97', 2970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('9b2d986f-3216-4452-9a0a-dcc6be3f4af8', '9b7c407c-e901-4a7b-af78-32251db37b4f', '4f29054b-234e-42be-887d-68164fd141b9', 10970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('9476d294-cf14-4bd9-a321-4661ae3569d1', '9b7c407c-e901-4a7b-af78-32251db37b4f', '70d5333d-f58e-47ae-b509-8d8a782519c5', 5470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('7a60d3c1-810b-4ec6-9b8a-9e05702db659', '9b7c407c-e901-4a7b-af78-32251db37b4f', 'b2a78012-b769-4005-acc5-289f05765a56', 4470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('43d8f1d5-5ee3-4928-846c-256a2d6cb149', '9b7c407c-e901-4a7b-af78-32251db37b4f', 'c3bb7245-d1f2-4be9-beef-f31f3819dd97', 2670, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('5f85bebb-ebe9-4dd7-a9e9-cd4ed862990f', '9ba1e3d8-a1fc-4638-9025-ea7be8dc6f0b', '4f29054b-234e-42be-887d-68164fd141b9', 10970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('7c4e3360-f65f-4112-8aec-94340602ea5e', '9ba1e3d8-a1fc-4638-9025-ea7be8dc6f0b', '70d5333d-f58e-47ae-b509-8d8a782519c5', 5470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('ec3173dc-b440-4e73-8671-917030690106', '9ba1e3d8-a1fc-4638-9025-ea7be8dc6f0b', 'b2a78012-b769-4005-acc5-289f05765a56', 4470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('e68238f5-4557-4727-a949-2147f041e247', '9ba1e3d8-a1fc-4638-9025-ea7be8dc6f0b', 'c3bb7245-d1f2-4be9-beef-f31f3819dd97', 2670, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('adc15386-d643-4999-88c7-6e5de4a14cac', '9ec1dcc3-cb0e-40be-9fb7-febc4a02e585', '25465998-608e-4dc8-9e5a-c7e37a46d3c4', 5970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('ff7fd101-6bd9-4a8d-8a95-c7743f78594f', '9ec1dcc3-cb0e-40be-9fb7-febc4a02e585', '4f29054b-234e-42be-887d-68164fd141b9', 8970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('77263a19-2ecc-4a7e-9ff8-c4baa7559de0', '9ec1dcc3-cb0e-40be-9fb7-febc4a02e585', '943ddf50-01d2-4492-be0a-fb357c40e9e2', 1970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('7edfdc69-d7ea-4e4f-901c-2599746baa3f', '9ec1dcc3-cb0e-40be-9fb7-febc4a02e585', 'b2a78012-b769-4005-acc5-289f05765a56', 3970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('4768eb82-0a46-413e-95bd-11784b03ca19', '9ec1dcc3-cb0e-40be-9fb7-febc4a02e585', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 3000, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('9789c775-8f20-40db-8a68-fdbea4920b5c', '9ec1dcc3-cb0e-40be-9fb7-febc4a02e585', 'fc96c525-d284-45a3-9868-7954401b70c5', 6970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('565e1bf1-c6a7-43c1-9fa5-9f2c0ea71157', '9fe8d5f6-a422-429f-bf3c-da70ce3f7d1a', '26e0fe96-7d72-47ff-93aa-f9acc74e7e6e', 3471, 'fixed', 90, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-25T21:54:19.35665+00:00'),
+  ('54168413-7e7b-4f91-b9d3-f7bba8a2d69b', '9fe8d5f6-a422-429f-bf3c-da70ce3f7d1a', '4c69f94d-a1c1-409d-9700-cc6f4456865b', 4070, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('80e91555-5751-464e-bf98-8d07ce3ce92c', '9fe8d5f6-a422-429f-bf3c-da70ce3f7d1a', '4f29054b-234e-42be-887d-68164fd141b9', 5700, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('5cdb00de-f339-4adb-a99e-bf921ea2d120', '9fe8d5f6-a422-429f-bf3c-da70ce3f7d1a', '6a3ccc76-7905-46ec-a87d-f9d278ffa50f', 4470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('03425996-11d5-40cd-a2df-51b624ae645a', '9fe8d5f6-a422-429f-bf3c-da70ce3f7d1a', '84691035-0765-4ce9-9e06-a809fc3c99c6', 2370, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('746863d7-da5f-4973-b91d-a5a1f3d873bd', '9fe8d5f6-a422-429f-bf3c-da70ce3f7d1a', 'b2a78012-b769-4005-acc5-289f05765a56', 2170, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('36ed88f1-b54e-46a7-8419-809613948456', '9fe8d5f6-a422-429f-bf3c-da70ce3f7d1a', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 2100, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('35a9b8b6-0988-4a6c-b113-b13a5feaf7a6', '9fe8d5f6-a422-429f-bf3c-da70ce3f7d1a', 'fa2613af-7b79-4229-8811-a5d9be586a91', 6700, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('e0712599-04c2-4d02-9ee1-403b724528ae', 'a2ac6dee-d64e-4cd0-9671-cc7d6b709ca4', '25465998-608e-4dc8-9e5a-c7e37a46d3c4', 5970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('5a9d0bfa-6b48-4672-910b-bb382f77af7b', 'a2ac6dee-d64e-4cd0-9671-cc7d6b709ca4', '4f29054b-234e-42be-887d-68164fd141b9', 8970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('1b344f91-cfae-4c2e-a0b4-b54047b54e73', 'a2ac6dee-d64e-4cd0-9671-cc7d6b709ca4', '943ddf50-01d2-4492-be0a-fb357c40e9e2', 1970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('7cfcff61-c670-49a4-b5e3-b733c89cc073', 'a2ac6dee-d64e-4cd0-9671-cc7d6b709ca4', 'b2a78012-b769-4005-acc5-289f05765a56', 3970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('1c52d3b6-0e3f-4678-8981-f173ea80f7aa', 'a2ac6dee-d64e-4cd0-9671-cc7d6b709ca4', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 3000, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('51b4e9b0-a4a8-48c3-8eaa-b9cb4d44c53c', 'a2ac6dee-d64e-4cd0-9671-cc7d6b709ca4', 'fc96c525-d284-45a3-9868-7954401b70c5', 6970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('db7c6820-671e-4983-980f-77292983e02a', 'a3c5e7eb-d0ef-46ca-b9f7-e72ae1cebcf2', '26e0fe96-7d72-47ff-93aa-f9acc74e7e6e', 1870, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('c175caed-6381-4a44-a927-992138f2a725', 'a3c5e7eb-d0ef-46ca-b9f7-e72ae1cebcf2', '4c69f94d-a1c1-409d-9700-cc6f4456865b', 2470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('70718065-1736-4f9f-81af-f91096a11280', 'a3c5e7eb-d0ef-46ca-b9f7-e72ae1cebcf2', '4f29054b-234e-42be-887d-68164fd141b9', 3470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('0412b9d0-30a2-4af6-8ff9-bbfda85e7cf0', 'a3c5e7eb-d0ef-46ca-b9f7-e72ae1cebcf2', '6a3ccc76-7905-46ec-a87d-f9d278ffa50f', 2870, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('a79a25ca-3386-4f63-bb23-da0fcf80aae3', 'a3c5e7eb-d0ef-46ca-b9f7-e72ae1cebcf2', '84691035-0765-4ce9-9e06-a809fc3c99c6', 1870, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('e71f7525-1630-4fb9-be0f-601afde57469', 'a3c5e7eb-d0ef-46ca-b9f7-e72ae1cebcf2', 'b2a78012-b769-4005-acc5-289f05765a56', 1670, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('91442a86-c47a-4afc-87d8-c46f60122b5f', 'a3c5e7eb-d0ef-46ca-b9f7-e72ae1cebcf2', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 1600, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('0abc130d-411a-48eb-949e-de04bf959b0d', 'a3c5e7eb-d0ef-46ca-b9f7-e72ae1cebcf2', 'fa2613af-7b79-4229-8811-a5d9be586a91', 4470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('4dfa01c7-57a2-40ec-834d-33668239bd13', 'a6a4f709-7003-4ebf-bae1-b140a4954031', '4f29054b-234e-42be-887d-68164fd141b9', 8970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('fb87d395-8150-4c5d-a58d-27f27aed0690', 'a6a4f709-7003-4ebf-bae1-b140a4954031', '70d5333d-f58e-47ae-b509-8d8a782519c5', 4970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('d4163900-0b78-44ed-b3f5-a15a1ef7d672', 'a6a4f709-7003-4ebf-bae1-b140a4954031', 'b2a78012-b769-4005-acc5-289f05765a56', 3970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('95bc167b-ab50-478b-acb7-237b537dde35', 'a6a4f709-7003-4ebf-bae1-b140a4954031', 'c3bb7245-d1f2-4be9-beef-f31f3819dd97', 2370, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('051d328d-299a-4781-909a-201eb94e3a5e', 'a723d8ad-85c2-4c97-884f-7b3a3c409043', '4f29054b-234e-42be-887d-68164fd141b9', 10970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('b0757d38-fe01-4fcd-b535-b86f06c9d09a', 'a723d8ad-85c2-4c97-884f-7b3a3c409043', '70d5333d-f58e-47ae-b509-8d8a782519c5', 5470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('f3839832-30e7-4966-bd0a-b150eca77e23', 'a723d8ad-85c2-4c97-884f-7b3a3c409043', 'b2a78012-b769-4005-acc5-289f05765a56', 4470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('5b607390-2bec-472a-b14d-813e8649c298', 'a723d8ad-85c2-4c97-884f-7b3a3c409043', 'c3bb7245-d1f2-4be9-beef-f31f3819dd97', 2670, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('16ffb852-f443-40bb-87b6-c7af1c1ea393', 'a832671f-5bd1-47cb-8c67-9930d880c4d6', '26e0fe96-7d72-47ff-93aa-f9acc74e7e6e', 3470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('6f4705d6-ef41-4c67-956f-8467f604a12d', 'a832671f-5bd1-47cb-8c67-9930d880c4d6', '4c69f94d-a1c1-409d-9700-cc6f4456865b', 4070, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('32ed2c08-d839-4aa8-a5ec-272a76b22676', 'a832671f-5bd1-47cb-8c67-9930d880c4d6', '4f29054b-234e-42be-887d-68164fd141b9', 5700, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('fe84130c-3630-4868-8dca-0a36dc7466f6', 'a832671f-5bd1-47cb-8c67-9930d880c4d6', '6a3ccc76-7905-46ec-a87d-f9d278ffa50f', 4470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('fd9c2b3a-d798-43c1-b69a-e77a78da079d', 'a832671f-5bd1-47cb-8c67-9930d880c4d6', '84691035-0765-4ce9-9e06-a809fc3c99c6', 2370, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('ab305c97-fab7-415e-aa9e-60c0801e72d3', 'a832671f-5bd1-47cb-8c67-9930d880c4d6', 'b2a78012-b769-4005-acc5-289f05765a56', 2170, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('39694f91-4161-43cc-ae26-618cbd981319', 'a832671f-5bd1-47cb-8c67-9930d880c4d6', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 2100, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('c4208b66-b719-4650-85ad-73ff80a6b80a', 'a832671f-5bd1-47cb-8c67-9930d880c4d6', 'fa2613af-7b79-4229-8811-a5d9be586a91', 6700, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('8018bad0-f89f-4c79-a3dc-8ce6c3ac3bfc', 'a9686cdb-9311-4cd4-9cdd-04a15d627655', '25465998-608e-4dc8-9e5a-c7e37a46d3c4', 4970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('9ea993a8-839e-4bb2-b83f-abb14692a22d', 'a9686cdb-9311-4cd4-9cdd-04a15d627655', '4f29054b-234e-42be-887d-68164fd141b9', 6970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('3719eb46-43c7-40c0-940d-b03fccb9e767', 'a9686cdb-9311-4cd4-9cdd-04a15d627655', '943ddf50-01d2-4492-be0a-fb357c40e9e2', 1770, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('8f41bc75-e5e0-4014-a637-99e383a575d7', 'a9686cdb-9311-4cd4-9cdd-04a15d627655', 'b2a78012-b769-4005-acc5-289f05765a56', 2970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('c435fd59-89f0-49cf-b608-b60c66981905', 'a9686cdb-9311-4cd4-9cdd-04a15d627655', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 2500, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('3da959ca-f5e8-4bbc-9f24-2b732a14e3de', 'a9686cdb-9311-4cd4-9cdd-04a15d627655', 'fc96c525-d284-45a3-9868-7954401b70c5', 5470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('d40f92e3-98fd-4e73-ace2-d30393b70df1', 'a9e6e985-c538-4780-af19-16141eb95024', '26e0fe96-7d72-47ff-93aa-f9acc74e7e6e', 2470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('e2265229-6449-445a-a3ba-d15e6efe96fb', 'a9e6e985-c538-4780-af19-16141eb95024', '4c69f94d-a1c1-409d-9700-cc6f4456865b', 3070, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('703ae496-6810-4573-a80c-e847f3711cd9', 'a9e6e985-c538-4780-af19-16141eb95024', '4f29054b-234e-42be-887d-68164fd141b9', 4670, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('d0401a0a-ff5f-47c8-a3df-16e1fda8561f', 'a9e6e985-c538-4780-af19-16141eb95024', '6a3ccc76-7905-46ec-a87d-f9d278ffa50f', 3470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('fb20a8a5-a400-44a5-a647-3e7ccfa1c175', 'a9e6e985-c538-4780-af19-16141eb95024', '84691035-0765-4ce9-9e06-a809fc3c99c6', 2170, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('37e3f9fa-f6e9-49a1-a2a1-a368ef9d71a3', 'a9e6e985-c538-4780-af19-16141eb95024', 'b2a78012-b769-4005-acc5-289f05765a56', 1970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('6bb95f29-7c8f-4252-858a-2ffd68d4000a', 'a9e6e985-c538-4780-af19-16141eb95024', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 1900, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('8899c778-af33-4a49-9e3d-1b92868cc6bf', 'a9e6e985-c538-4780-af19-16141eb95024', 'fa2613af-7b79-4229-8811-a5d9be586a91', 5670, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('2eb33af7-24a1-4722-92a9-7b3d358431e1', 'aa6d866a-5f44-4463-a261-bc482dc86f11', '25465998-608e-4dc8-9e5a-c7e37a46d3c4', 2970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('9a5d05f0-6f7b-4c98-879f-0fbd18a588ee', 'aa6d866a-5f44-4463-a261-bc482dc86f11', '4f29054b-234e-42be-887d-68164fd141b9', 4970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('518227ad-df09-49c8-b000-66db4cbf88c1', 'aa6d866a-5f44-4463-a261-bc482dc86f11', '943ddf50-01d2-4492-be0a-fb357c40e9e2', 1470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('ae972272-e230-4b5c-8757-12ded7b76a3a', 'aa6d866a-5f44-4463-a261-bc482dc86f11', 'b2a78012-b769-4005-acc5-289f05765a56', 1970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('0684fc5e-856a-49f4-9fbc-e3319134c37f', 'aa6d866a-5f44-4463-a261-bc482dc86f11', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 1500, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('fcfeb268-7484-48fe-954f-4509a81e20ef', 'aa6d866a-5f44-4463-a261-bc482dc86f11', 'fc96c525-d284-45a3-9868-7954401b70c5', 3470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('5a8451c6-00c2-4dd7-844d-f06cb3a3ba1a', 'af6d5826-a78c-4f9e-9354-b1ef843b16eb', '25465998-608e-4dc8-9e5a-c7e37a46d3c4', 1670, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('a62270f0-2b5b-488c-83a8-9214006cfe51', 'af6d5826-a78c-4f9e-9354-b1ef843b16eb', '44f2ab94-1b45-4a1f-9301-e5303acf1d7d', 1170, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('796dffd0-7ff3-4de1-b5ed-f9e55f2bc4fd', 'af6d5826-a78c-4f9e-9354-b1ef843b16eb', '4f29054b-234e-42be-887d-68164fd141b9', 2470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('b4a3d76d-99bc-46d7-a0b3-9ac05bb390cd', 'af6d5826-a78c-4f9e-9354-b1ef843b16eb', 'b2a78012-b769-4005-acc5-289f05765a56', 1370, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('fc6fcac2-8171-4008-bacc-b40e99578760', 'af6d5826-a78c-4f9e-9354-b1ef843b16eb', 'fc96c525-d284-45a3-9868-7954401b70c5', 1970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('49c9c91e-793e-4bad-8767-3f523a73d291', 'af8b2383-8bf1-42a5-9263-71ea3fe4f13e', '26e0fe96-7d72-47ff-93aa-f9acc74e7e6e', 2070, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('135decf7-3e3a-4fed-bdc9-7ed312389c16', 'af8b2383-8bf1-42a5-9263-71ea3fe4f13e', '4c69f94d-a1c1-409d-9700-cc6f4456865b', 2670, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('c73a769f-193a-4958-8e74-da382b8d8fd0', 'af8b2383-8bf1-42a5-9263-71ea3fe4f13e', '4f29054b-234e-42be-887d-68164fd141b9', 3870, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('e942e2c9-81c9-4079-b5ae-42bab82f1982', 'af8b2383-8bf1-42a5-9263-71ea3fe4f13e', '6a3ccc76-7905-46ec-a87d-f9d278ffa50f', 3070, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('940f2e34-99d8-49ef-8fff-c9f7bb24b66f', 'af8b2383-8bf1-42a5-9263-71ea3fe4f13e', '84691035-0765-4ce9-9e06-a809fc3c99c6', 1970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('8d03e0c4-8fa1-4955-9c24-dde0a082bbcf', 'af8b2383-8bf1-42a5-9263-71ea3fe4f13e', 'b2a78012-b769-4005-acc5-289f05765a56', 1770, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('145b6bb5-ac2e-4b1f-92c7-4fab19fe5601', 'af8b2383-8bf1-42a5-9263-71ea3fe4f13e', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 1700, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('97a93575-f965-44d8-aec3-a6dfbd3fb211', 'af8b2383-8bf1-42a5-9263-71ea3fe4f13e', 'fa2613af-7b79-4229-8811-a5d9be586a91', 4870, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('6f9bc23c-1cc7-464d-a12c-ca0d2ac4f738', 'b0c1f092-bfce-4e2b-9e36-7da131f18a33', '25465998-608e-4dc8-9e5a-c7e37a46d3c4', 1670, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('99ce853f-c762-47ea-a13c-76be5a7d5e0d', 'b0c1f092-bfce-4e2b-9e36-7da131f18a33', '44f2ab94-1b45-4a1f-9301-e5303acf1d7d', 1170, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('d5ea30bd-3bd2-4643-a996-28e4c8ef6cb5', 'b0c1f092-bfce-4e2b-9e36-7da131f18a33', '4f29054b-234e-42be-887d-68164fd141b9', 2470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('fb5cbbf5-b947-48a9-9884-511129f617ce', 'b0c1f092-bfce-4e2b-9e36-7da131f18a33', 'b2a78012-b769-4005-acc5-289f05765a56', 1370, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('b022688e-9308-4143-9d9a-460b590cceb9', 'b0c1f092-bfce-4e2b-9e36-7da131f18a33', 'fc96c525-d284-45a3-9868-7954401b70c5', 1970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('3d773472-beeb-41dc-9cb5-aecd06c25ccd', 'b2ba0414-397b-4504-be02-62e5ae2ef90a', '25465998-608e-4dc8-9e5a-c7e37a46d3c4', 5970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('44c92dec-80e9-4c84-b5b3-7c2f2b707485', 'b2ba0414-397b-4504-be02-62e5ae2ef90a', '4f29054b-234e-42be-887d-68164fd141b9', 8970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('081652fb-45ff-40d3-a76f-d61435f0366a', 'b2ba0414-397b-4504-be02-62e5ae2ef90a', '943ddf50-01d2-4492-be0a-fb357c40e9e2', 1970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('105c537b-76db-4a6d-bda5-589c90ca8d7e', 'b2ba0414-397b-4504-be02-62e5ae2ef90a', 'b2a78012-b769-4005-acc5-289f05765a56', 3970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('5a805e12-e0ac-492f-ad7b-47f510d67442', 'b2ba0414-397b-4504-be02-62e5ae2ef90a', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 3000, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('23edbf29-89b7-4adf-b090-421c38fbd859', 'b2ba0414-397b-4504-be02-62e5ae2ef90a', 'fc96c525-d284-45a3-9868-7954401b70c5', 6970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('f3a73fef-707e-4a1d-8014-6e1e8b023107', 'b2d202b1-8b30-4bf8-846f-9a4dd692f07e', '25465998-608e-4dc8-9e5a-c7e37a46d3c4', 1670, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('b256da70-346d-4250-acd0-1b79bfe97f1d', 'b2d202b1-8b30-4bf8-846f-9a4dd692f07e', '44f2ab94-1b45-4a1f-9301-e5303acf1d7d', 1170, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('7224d55f-bfe0-4a07-9fe6-05c67d954640', 'b2d202b1-8b30-4bf8-846f-9a4dd692f07e', '4f29054b-234e-42be-887d-68164fd141b9', 2470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('cb1950b6-34ad-4e1e-91bc-dd24caf066cc', 'b2d202b1-8b30-4bf8-846f-9a4dd692f07e', 'b2a78012-b769-4005-acc5-289f05765a56', 1370, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('295a5dc5-6286-45cf-a9f4-8a9341bc8b0d', 'b2d202b1-8b30-4bf8-846f-9a4dd692f07e', 'fc96c525-d284-45a3-9868-7954401b70c5', 1970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('7b7b5b2e-812e-42d0-90d4-30fda9350e3b', 'b3a076f7-d5d9-4d41-b066-6adcf7a8a0f4', '4f29054b-234e-42be-887d-68164fd141b9', 10970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('120fa0e7-5bde-4879-b697-e442c2a8fc1d', 'b3a076f7-d5d9-4d41-b066-6adcf7a8a0f4', '70d5333d-f58e-47ae-b509-8d8a782519c5', 5470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('a943f08e-bcdc-4667-a856-1b9ee6ca8f61', 'b3a076f7-d5d9-4d41-b066-6adcf7a8a0f4', 'b2a78012-b769-4005-acc5-289f05765a56', 4470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('ba39417e-2ca3-4c8e-a62f-c83b828a88dc', 'b3a076f7-d5d9-4d41-b066-6adcf7a8a0f4', 'c3bb7245-d1f2-4be9-beef-f31f3819dd97', 2670, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('0bb4ace7-61b0-441b-91c1-4552b8987ea0', 'b5ecb87a-c395-4213-8028-053eccf19920', '4f29054b-234e-42be-887d-68164fd141b9', 11970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('e60d4451-3576-4228-abc5-6f88c71ca7dc', 'b5ecb87a-c395-4213-8028-053eccf19920', '70d5333d-f58e-47ae-b509-8d8a782519c5', 5970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('2ab6e12d-face-4914-af42-7392188ae4f2', 'b5ecb87a-c395-4213-8028-053eccf19920', 'b2a78012-b769-4005-acc5-289f05765a56', 4970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('3f8e1f21-657e-40e1-b70b-c7ee0ea750ec', 'b5ecb87a-c395-4213-8028-053eccf19920', 'c3bb7245-d1f2-4be9-beef-f31f3819dd97', 2970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('102113b1-5fcf-44da-9531-67c1eecab395', 'b6e0b1c4-26a5-4b07-b995-f56c5d350d62', '26e0fe96-7d72-47ff-93aa-f9acc74e7e6e', 1470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('ebbeb3b5-13e8-4adc-ad01-e7d1f04f2598', 'b6e0b1c4-26a5-4b07-b995-f56c5d350d62', '4c69f94d-a1c1-409d-9700-cc6f4456865b', 2070, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('ae6bb48e-171a-4ac8-af40-4de872d78e69', 'b6e0b1c4-26a5-4b07-b995-f56c5d350d62', '4f29054b-234e-42be-887d-68164fd141b9', 2970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('eaf18164-8786-42ee-8e76-5a57d4c8a396', 'b6e0b1c4-26a5-4b07-b995-f56c5d350d62', '6a3ccc76-7905-46ec-a87d-f9d278ffa50f', 2470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('8eb6fb2c-51f6-4076-9999-8bb94b3bece5', 'b6e0b1c4-26a5-4b07-b995-f56c5d350d62', '84691035-0765-4ce9-9e06-a809fc3c99c6', 1670, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('41f293e1-90bf-4721-9cb9-47c1d3620ba6', 'b6e0b1c4-26a5-4b07-b995-f56c5d350d62', 'b2a78012-b769-4005-acc5-289f05765a56', 1470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('3d578880-e1c3-4fcb-b28c-15af2756c6bb', 'b6e0b1c4-26a5-4b07-b995-f56c5d350d62', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 1400, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('b5e7c0ca-0c08-4ca8-a94e-114a4ccd16b7', 'c3a620f9-5316-4236-8508-093cb8cee6ac', '4f29054b-234e-42be-887d-68164fd141b9', 10970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('0a1da7d4-6090-4b0a-aba3-ad2f37c21eb0', 'c3a620f9-5316-4236-8508-093cb8cee6ac', '70d5333d-f58e-47ae-b509-8d8a782519c5', 5470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('687a8653-d64f-4f6d-83ea-bf7153db07f3', 'c3a620f9-5316-4236-8508-093cb8cee6ac', 'b2a78012-b769-4005-acc5-289f05765a56', 4470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('71b279b4-0d15-406b-8e2d-e6ee54e4627d', 'c3a620f9-5316-4236-8508-093cb8cee6ac', 'c3bb7245-d1f2-4be9-beef-f31f3819dd97', 2670, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('43ff1424-0ef3-42a6-94bd-e26d790fd0bb', 'c3da5e10-c4de-4291-9fbe-1e51121b5bde', '4f29054b-234e-42be-887d-68164fd141b9', 10970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('36e7bc07-ceb2-4aa5-a2c2-5459877e1ff0', 'c3da5e10-c4de-4291-9fbe-1e51121b5bde', '70d5333d-f58e-47ae-b509-8d8a782519c5', 5470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('42228f97-f9bb-4ed5-a1e1-2ce7e16de13b', 'c3da5e10-c4de-4291-9fbe-1e51121b5bde', 'b2a78012-b769-4005-acc5-289f05765a56', 4470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('d25001e2-f2ac-4714-8831-0ad9eb5d41f4', 'c3da5e10-c4de-4291-9fbe-1e51121b5bde', 'c3bb7245-d1f2-4be9-beef-f31f3819dd97', 2670, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('684caaec-5232-447e-83b7-4a1d4a238465', 'c43dd729-54a1-4575-8491-0b243c2e8eee', '25465998-608e-4dc8-9e5a-c7e37a46d3c4', 1970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('e790c89b-0669-46bf-bb73-e38ef0efd723', 'c43dd729-54a1-4575-8491-0b243c2e8eee', '44f2ab94-1b45-4a1f-9301-e5303acf1d7d', 1370, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('0e4138de-2e83-4719-94e8-3a5d9c91805b', 'c43dd729-54a1-4575-8491-0b243c2e8eee', '4f29054b-234e-42be-887d-68164fd141b9', 2970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('71b70406-73ee-404a-9b20-30f5986329ae', 'c43dd729-54a1-4575-8491-0b243c2e8eee', 'b2a78012-b769-4005-acc5-289f05765a56', 1570, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('0a36dd60-a681-42da-94cc-7643b5a2d808', 'c43dd729-54a1-4575-8491-0b243c2e8eee', 'fc96c525-d284-45a3-9868-7954401b70c5', 2270, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('e4bf0426-0485-44c8-b8fe-4abbf52f4491', 'c47b19d8-02f0-48ca-baee-ca4db169fa64', '25465998-608e-4dc8-9e5a-c7e37a46d3c4', 5970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('33644640-6697-42b2-a344-3226572e2580', 'c47b19d8-02f0-48ca-baee-ca4db169fa64', '4f29054b-234e-42be-887d-68164fd141b9', 8970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('77e751c6-dc73-4d1a-bbb2-bc6910dd22bb', 'c47b19d8-02f0-48ca-baee-ca4db169fa64', '943ddf50-01d2-4492-be0a-fb357c40e9e2', 1970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('2a22c01a-a8d9-4aa5-8d4e-1f4c4f6416b8', 'c47b19d8-02f0-48ca-baee-ca4db169fa64', 'b2a78012-b769-4005-acc5-289f05765a56', 3970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('bb1fa3df-ba81-4378-a861-9d7073e0f684', 'c47b19d8-02f0-48ca-baee-ca4db169fa64', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 3000, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('9658b95c-c48b-4229-a38b-fee8ae59e831', 'c47b19d8-02f0-48ca-baee-ca4db169fa64', 'fc96c525-d284-45a3-9868-7954401b70c5', 6970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('ed28d46b-e127-4e67-9269-7165c4d990c2', 'c5ae11ec-9899-4f64-99e9-3c6dad038256', '26e0fe96-7d72-47ff-93aa-f9acc74e7e6e', 1670, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('574f75e0-cf86-4a0e-a9cf-f4533a91b3e3', 'c5ae11ec-9899-4f64-99e9-3c6dad038256', '4c69f94d-a1c1-409d-9700-cc6f4456865b', 2270, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('5999f3aa-6b93-4b63-a444-9bf19782549f', 'c5ae11ec-9899-4f64-99e9-3c6dad038256', '4f29054b-234e-42be-887d-68164fd141b9', 3270, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('ca22d830-cd45-4bf7-8145-85e16ee65101', 'c5ae11ec-9899-4f64-99e9-3c6dad038256', '6a3ccc76-7905-46ec-a87d-f9d278ffa50f', 2670, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('06d15c37-7ff3-46c2-923a-78d9c0858d2e', 'c5ae11ec-9899-4f64-99e9-3c6dad038256', '84691035-0765-4ce9-9e06-a809fc3c99c6', 1770, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('8de77428-65a4-48e1-9f7f-1c4729ea31f4', 'c5ae11ec-9899-4f64-99e9-3c6dad038256', 'b2a78012-b769-4005-acc5-289f05765a56', 1570, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('917764f6-81dd-44ad-bebf-6e9868ca97f3', 'c5ae11ec-9899-4f64-99e9-3c6dad038256', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 1500, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('ff4ea2cc-3128-4e46-81a6-e01bce61fcff', 'c641b17b-0937-41d3-b275-4b2ed1ca0a6e', '26e0fe96-7d72-47ff-93aa-f9acc74e7e6e', 2470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('ebed225a-5338-4fec-b445-49fe74e63ced', 'c641b17b-0937-41d3-b275-4b2ed1ca0a6e', '4c69f94d-a1c1-409d-9700-cc6f4456865b', 3070, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('28a7771c-729f-45fa-8caf-eb21a3a2ab38', 'c641b17b-0937-41d3-b275-4b2ed1ca0a6e', '4f29054b-234e-42be-887d-68164fd141b9', 4670, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('d4de052f-b573-4e3e-915d-e2bcf0bc2a64', 'c641b17b-0937-41d3-b275-4b2ed1ca0a6e', '6a3ccc76-7905-46ec-a87d-f9d278ffa50f', 3470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('805c8699-39c2-4f4a-819c-0bed806b39ef', 'c641b17b-0937-41d3-b275-4b2ed1ca0a6e', '84691035-0765-4ce9-9e06-a809fc3c99c6', 2170, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('e7680f38-7f23-4345-a65a-63c59759c45f', 'c641b17b-0937-41d3-b275-4b2ed1ca0a6e', 'b2a78012-b769-4005-acc5-289f05765a56', 1970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('6055e594-38e2-42cf-893c-60f5c9d59831', 'c641b17b-0937-41d3-b275-4b2ed1ca0a6e', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 1900, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('c4922e81-3fa7-408b-aecd-d563029a22d6', 'c641b17b-0937-41d3-b275-4b2ed1ca0a6e', 'fa2613af-7b79-4229-8811-a5d9be586a91', 5670, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('8d8217da-5450-49bc-80bb-30106a3d6817', 'c7e47230-b3c7-42f8-a1bf-66cafc3e511c', '25465998-608e-4dc8-9e5a-c7e37a46d3c4', 5970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('29fb4d93-3c4d-405c-a829-6620aa5b76d5', 'c7e47230-b3c7-42f8-a1bf-66cafc3e511c', '4f29054b-234e-42be-887d-68164fd141b9', 8970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('7ba0eb8b-a26f-4865-8d68-cea9735cfe35', 'c7e47230-b3c7-42f8-a1bf-66cafc3e511c', '943ddf50-01d2-4492-be0a-fb357c40e9e2', 1970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('01e1915f-a341-457d-be57-b859551eef26', 'c7e47230-b3c7-42f8-a1bf-66cafc3e511c', 'b2a78012-b769-4005-acc5-289f05765a56', 3970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('3dde175a-4d9d-4c52-a2b4-ac00827c9602', 'c7e47230-b3c7-42f8-a1bf-66cafc3e511c', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 3000, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('29a7b804-2963-4aa5-be26-c6bb700733eb', 'c7e47230-b3c7-42f8-a1bf-66cafc3e511c', 'fc96c525-d284-45a3-9868-7954401b70c5', 6970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('045442d7-29d3-46de-b0b2-4863c1586780', 'c9632bb4-fe1d-4a33-9169-f986b797c0f8', '26e0fe96-7d72-47ff-93aa-f9acc74e7e6e', 1870, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('1e92a93a-0e12-4ebc-91c5-12c02423123a', 'c9632bb4-fe1d-4a33-9169-f986b797c0f8', '4c69f94d-a1c1-409d-9700-cc6f4456865b', 2470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('872c81bb-4245-4ad4-959a-c3e357578832', 'c9632bb4-fe1d-4a33-9169-f986b797c0f8', '4f29054b-234e-42be-887d-68164fd141b9', 3470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('3d1f1bc0-796a-4fb8-a8b9-59ef84b8411c', 'c9632bb4-fe1d-4a33-9169-f986b797c0f8', '6a3ccc76-7905-46ec-a87d-f9d278ffa50f', 2870, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('24b98714-28af-4d9e-a06b-908dc8c50d46', 'c9632bb4-fe1d-4a33-9169-f986b797c0f8', '84691035-0765-4ce9-9e06-a809fc3c99c6', 1870, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('c819081e-8b38-49e4-9711-6f799b8283c4', 'c9632bb4-fe1d-4a33-9169-f986b797c0f8', 'b2a78012-b769-4005-acc5-289f05765a56', 1670, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('2615a3ed-ecab-4afa-9a1c-040c6b045aa7', 'c9632bb4-fe1d-4a33-9169-f986b797c0f8', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 1600, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('49294f71-f72c-478d-b80d-979cdc9461e6', 'c9632bb4-fe1d-4a33-9169-f986b797c0f8', 'fa2613af-7b79-4229-8811-a5d9be586a91', 4470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('2d54a72c-0b15-4a8c-99b2-43511299ea61', 'cb711526-9849-40aa-acd5-9f0c8ce3d738', '26e0fe96-7d72-47ff-93aa-f9acc74e7e6e', 1870, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('a77240e6-98e5-4de8-8e0a-c781c628318f', 'cb711526-9849-40aa-acd5-9f0c8ce3d738', '4c69f94d-a1c1-409d-9700-cc6f4456865b', 2470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('230c69da-c4da-409d-982f-cbf1694cb245', 'cb711526-9849-40aa-acd5-9f0c8ce3d738', '4f29054b-234e-42be-887d-68164fd141b9', 3470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('48af6571-5bf7-4d45-9b0d-1b5cef14a0e4', 'cb711526-9849-40aa-acd5-9f0c8ce3d738', '6a3ccc76-7905-46ec-a87d-f9d278ffa50f', 2870, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('302c6883-58c5-4854-8cda-d21a9025e09c', 'cb711526-9849-40aa-acd5-9f0c8ce3d738', '84691035-0765-4ce9-9e06-a809fc3c99c6', 1870, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('bd951c63-f63e-4f44-a653-fa0b158069ac', 'cb711526-9849-40aa-acd5-9f0c8ce3d738', 'b2a78012-b769-4005-acc5-289f05765a56', 1670, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('49f9a3f4-ec78-4502-8c37-5187717c22c6', 'cb711526-9849-40aa-acd5-9f0c8ce3d738', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 1600, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('85cd3372-9e89-4227-a89d-0462e1dd60bd', 'cb711526-9849-40aa-acd5-9f0c8ce3d738', 'fa2613af-7b79-4229-8811-a5d9be586a91', 4470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('4a114a0c-c067-44fe-b2ac-64db8bb7101a', 'd8347e13-1405-4000-bb47-fa15cf052829', '4f29054b-234e-42be-887d-68164fd141b9', 11970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('1cf234ff-60e4-4676-a561-a06924e5563b', 'd8347e13-1405-4000-bb47-fa15cf052829', '70d5333d-f58e-47ae-b509-8d8a782519c5', 5970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('79159f66-7fb0-4c1d-a2df-55a925aa047b', 'd8347e13-1405-4000-bb47-fa15cf052829', 'b2a78012-b769-4005-acc5-289f05765a56', 4970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('aea16edd-471e-4c8a-8ae7-0ba33a061e72', 'd8347e13-1405-4000-bb47-fa15cf052829', 'c3bb7245-d1f2-4be9-beef-f31f3819dd97', 2970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('16b396ff-3717-4518-8ebf-11b952e0cee2', 'dc726601-80da-4eca-bd08-bdbef33925d4', '26e0fe96-7d72-47ff-93aa-f9acc74e7e6e', 2670, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('f7c03f91-5676-4d93-904c-45854bb18776', 'dc726601-80da-4eca-bd08-bdbef33925d4', '4c69f94d-a1c1-409d-9700-cc6f4456865b', 3270, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('10547640-53c0-43f9-b037-156dccb7c485', 'dc726601-80da-4eca-bd08-bdbef33925d4', '4f29054b-234e-42be-887d-68164fd141b9', 4870, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('3c73b297-ddd5-4d93-b966-0f480915e543', 'dc726601-80da-4eca-bd08-bdbef33925d4', '6a3ccc76-7905-46ec-a87d-f9d278ffa50f', 3670, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('a43198cd-1d03-4949-9958-3d4c66bf7878', 'dc726601-80da-4eca-bd08-bdbef33925d4', '84691035-0765-4ce9-9e06-a809fc3c99c6', 2270, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('0d40ae49-a914-41d3-a40a-6087d223adeb', 'dc726601-80da-4eca-bd08-bdbef33925d4', 'b2a78012-b769-4005-acc5-289f05765a56', 2070, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('60eee5cc-85f2-4fce-83b6-c5b5f29a9909', 'dc726601-80da-4eca-bd08-bdbef33925d4', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 2000, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('08b279fe-dc99-4aac-b994-1926fb0fb2d2', 'dc726601-80da-4eca-bd08-bdbef33925d4', 'fa2613af-7b79-4229-8811-a5d9be586a91', 5870, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('7c152dc9-7576-4ee5-a064-2f9ce2526fb8', 'de096624-9775-4b9a-9f5f-89ea71efa77a', '26e0fe96-7d72-47ff-93aa-f9acc74e7e6e', 2670, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('633bec1b-b838-4a82-843e-ed8edd38ac64', 'de096624-9775-4b9a-9f5f-89ea71efa77a', '4c69f94d-a1c1-409d-9700-cc6f4456865b', 3270, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('584464f0-bd53-42fd-8073-2be9d38b7941', 'de096624-9775-4b9a-9f5f-89ea71efa77a', '4f29054b-234e-42be-887d-68164fd141b9', 4870, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('1426d8d6-63e6-4d9c-993c-d5857d90076c', 'de096624-9775-4b9a-9f5f-89ea71efa77a', '6a3ccc76-7905-46ec-a87d-f9d278ffa50f', 3670, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('ec6a56f4-c31f-4c42-a72d-59155360d8c4', 'de096624-9775-4b9a-9f5f-89ea71efa77a', '84691035-0765-4ce9-9e06-a809fc3c99c6', 2270, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('f814ee75-5805-423c-92e9-e565750d738e', 'de096624-9775-4b9a-9f5f-89ea71efa77a', 'b2a78012-b769-4005-acc5-289f05765a56', 2070, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('9b2f37a9-8a39-4a2f-ab62-42357e7ae636', 'de096624-9775-4b9a-9f5f-89ea71efa77a', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 2000, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('e8a38e29-d700-4a14-b9c5-26e277e7a4da', 'de096624-9775-4b9a-9f5f-89ea71efa77a', 'fa2613af-7b79-4229-8811-a5d9be586a91', 5870, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('01f4ebcd-20de-422b-b963-3f1ec28410bf', 'e0e6bf1b-2fc0-4902-a933-f905a57241f6', '26e0fe96-7d72-47ff-93aa-f9acc74e7e6e', 2070, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('292a871c-7ac2-4d59-a31b-6e67784f679f', 'e0e6bf1b-2fc0-4902-a933-f905a57241f6', '4c69f94d-a1c1-409d-9700-cc6f4456865b', 2670, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('e9ce24b5-2ef2-40b7-b8e7-5e4e79b96d0a', 'e0e6bf1b-2fc0-4902-a933-f905a57241f6', '4f29054b-234e-42be-887d-68164fd141b9', 3870, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('17e07da4-1ae2-48d0-b0a1-06f3ba9d5624', 'e0e6bf1b-2fc0-4902-a933-f905a57241f6', '6a3ccc76-7905-46ec-a87d-f9d278ffa50f', 3070, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('603e21b2-0a15-4644-bb7c-85e9d32a9c80', 'e0e6bf1b-2fc0-4902-a933-f905a57241f6', '84691035-0765-4ce9-9e06-a809fc3c99c6', 1970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('bb5ac188-7607-4fe1-bf48-10d40e0b9aae', 'e0e6bf1b-2fc0-4902-a933-f905a57241f6', 'b2a78012-b769-4005-acc5-289f05765a56', 1770, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('30cc14db-ffa2-4930-8221-33dcc9491a4c', 'e0e6bf1b-2fc0-4902-a933-f905a57241f6', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 1700, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('35cf610b-6fd9-4210-b225-52710dd84cae', 'e0e6bf1b-2fc0-4902-a933-f905a57241f6', 'fa2613af-7b79-4229-8811-a5d9be586a91', 4870, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('2c66f805-3261-460d-bc7b-928a800fc9d7', 'e25d9e77-82a3-4d71-abba-2992b56b85fc', '25465998-608e-4dc8-9e5a-c7e37a46d3c4', 5970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('6b4799b5-65bb-4422-9011-6c529afc1b6e', 'e25d9e77-82a3-4d71-abba-2992b56b85fc', '4f29054b-234e-42be-887d-68164fd141b9', 8970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('7f380755-e58c-433a-96ad-793aaa98ce54', 'e25d9e77-82a3-4d71-abba-2992b56b85fc', '943ddf50-01d2-4492-be0a-fb357c40e9e2', 1970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('567f52c7-91c1-4c57-8e2c-155ac82861e5', 'e25d9e77-82a3-4d71-abba-2992b56b85fc', 'b2a78012-b769-4005-acc5-289f05765a56', 3970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('743f8e36-6e12-42cc-a0ec-bb4f4abc61d8', 'e25d9e77-82a3-4d71-abba-2992b56b85fc', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 3000, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('07998f2d-44c4-4584-a0d9-da65db6fe952', 'e25d9e77-82a3-4d71-abba-2992b56b85fc', 'fc96c525-d284-45a3-9868-7954401b70c5', 6970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('b25cb248-24be-4d70-a317-dd73a3e1b2c3', 'e3c00552-6751-4a79-a10f-4347ccec663d', '26e0fe96-7d72-47ff-93aa-f9acc74e7e6e', 1270, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('0e85eead-49ca-4dff-bfaa-3473ab847a50', 'e3c00552-6751-4a79-a10f-4347ccec663d', '4c69f94d-a1c1-409d-9700-cc6f4456865b', 1870, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('6b88a277-8953-47f4-b2d8-159dcb570550', 'e3c00552-6751-4a79-a10f-4347ccec663d', '4f29054b-234e-42be-887d-68164fd141b9', 2470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('b15ae27d-0dc0-4444-aa59-11f00e31693e', 'e3c00552-6751-4a79-a10f-4347ccec663d', '6a3ccc76-7905-46ec-a87d-f9d278ffa50f', 2270, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('3d76f88e-f0db-4558-a529-00f4525a54bd', 'e3c00552-6751-4a79-a10f-4347ccec663d', '84691035-0765-4ce9-9e06-a809fc3c99c6', 1570, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('0a199814-2c92-4918-a76e-d743004901c3', 'e3c00552-6751-4a79-a10f-4347ccec663d', 'b2a78012-b769-4005-acc5-289f05765a56', 1270, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('5408cb58-7898-4ba4-83c5-3b2788694185', 'e3c00552-6751-4a79-a10f-4347ccec663d', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 1300, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('3b1c06ce-c6ef-4fab-bef4-e01476dc33b6', 'f6f8a84a-8767-4daa-94e0-54e7530b384e', '26e0fe96-7d72-47ff-93aa-f9acc74e7e6e', 2670, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('cc3ff82b-3873-40e2-843a-c803587d0866', 'f6f8a84a-8767-4daa-94e0-54e7530b384e', '4c69f94d-a1c1-409d-9700-cc6f4456865b', 3270, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('5a42bd5f-2201-448c-9d72-122a55552754', 'f6f8a84a-8767-4daa-94e0-54e7530b384e', '4f29054b-234e-42be-887d-68164fd141b9', 4870, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('3c0a553f-73a2-4c3f-bdc5-1887dddd6eb9', 'f6f8a84a-8767-4daa-94e0-54e7530b384e', '6a3ccc76-7905-46ec-a87d-f9d278ffa50f', 3670, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('48155ca8-f0be-4de2-88a1-f624098c8df9', 'f6f8a84a-8767-4daa-94e0-54e7530b384e', '84691035-0765-4ce9-9e06-a809fc3c99c6', 2270, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('e4c030e2-ccb8-4570-8985-4a4731e30c67', 'f6f8a84a-8767-4daa-94e0-54e7530b384e', 'b2a78012-b769-4005-acc5-289f05765a56', 2070, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('cf79b4cf-b676-4944-8f3e-cab43650d152', 'f6f8a84a-8767-4daa-94e0-54e7530b384e', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 2000, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('d3dd9a6d-b152-4610-8841-04d222157617', 'f6f8a84a-8767-4daa-94e0-54e7530b384e', 'fa2613af-7b79-4229-8811-a5d9be586a91', 5870, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('6df5abe1-85d9-47ca-a92e-6c02332a1be0', 'f7127b6a-d811-4e97-9568-d4a0d7adbb94', '4f29054b-234e-42be-887d-68164fd141b9', 11970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('5ea050b9-5c4d-4d85-ba50-2d7e9ca7fc29', 'f7127b6a-d811-4e97-9568-d4a0d7adbb94', '70d5333d-f58e-47ae-b509-8d8a782519c5', 5970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('7736dd23-65fd-4a34-94ca-02f93027675e', 'f7127b6a-d811-4e97-9568-d4a0d7adbb94', 'b2a78012-b769-4005-acc5-289f05765a56', 4970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('6cc79bd6-e38a-4c08-93fd-301fc6ac3384', 'f7127b6a-d811-4e97-9568-d4a0d7adbb94', 'c3bb7245-d1f2-4be9-beef-f31f3819dd97', 2970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('1671badf-3b4e-4c42-be39-bd299aeda726', 'f86b49fb-ea41-45b7-ab28-491c37dcd35f', '25465998-608e-4dc8-9e5a-c7e37a46d3c4', 1670, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('772fea27-bdcf-4c8f-8796-a4de409a8485', 'f86b49fb-ea41-45b7-ab28-491c37dcd35f', '44f2ab94-1b45-4a1f-9301-e5303acf1d7d', 1170, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('41b4cc55-f0d7-4ce2-842f-bbae25acb08b', 'f86b49fb-ea41-45b7-ab28-491c37dcd35f', '4f29054b-234e-42be-887d-68164fd141b9', 2470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('b5f25b01-4954-4498-8f1c-98686a67358e', 'f86b49fb-ea41-45b7-ab28-491c37dcd35f', 'b2a78012-b769-4005-acc5-289f05765a56', 1370, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('4bc84411-66c0-4256-bc13-27af39daba2a', 'f86b49fb-ea41-45b7-ab28-491c37dcd35f', 'fc96c525-d284-45a3-9868-7954401b70c5', 1970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('368a6968-8248-4f0e-be9e-1fd17e96217c', 'fe54a81d-5e61-4fab-83e0-b145ec6747bb', '4f29054b-234e-42be-887d-68164fd141b9', 11970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('fa8c89be-3ed7-42a8-aea2-4cda9a1323bb', 'fe54a81d-5e61-4fab-83e0-b145ec6747bb', '70d5333d-f58e-47ae-b509-8d8a782519c5', 5970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('08f6c3fa-7ae0-43ff-8c05-bfdc6bddc927', 'fe54a81d-5e61-4fab-83e0-b145ec6747bb', 'b2a78012-b769-4005-acc5-289f05765a56', 4970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('7b309324-de7d-4120-9f31-b8c20b81d78d', 'fe54a81d-5e61-4fab-83e0-b145ec6747bb', 'c3bb7245-d1f2-4be9-beef-f31f3819dd97', 2970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('004f0f8e-1774-4594-a3bf-c4a0d0396692', 'ff855234-219b-4cd5-9e7b-609573e27837', '25465998-608e-4dc8-9e5a-c7e37a46d3c4', 3970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('f3ff20e0-85ad-4e4b-8a89-a67c4caa2364', 'ff855234-219b-4cd5-9e7b-609573e27837', '4f29054b-234e-42be-887d-68164fd141b9', 5970, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('e82db834-7beb-4cc7-aab5-690a1667f349', 'ff855234-219b-4cd5-9e7b-609573e27837', '943ddf50-01d2-4492-be0a-fb357c40e9e2', 1570, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('56f22f1c-fb26-4458-9ede-651d31a9a6ec', 'ff855234-219b-4cd5-9e7b-609573e27837', 'b2a78012-b769-4005-acc5-289f05765a56', 2470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('29db963a-f7f5-485c-9354-3b13358428e1', 'ff855234-219b-4cd5-9e7b-609573e27837', 'd3d5e1aa-4232-4235-9dc9-3d88ab1aa7bb', 2000, 'from', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00'),
+  ('c8deffe6-b48b-4b2a-b61e-d166d8eccc86', 'ff855234-219b-4cd5-9e7b-609573e27837', 'fc96c525-d284-45a3-9868-7954401b70c5', 4470, 'fixed', 60, 24, NULL, NULL, NULL, '2025-11-23T20:26:16.074912+00:00', '2025-11-23T20:26:16.074912+00:00');
 
--- ==========================================
--- 3. SERVICES
--- ==========================================
-INSERT INTO services (slug, name_ru, name_en, name_cz, service_type, "order") VALUES
--- iPhone services
-('iphone-display-original-prc', 'Замена дисплея оригинал PRC', 'Display Replacement Original PRC', 'Výměna displeje originál PRC', 'main', 10),
-('iphone-display-analog', 'Замена дисплея (аналог)', 'Display Replacement (Analog)', 'Výměna displeje (analog)', 'main', 20),
-('iphone-battery', 'Замена аккумулятора', 'Battery Replacement', 'Výměna baterie', 'main', 30),
-('iphone-back-glass', 'Замена заднего стеклокорпуса', 'Back Glass Replacement', 'Výměna zadního skla', 'main', 40),
-('iphone-housing', 'Замена корпуса', 'Housing Replacement', 'Výměna krytu', 'main', 50),
-('iphone-camera-main', 'Замена основной камеры', 'Main Camera Replacement', 'Výměna hlavní kamery', 'main', 60),
-('iphone-charging-cable', 'Замена шлейфа зарядки', 'Charging Cable Replacement', 'Výměna nabíjecího kabelu', 'main', 70),
-('iphone-water-damage', 'Восстановление от повреждения водой', 'Water Damage Recovery', 'Obnova po poškození vodou', 'main', 80),
+-- ================================================================
+-- 6. DISCOUNTS (3 records)
+-- Standard promotional offers
+-- ================================================================
+-- Insert discounts (3 records)
+INSERT INTO discounts (id, name_ru, name_en, name_cz, discount_type, value, conditions_ru, conditions_en, conditions_cz, active, created_at, updated_at)
+VALUES
+  ('119dd665-c9ca-48cf-9769-a81fa217fc7e', 'Скидка 10% при ремонте 2+ устройств', '10% discount for 2+ devices', 'Sleva 10% při opravě 2+ zařízení', 'percentage', 10, 'При одновременном ремонте двух и более устройств', 'When repairing two or more devices simultaneously', 'Při současné opravě dvou a více zařízení', TRUE, '2025-11-04T21:00:28.92885+00:00', '2025-11-04T21:00:28.92885+00:00'),
+  ('262d06c1-b3c4-4889-874e-53f82b52d46e', 'Бесплатная диагностика при ремонте', 'Free diagnostics with repair', 'Bezplatná diagnostika při opravě', 'bonus', 0, 'При заказе любого ремонта диагностика бесплатно', 'Free diagnostics when ordering any repair', 'Bezplatná diagnostika při objednání jakékoli opravy', TRUE, '2025-11-04T21:00:28.92885+00:00', '2025-11-04T21:00:28.92885+00:00'),
+  ('05c8a478-4a8f-4f2d-83d5-41c44737afba', 'Гарантия 24 месяца', '24 months warranty', 'Záruka 24 měsíců', 'bonus', 0, 'Гарантия 2 года на все виды ремонта', '2-year warranty on all repairs', 'Záruka 2 roky na všechny druhy oprav', TRUE, '2025-11-04T21:00:28.92885+00:00', '2025-11-04T21:00:28.92885+00:00');
 
--- iPad services
-('ipad-glass', 'Замена стекла дисплея', 'Display Glass Replacement', 'Výměna skla displeje', 'main', 10),
-('ipad-digitizer', 'Замена сенсора дисплея', 'Digitizer Replacement', 'Výměna digitizéru', 'main', 20),
-('ipad-display-original', 'Замена дисплея оригинал', 'Display Replacement Original', 'Výměna displeje originál', 'main', 30),
-('ipad-battery', 'Замена аккумулятора', 'Battery Replacement', 'Výměna baterie', 'main', 40),
-('ipad-water-damage', 'Восстановление от повреждения водой', 'Water Damage Recovery', 'Obnova po poškození vodou', 'main', 50),
-('ipad-charging-port', 'Замена разъема зарядки', 'Charging Port Replacement', 'Výměna nabíjecího portu', 'main', 60),
+COMMIT;
 
--- MacBook services
-('macbook-display', 'Замена дисплея', 'Display Replacement', 'Výměna displeje', 'main', 10),
-('macbook-battery', 'Замена аккумулятора', 'Battery Replacement', 'Výměna baterie', 'main', 20),
-('macbook-keyboard', 'Замена клавиатуры', 'Keyboard Replacement', 'Výměna klávesnice', 'main', 30),
-('macbook-thermal-paste', 'Чистка, замена термопасты', 'Cleaning, Thermal Paste Replacement', 'Čištění, výměna termální pasty', 'main', 40),
+-- ================================================================
+-- VERIFICATION QUERIES
+-- ================================================================
 
--- Apple Watch services
-('watch-glass', 'Замена стекла', 'Glass Replacement', 'Výměna skla', 'main', 10),
-('watch-digitizer', 'Замена сенсора', 'Digitizer Replacement', 'Výměna senzoru', 'main', 20),
-('watch-display', 'Замена дисплея', 'Display Replacement', 'Výměna displeje', 'main', 30),
-('watch-battery', 'Замена аккумулятора', 'Battery Replacement', 'Výměna baterie', 'main', 40),
-('watch-nfc', 'Восстановление NFC', 'NFC Recovery', 'Obnova NFC', 'main', 50)
-ON CONFLICT (slug) DO NOTHING;
+-- Check record counts
+SELECT 'device_categories' as table_name, COUNT(*) as count FROM device_categories
+UNION ALL
+SELECT 'device_models', COUNT(*) FROM device_models
+UNION ALL
+SELECT 'services', COUNT(*) FROM services
+UNION ALL
+SELECT 'category_services', COUNT(*) FROM category_services
+UNION ALL
+SELECT 'prices', COUNT(*) FROM prices
+UNION ALL
+SELECT 'discounts', COUNT(*) FROM discounts;
 
--- ==========================================
--- 4. LINK SERVICES TO CATEGORIES
--- ==========================================
-DO $$
-DECLARE
-  iphone_id UUID;
-  ipad_id UUID;
-  macbook_id UUID;
-  watch_id UUID;
-BEGIN
-  -- Get category IDs
-  SELECT id INTO iphone_id FROM device_categories WHERE slug = 'iphone';
-  SELECT id INTO ipad_id FROM device_categories WHERE slug = 'ipad';
-  SELECT id INTO macbook_id FROM device_categories WHERE slug = 'macbook';
-  SELECT id INTO watch_id FROM device_categories WHERE slug = 'apple-watch';
-
-  -- Link iPhone services
-  INSERT INTO category_services (category_id, service_id, is_active)
-  SELECT iphone_id, id, true FROM services WHERE slug IN (
-    'iphone-display-original-prc',
-    'iphone-display-analog',
-    'iphone-battery',
-    'iphone-back-glass',
-    'iphone-housing',
-    'iphone-camera-main',
-    'iphone-charging-cable',
-    'iphone-water-damage'
-  ) ON CONFLICT DO NOTHING;
-
-  -- Link iPad services
-  INSERT INTO category_services (category_id, service_id, is_active)
-  SELECT ipad_id, id, true FROM services WHERE slug IN (
-    'ipad-glass',
-    'ipad-digitizer',
-    'ipad-display-original',
-    'ipad-battery',
-    'ipad-water-damage',
-    'ipad-charging-port'
-  ) ON CONFLICT DO NOTHING;
-
-  -- Link MacBook services
-  INSERT INTO category_services (category_id, service_id, is_active)
-  SELECT macbook_id, id, true FROM services WHERE slug IN (
-    'macbook-display',
-    'macbook-battery',
-    'macbook-keyboard',
-    'macbook-thermal-paste'
-  ) ON CONFLICT DO NOTHING;
-
-  -- Link Apple Watch services
-  INSERT INTO category_services (category_id, service_id, is_active)
-  SELECT watch_id, id, true FROM services WHERE slug IN (
-    'watch-glass',
-    'watch-digitizer',
-    'watch-display',
-    'watch-battery',
-    'watch-nfc'
-  ) ON CONFLICT DO NOTHING;
-END $$;
-
--- ==========================================
--- 5. SAMPLE PRICES (for iPhone 15 Pro Max)
--- ==========================================
-DO $$
-DECLARE
-  model_id UUID;
-BEGIN
-  SELECT id INTO model_id FROM device_models WHERE slug = 'iphone-15-pro-max';
-
-  -- Diagnostics (free)
-  INSERT INTO prices (model_id, service_id, price, price_type, duration_minutes)
-  SELECT model_id, id, 0, 'free', 15 FROM services WHERE slug = 'iphone-display-original-prc'
-  ON CONFLICT DO NOTHING;
-
-  -- Screen replacement Original PRC
-  INSERT INTO prices (model_id, service_id, price, price_type, duration_minutes)
-  SELECT model_id, id, 3999, 'fixed', 120 FROM services WHERE slug = 'iphone-display-original-prc'
-  ON CONFLICT DO NOTHING;
-
-  -- Screen replacement Analog
-  INSERT INTO prices (model_id, service_id, price, price_type, duration_minutes)
-  SELECT model_id, id, 2499, 'from', 90 FROM services WHERE slug = 'iphone-display-analog'
-  ON CONFLICT DO NOTHING;
-
-  -- Battery replacement
-  INSERT INTO prices (model_id, service_id, price, price_type, duration_minutes)
-  SELECT model_id, id, 1499, 'fixed', 60 FROM services WHERE slug = 'iphone-battery'
-  ON CONFLICT DO NOTHING;
-
-  -- Back glass replacement
-  INSERT INTO prices (model_id, service_id, price, price_type, duration_minutes)
-  SELECT model_id, id, 2499, 'fixed', 180 FROM services WHERE slug = 'iphone-back-glass'
-  ON CONFLICT DO NOTHING;
-
-  -- Camera replacement
-  INSERT INTO prices (model_id, service_id, price, price_type, duration_minutes)
-  SELECT model_id, id, 1999, 'fixed', 90 FROM services WHERE slug = 'iphone-camera-main'
-  ON CONFLICT DO NOTHING;
-
-  -- Water damage repair
-  INSERT INTO prices (model_id, service_id, price, price_type, duration_minutes)
-  SELECT model_id, id, 2999, 'from', 2880 FROM services WHERE slug = 'iphone-water-damage'
-  ON CONFLICT DO NOTHING;
-END $$;
-
--- ==========================================
--- 6. DISCOUNTS
--- ==========================================
-INSERT INTO discounts (name_ru, name_en, name_cz, discount_type, value, conditions_ru, conditions_en, conditions_cz, active) VALUES
-('Скидка 10% при ремонте 2+ устройств', '10% discount for 2+ devices', 'Sleva 10% při opravě 2+ zařízení', 'percentage', 10, 'При одновременном ремонте двух и более устройств', 'When repairing two or more devices simultaneously', 'Při současné opravě dvou a více zařízení', true),
-('Бесплатная диагностика при ремонте', 'Free diagnostics with repair', 'Bezplatná diagnostika při opravě', 'bonus', 0, 'При заказе любого ремонта диагностика бесплатно', 'Free diagnostics when ordering any repair', 'Bezplatná diagnostika při objednání jakékoli opravy', true),
-('Гарантия 24 месяца', '24 months warranty', 'Záruka 24 měsíců', 'bonus', 0, 'Гарантия 2 года на все виды ремонта', '2-year warranty on all repairs', 'Záruka 2 roky na všechny druhy oprav', true);
+-- Verify updated model names (should show years in names)
+SELECT
+  dc.slug as category,
+  COUNT(*) as models_count,
+  COUNT(CASE WHEN dm.name ~ '\(\d{4}\)' THEN 1 END) as with_year
+FROM device_models dm
+JOIN device_categories dc ON dm.category_id = dc.id
+GROUP BY dc.slug
+ORDER BY dc.slug;
