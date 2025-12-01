@@ -31,7 +31,7 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url)
     const modelSlug = searchParams.get('model')
 
-    if (!modelSlug) {
+    if (modelSlug === null) {
       return NextResponse.json(
         { error: 'Model parameter is required' },
         { status: 400 }
