@@ -24,12 +24,9 @@ test.describe('Responsive Design - Mobile (375px)', () => {
     const hamburger = page.locator('button.lg\\:hidden').first()
     await hamburger.click()
 
-    // Wait for menu animation
-    await page.waitForTimeout(300)
-
-    // Menu should contain navigation links
-    const menuLinks = page.getByRole('link', { name: /pricelist|about|contact/i })
-    await expect(menuLinks.first()).toBeVisible()
+    // Wait for mobile menu to open - look for pricelist link inside the sheet
+    const pricelistLink = page.locator('[data-testid="pricelist-link"]').last()
+    await expect(pricelistLink).toBeVisible()
   })
 
   test('should be usable on mobile - pricelist flow', async ({ page }) => {
@@ -132,7 +129,7 @@ test.describe('Responsive Design - Desktop (1920px)', () => {
     await page.goto('/')
 
     // Navigate to pricelist
-    await page.getByRole('link', { name: /pricelist|prices|services/i }).first().click()
+    await page.getByTestId('pricelist-link').click()
     await expect(page).toHaveURL(/\/pricelist/)
 
     // Select category
@@ -177,12 +174,17 @@ test.describe('Responsive Design - Cross-Device Consistency', () => {
         const hamburger = page.locator('button.lg\\:hidden').first()
         if (await hamburger.isVisible()) {
           await hamburger.click()
-          await page.waitForTimeout(300)
+          // Wait for menu to appear and click the mobile link
+          const mobileLink = page.locator('[data-testid="pricelist-link"]').last()
+          await expect(mobileLink).toBeVisible()
+          await mobileLink.click()
+          await expect(page).toHaveURL(/\/pricelist/)
+          return
         }
       }
 
-      // Navigate to pricelist
-      await page.getByRole('link', { name: /pricelist|prices|services/i }).first().click()
+      // Navigate to pricelist (desktop)
+      await page.getByTestId('pricelist-link').click()
       await expect(page).toHaveURL(/\/pricelist/)
     })
   }

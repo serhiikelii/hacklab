@@ -4,8 +4,8 @@ test.describe('Repair Booking Flow', () => {
   test('should navigate from homepage to device category', async ({ page }) => {
     await page.goto('/')
 
-    // Click on pricelist/services navigation
-    const pricelistLink = page.getByRole('link', { name: /pricelist|prices|services/i }).first()
+    // Click on pricelist navigation
+    const pricelistLink = page.getByTestId('pricelist-link')
     await pricelistLink.click()
 
     // Should navigate to pricelist page
@@ -92,11 +92,15 @@ test.describe('Repair Booking Flow - Mobile', () => {
     const hamburger = page.locator('button.lg\\:hidden').first()
     if (await hamburger.isVisible()) {
       await hamburger.click()
-      await page.waitForTimeout(300) // Wait for menu animation
+      // Click the mobile menu link (last one)
+      const mobileLink = page.locator('[data-testid="pricelist-link"]').last()
+      await expect(mobileLink).toBeVisible()
+      await mobileLink.click()
+    } else {
+      // Desktop - click the desktop link
+      await page.getByTestId('pricelist-link').click()
     }
 
-    // Navigate to pricelist
-    await page.getByRole('link', { name: /pricelist|prices|services/i }).first().click()
     await expect(page).toHaveURL(/\/pricelist/)
   })
 
