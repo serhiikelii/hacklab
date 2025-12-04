@@ -42,14 +42,27 @@ device_categories → device_models → prices ← services
 ```
 
 ## 🛠️ Утилиты и скрипты
-**Папка:** `scripts/` - Все временные и утилитарные скрипты
 
-### Доступные скрипты:
-- **`scripts/apply-migration-api.mjs`** - Применение миграций через Supabase Management API
-- **`scripts/process-images.mjs`** - Обработка и копирование картинок устройств
+### ⚠️ ВАЖНО: Файлы перемещены в архив!
+**Дата:** 2025-12-04
+**Причина:** Подготовка к production деплою
 
-### Правило:
-⚠️ **Все временные скрипты писать в `scripts/`** - не засоряй корень проекта!
+Все development файлы перемещены в папку `_archive/`:
+- **Тесты:** `_archive/tests/` - unit, integration, E2E тесты, coverage, playwright-report
+- **Скрипты:** `_archive/scripts/` - все .mjs и .sql скрипты для работы с БД
+- **Документация:** `_archive/docs/` - отчеты, анализы, инструкции
+- **Конфиги тестов:** `_archive/configs/` - playwright.config.ts, vitest.config.ts, vitest.setup.ts
+- **Build артефакты:** `_archive/build-artifacts/` - tsconfig.tsbuildinfo
+
+**Как использовать:** Файлы остались локально в `_archive/`. Подробное описание и инструкции по восстановлению см. в `_archive/README.md`
+
+**Перед production:** Удали всю папку `_archive/` - она уже в .gitignore и не попадет в репозиторий.
+
+### Основные скрипты (теперь в _archive/scripts/):
+- **Database:** analyze-db-schema.mjs, check-db-structure.mjs, rebuild-database.mjs
+- **Data:** export-all-data.mjs, generate-seed-sql.mjs, fix-model-names-simple.mjs
+- **Admin:** check-admin.mjs, test-admin-auth-flow.mjs, verify-admin-access.mjs
+- **Testing:** test-frontend-access.mjs, test-audit-from-server-action.mjs
 
 ## 🚀 Команды
 ```bash
