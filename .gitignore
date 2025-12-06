@@ -42,3 +42,18 @@ next-env.d.ts
 
 # archive folder (development files - delete before production deploy)
 /_archive
+
+# Claude Code settings (development only)
+/.claude
+
+# Playwright MCP screenshots (development only)
+/.playwright-mcp
+
+# Playwright test reports
+/playwright-report
+
+# Development scripts (for database management)
+/scripts
+
+# Database export data
+/data
