@@ -58,7 +58,7 @@ export function AuditLogFilters({
             onChange={(e) => handleFilterChange('action', e.target.value)}
             className="rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
           >
-            <option value="all">Все</option>
+            <option value="all">All</option>
             {ACTIONS.map((action) => (
               <option key={action} value={action}>
                 {action}
@@ -67,15 +67,15 @@ export function AuditLogFilters({
           </select>
         </div>
 
-        {/* Фильтр по таблице */}
+        {/* Filter by table */}
         <div className="flex items-center space-x-2">
-          <label className="text-sm font-medium text-gray-700">Таблица:</label>
+          <label className="text-sm font-medium text-gray-700">Table:</label>
           <select
             value={currentTable || 'all'}
             onChange={(e) => handleFilterChange('table', e.target.value)}
             className="rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
           >
-            <option value="all">Все</option>
+            <option value="all">All</option>
             {TABLES.map((table) => (
               <option key={table} value={table}>
                 {table}
@@ -84,14 +84,14 @@ export function AuditLogFilters({
           </select>
         </div>
 
-        {/* Кнопка сброса */}
+        {/* Reset filters button */}
         {hasActiveFilters && (
           <Button
             variant="outline"
             onClick={handleReset}
             className="text-sm"
           >
-            Сбросить фильтры
+            Reset Filters
           </Button>
         )}
       </div>
