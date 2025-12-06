@@ -2,6 +2,10 @@
 
 import { useState, useEffect } from 'react'
 import { createModel, getMaxOrder } from './actions'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Plus, X } from 'lucide-react'
 
 interface AddModelFormProps {
   categoryId: string
@@ -27,6 +31,31 @@ export function AddModelForm({ categoryId, categorySlug }: AddModelFormProps) {
     setError('')
 
     const formData = new FormData(e.currentTarget)
+
+    // Client-side validation
+    const name = formData.get('name') as string
+    const releaseYear = formData.get('release_year') as string
+    const order = formData.get('order') as string
+
+    if (!name?.trim()) {
+      setError('Model name is required')
+      setLoading(false)
+      return
+    }
+
+    const year = parseInt(releaseYear)
+    if (!releaseYear || isNaN(year) || year < 2000 || year > 2030) {
+      setError('Release year must be between 2000 and 2030')
+      setLoading(false)
+      return
+    }
+
+    if (!order || parseInt(order) < 1) {
+      setError('Sort order must be at least 1')
+      setLoading(false)
+      return
+    }
+
     formData.append('category_id', categoryId)
 
     const result = await createModel(formData)
@@ -44,166 +73,104 @@ export function AddModelForm({ categoryId, categorySlug }: AddModelFormProps) {
 
   if (!isOpen) {
     return (
-      <button
-        onClick={() => setIsOpen(true)}
-        className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-      >
-        <svg
-          className="-ml-1 mr-2 h-5 w-5"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-          />
-        </svg>
+      <Button onClick={() => setIsOpen(true)} variant="primary" className="mb-4">
+        <Plus className="h-4 w-4 mr-2" />
         Add Model
-      </button>
+      </Button>
     )
   }
 
   const recommendedOrder = maxOrder + 1
 
   return (
-    <div className="bg-white shadow sm:rounded-lg p-6">
+    <div className="mb-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
       <div className="flex justify-between items-center mb-4">
-        <h3 className="text-lg font-medium text-gray-900">
-          Add New Model
-        </h3>
-        <button
+        <h4 className="text-lg font-medium">Add New Model</h4>
+        <Button
+          variant="ghost"
+          size="sm"
           onClick={() => {
             setIsOpen(false)
             setError('')
           }}
-          className="text-gray-400 hover:text-gray-500"
+          disabled={loading}
         >
-          <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M6 18L18 6M6 6l12 12"
-            />
-          </svg>
-        </button>
+          <X className="h-4 w-4" />
+        </Button>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        {error && (
-          <div className="rounded-md bg-red-50 p-4">
-            <p className="text-sm text-red-800">{error}</p>
-          </div>
-        )}
-
         {/* Model name */}
         <div>
-          <label
-            htmlFor="name"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Model Name
-          </label>
-          <input
-            type="text"
-            name="name"
+          <Label htmlFor="name">
+            Model Name <span className="text-red-500">*</span>
+          </Label>
+          <Input
             id="name"
-            required
+            name="name"
             placeholder="e.g.: iPhone 15 Pro"
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            disabled={loading}
           />
         </div>
 
         {/* Release year */}
         <div>
-          <label
-            htmlFor="release_year"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Release Year
-          </label>
-          <input
-            type="number"
-            name="release_year"
+          <Label htmlFor="release_year">
+            Release Year <span className="text-red-500">*</span>
+          </Label>
+          <Input
             id="release_year"
-            required
+            name="release_year"
+            type="number"
             min="2000"
             max="2030"
             defaultValue={new Date().getFullYear()}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            disabled={loading}
           />
         </div>
 
-        {/* Order with UX Helper */}
+        {/* Sort Order */}
         <div>
-          <label
-            htmlFor="order"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Sort Order
-          </label>
-          <input
-            type="number"
-            name="order"
+          <Label htmlFor="order">
+            Sort Order <span className="text-red-500">*</span>
+          </Label>
+          <Input
             id="order"
-            required
+            name="order"
+            type="number"
             min="1"
             defaultValue={recommendedOrder}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            disabled={loading}
           />
           <p className="mt-1 text-sm text-gray-500">
-            Current max order: <strong>{maxOrder}</strong>.
-            Recommended: <strong>{recommendedOrder}</strong> (step 1)
+            Current max order: <strong>{maxOrder}</strong>. Recommended:{' '}
+            <strong>{recommendedOrder}</strong> (step 1)
           </p>
         </div>
 
+        {/* Error message */}
+        {error && (
+          <div className="p-3 bg-red-50 border border-red-200 rounded-md">
+            <p className="text-sm text-red-800">{error}</p>
+          </div>
+        )}
+
         {/* Buttons */}
-        <div className="flex justify-end space-x-3 pt-4">
-          <button
+        <div className="flex gap-2">
+          <Button type="submit" variant="outline" disabled={loading}>
+            {loading ? 'Creating...' : 'Create Model'}
+          </Button>
+          <Button
             type="button"
+            variant="outline"
             onClick={() => {
               setIsOpen(false)
               setError('')
             }}
-            className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            disabled={loading}
           >
             Cancel
-          </button>
-          <button
-            type="submit"
-            disabled={loading}
-            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
-          >
-            {loading ? (
-              <>
-                <svg
-                  className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  />
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                  />
-                </svg>
-                Creating...
-              </>
-            ) : (
-              'Create Model'
-            )}
-          </button>
+          </Button>
         </div>
       </form>
     </div>

@@ -46,21 +46,15 @@ export function AddPriceForm({
     (service) => !existingServiceIds.includes(service.id)
   )
 
-  const handleSuccess = () => {
-    if (state?.success) {
-      setIsOpen(false)
-      setSelectedServiceId('')
-    }
-  }
-
   // Automatically close form on success
   if (state?.success && isOpen) {
-    handleSuccess()
+    setIsOpen(false)
+    setSelectedServiceId('')
   }
 
   if (!isOpen) {
     return (
-      <Button onClick={() => setIsOpen(true)} className="mb-4">
+      <Button onClick={() => setIsOpen(true)} variant="primary" className="mb-4">
         <Plus className="h-4 w-4 mr-2" />
         Add Price
       </Button>
@@ -106,12 +100,11 @@ export function AddPriceForm({
             Service <span className="text-red-500">*</span>
           </Label>
           <Select
-            name="service_id"
             value={selectedServiceId}
             onValueChange={setSelectedServiceId}
-            required
+            disabled={isPending}
           >
-            <SelectTrigger>
+            <SelectTrigger className="max-w-xs">
               <SelectValue placeholder="Select service" />
             </SelectTrigger>
             <SelectContent>
@@ -126,13 +119,19 @@ export function AddPriceForm({
                           : 'bg-purple-100 text-purple-800'
                       }`}
                     >
-                      {service.service_type === 'main' ? 'Repair' : 'Extra'}
+                      {service.service_type === 'main' ? 'Main' : 'Extra'}
                     </span>
                   </div>
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
+          <input type="hidden" name="service_id" value={selectedServiceId} />
+          {!selectedServiceId && !state?.errors?.service_id && (
+            <p className="text-sm text-gray-500 mt-1">
+              Please select a service to continue
+            </p>
+          )}
           {state?.errors?.service_id && (
             <p className="text-sm text-red-600 mt-1">
               {state.errors.service_id[0]}
@@ -205,7 +204,7 @@ export function AddPriceForm({
 
         {/* Buttons */}
         <div className="flex gap-2">
-          <Button type="submit" disabled={isPending || !selectedServiceId}>
+          <Button type="submit" variant="outline" disabled={isPending || !selectedServiceId}>
             {isPending ? 'Adding...' : 'Add'}
           </Button>
           <Button

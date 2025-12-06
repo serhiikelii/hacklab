@@ -20,13 +20,13 @@ const PriceSchema = z.object({
   duration_minutes: z.coerce
     .number()
     .int('Duration must be an integer')
-    .positive('Duration must be positive')
+    .min(1, 'Duration must be at least 1 minute')
     .nullable()
     .optional(),
   warranty_months: z.coerce
     .number()
     .int('Warranty must be an integer')
-    .positive('Warranty must be positive')
+    .min(0, 'Warranty cannot be negative')
     .nullable()
     .optional()
     .default(24),
@@ -60,15 +60,20 @@ export async function addPrice(
       warranty_months: formData.get('warranty_months'),
     }
 
+    console.error('[DEBUG] addPrice - Raw form data:', rawData)
+
     const validatedFields = PriceSchema.safeParse(rawData)
 
     if (!validatedFields.success) {
+      console.error('[DEBUG] addPrice - Validation failed:', validatedFields.error.flatten())
       return {
         success: false,
         message: 'Validation error',
         errors: validatedFields.error.flatten().fieldErrors,
       }
     }
+
+    console.error('[DEBUG] addPrice - Validated data:', validatedFields.data)
 
     const { service_id, price, duration_minutes, warranty_months } = validatedFields.data
 
@@ -95,7 +100,6 @@ export async function addPrice(
       price_type: 'fixed',
       duration_minutes: duration_minutes ?? null,
       warranty_months: warranty_months ?? 24,
-      is_active: true,
     }
 
     const { data: newPrice, error } = await supabase
@@ -105,11 +109,14 @@ export async function addPrice(
       .single()
 
     if (error) {
+      console.error('[DEBUG] addPrice - Database error:', error)
       return {
         success: false,
-        message: 'Error adding price',
+        message: `Database error: ${error.message}`,
       }
     }
+
+    console.error('[DEBUG] addPrice - Success! New price:', newPrice)
 
     // Audit logging
     await logCreate('prices', newPrice.id, newPriceData)

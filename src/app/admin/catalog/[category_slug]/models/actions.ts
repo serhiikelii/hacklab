@@ -5,6 +5,16 @@ import { z } from 'zod'
 import { revalidatePath } from 'next/cache'
 import { logCreate, logUpdate } from '@/lib/audit'
 
+// Helper function to generate URL-friendly slug
+function generateSlug(name: string): string {
+  return name
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, '') // Remove special characters
+    .replace(/\s+/g, '-') // Replace spaces with hyphens
+    .replace(/-+/g, '-') // Replace multiple hyphens with single hyphen
+}
+
 // Validation schema for creating a model
 const createModelSchema = z.object({
   name: z.string().min(1, 'Name is required'),
@@ -26,9 +36,13 @@ export async function createModel(formData: FormData) {
       category_id: formData.get('category_id'),
     })
 
+    // Generate slug from model name
+    const slug = generateSlug(validatedData.name)
+
     // Insert into database
     const modelData = {
       name: validatedData.name,
+      slug: slug,
       release_year: validatedData.release_year,
       order: validatedData.order,
       category_id: validatedData.category_id,

@@ -7,6 +7,16 @@ import { logCreate, logUpdate } from '@/lib/audit'
 
 // Temporary workaround for typing
 
+// Generate slug from English name
+function generateSlug(name: string): string {
+  return name
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, '') // Remove special characters
+    .replace(/\s+/g, '-') // Replace spaces with hyphens
+    .replace(/-+/g, '-') // Replace multiple hyphens with single
+}
+
 
 // Validation schema for creating a service
 const createServiceSchema = z.object({
@@ -22,34 +32,49 @@ export async function createService(formData: FormData) {
   try {
     const supabase = await createClient()
 
-    const validatedData = createServiceSchema.parse({
+    const rawData = {
       name_ru: formData.get('name_ru'),
       name_en: formData.get('name_en'),
       name_cz: formData.get('name_cz'),
       service_type: formData.get('service_type'),
       order: formData.get('order'),
       category_id: formData.get('category_id'),
-    })
+    }
+
+    console.error('[DEBUG] createService - Raw form data:', rawData)
+
+    const validatedData = createServiceSchema.parse(rawData)
+    console.error('[DEBUG] createService - Validated data:', validatedData)
 
     // 1. Create or find service in services table
-    const { data: existingService } = await supabase
+    const { data: existingService, error: findError } = await supabase
       .from('services')
       .select('id')
       .eq('name_ru', validatedData.name_ru)
-      .single()
+      .maybeSingle()
+
+    if (findError) {
+      console.error('[ERROR] createService - Error finding existing service:', findError)
+    }
 
     let serviceId: string
 
     if (existingService) {
+      console.error('[DEBUG] createService - Found existing service:', existingService.id)
       serviceId = existingService.id
     } else {
+      console.error('[DEBUG] createService - Creating new service...')
       // Create new service
+      const slug = generateSlug(validatedData.name_en)
+      console.error('[DEBUG] createService - Generated slug:', slug)
+
       const { data: newService, error: serviceError } = await supabase
         .from('services')
         .insert({
           name_ru: validatedData.name_ru,
           name_en: validatedData.name_en,
           name_cz: validatedData.name_cz,
+          slug: slug,
           service_type: validatedData.service_type, // Fixed: save service_type template
           order: validatedData.order, // Fixed: save order template
         })
@@ -57,9 +82,11 @@ export async function createService(formData: FormData) {
         .single()
 
       if (serviceError || !newService) {
-        return { success: false, error: 'Error creating service' }
+        console.error('[ERROR] createService - Error creating service:', serviceError)
+        return { success: false, error: `Error creating service: ${serviceError?.message || 'Unknown'}` }
       }
 
+      console.error('[DEBUG] createService - New service created:', newService)
       serviceId = newService.id
     }
 
@@ -72,6 +99,8 @@ export async function createService(formData: FormData) {
       // Note: service_type is stored in services table, not here
     }
 
+    console.error('[DEBUG] createService - Creating category_services link:', categoryServiceData)
+
     const { data: newCategoryService, error: linkError } = await supabase
       .from('category_services')
       .insert(categoryServiceData)
@@ -79,8 +108,11 @@ export async function createService(formData: FormData) {
       .single()
 
     if (linkError) {
-      return { success: false, error: 'Service already added to category' }
+      console.error('[ERROR] createService - Error creating category_services link:', linkError)
+      return { success: false, error: `Error linking service: ${linkError.message}` }
     }
+
+    console.error('[DEBUG] createService - Category service link created:', newCategoryService)
 
     // Audit logging
     await logCreate(
@@ -100,15 +132,18 @@ export async function createService(formData: FormData) {
       revalidatePath(`/admin/catalog/${category.slug}/services`)
     }
 
+    console.error('[DEBUG] createService - Success!')
     return { success: true }
   } catch (error) {
+    console.error('[ERROR] createService - Unexpected error:', error)
     if (error instanceof z.ZodError) {
+      console.error('[ERROR] createService - Validation errors:', error.errors)
       return {
         success: false,
         error: error.errors.map((e) => e.message).join(', '),
       }
     }
-    return { success: false, error: 'Unknown error' }
+    return { success: false, error: `Unknown error: ${error}` }
   }
 }
 

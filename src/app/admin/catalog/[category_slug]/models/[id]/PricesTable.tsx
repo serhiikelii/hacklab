@@ -60,6 +60,12 @@ export function PricesTable({
     duration_minutes: '',
     warranty_months: '',
   })
+  const [deleteConfirm, setDeleteConfirm] = useState<{
+    show: boolean
+    priceId: string
+    serviceName: string
+  }>({ show: false, priceId: '', serviceName: '' })
+  const [error, setError] = useState('')
 
   const handleEdit = (price: Price) => {
     setEditingId(price.id)
@@ -87,21 +93,31 @@ export function PricesTable({
     if (result.success) {
       setEditingId(null)
       setEditData({ price: '', duration_minutes: '', warranty_months: '' })
+      setError('')
     } else {
-      alert(result.message)
+      setError(result.message)
     }
   }
 
-  const handleDelete = async (priceId: string, serviceName: string) => {
-    if (!confirm(`Delete price for service "${serviceName}"?`)) {
-      return
-    }
+  const handleDeleteClick = (priceId: string, serviceName: string) => {
+    setDeleteConfirm({ show: true, priceId, serviceName })
+  }
+
+  const handleDeleteConfirm = async () => {
+    const { priceId } = deleteConfirm
+    setDeleteConfirm({ show: false, priceId: '', serviceName: '' })
 
     const result = await deletePrice(priceId, modelId, categorySlug)
 
     if (!result.success) {
-      alert(result.message)
+      setError(result.message)
+    } else {
+      setError('')
     }
+  }
+
+  const handleDeleteCancel = () => {
+    setDeleteConfirm({ show: false, priceId: '', serviceName: '' })
   }
 
   if (prices.length === 0) {
@@ -113,8 +129,41 @@ export function PricesTable({
   }
 
   return (
-    <div className="overflow-x-auto">
-      <Table>
+    <div className="space-y-4">
+      {/* Error Message */}
+      {error && (
+        <div className="rounded-md bg-red-50 p-4">
+          <p className="text-sm text-red-800">{error}</p>
+        </div>
+      )}
+
+      {/* Delete Confirmation Dialog */}
+      {deleteConfirm.show && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4 shadow-xl">
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              Confirm Delete
+            </h3>
+            <p className="text-sm text-gray-600 mb-6">
+              Delete price for service <strong>&quot;{deleteConfirm.serviceName}&quot;</strong>?
+            </p>
+            <div className="flex justify-end gap-3">
+              <Button variant="outline" onClick={handleDeleteCancel}>
+                Cancel
+              </Button>
+              <Button
+                variant="destructive"
+                onClick={handleDeleteConfirm}
+              >
+                Delete
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <div className="overflow-x-auto">
+        <Table>
         <TableHeader>
           <TableRow>
             <TableHead>Service</TableHead>
@@ -142,7 +191,7 @@ export function PricesTable({
                         : 'bg-purple-100 text-purple-800'
                     }`}
                   >
-                    {price.services.service_type === 'main' ? 'Repair' : 'Extra Service'}
+                    {price.services.service_type === 'main' ? 'Main' : 'Extra'}
                   </span>
                 </TableCell>
                 <TableCell className="text-right">
@@ -221,7 +270,7 @@ export function PricesTable({
                         size="sm"
                         variant="ghost"
                         onClick={() =>
-                          handleDelete(price.id, price.services.name_en)
+                          handleDeleteClick(price.id, price.services.name_en)
                         }
                       >
                         <Trash2 className="h-4 w-4 text-red-600" />
@@ -234,6 +283,7 @@ export function PricesTable({
           })}
         </TableBody>
       </Table>
+      </div>
     </div>
   )
 }

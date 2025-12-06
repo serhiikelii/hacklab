@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import {
   DndContext,
@@ -90,7 +90,7 @@ function SortableServiceItem({
                   : 'bg-purple-100 text-purple-800'
               }`}
             >
-              {service.service_type === 'main' ? 'Repair' : 'Extra Service'}
+              {service.service_type === 'main' ? 'Main' : 'Extra'}
             </span>
 
             {/* Service Names */}
@@ -126,7 +126,13 @@ export function ServicesList({
 }: ServicesListProps) {
   const [services, setServices] = useState(initialServices)
   const [isSaving, setIsSaving] = useState(false)
+  const [isMounted, setIsMounted] = useState(false)
   const router = useRouter()
+
+  // Prevent hydration mismatch with DnD
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -179,6 +185,42 @@ export function ServicesList({
       <div className="px-4 py-12 text-center text-gray-500">
         No services found. Add the first service above.
       </div>
+    )
+  }
+
+  // Prevent hydration errors by only rendering DnD on client
+  if (!isMounted) {
+    return (
+      <ul className="divide-y divide-gray-200">
+        {services.map((service) => (
+          <li key={service.id} className="px-4 py-4 sm:px-6 bg-white">
+            <div className="flex items-center justify-between">
+              <div className="flex-1">
+                <div className="flex items-center space-x-3">
+                  <span
+                    className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                      service.service_type === 'main'
+                        ? 'bg-blue-100 text-blue-800'
+                        : 'bg-purple-100 text-purple-800'
+                    }`}
+                  >
+                    {service.service_type === 'main' ? 'Main' : 'Extra'}
+                  </span>
+                  <div>
+                    <p className="text-sm font-medium text-gray-900">
+                      {service.service_name_en}
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      RU: {service.service_name_ru} • CZ: {service.service_name_cz}
+                    </p>
+                  </div>
+                </div>
+                <p className="text-xs text-gray-500 mt-1">Order: {service.order}</p>
+              </div>
+            </div>
+          </li>
+        ))}
+      </ul>
     )
   }
 

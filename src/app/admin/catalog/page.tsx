@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase-server'
+import { Smartphone } from 'lucide-react'
 
 interface DeviceCategory {
   id: string
@@ -58,23 +59,11 @@ export default async function CatalogPage() {
               key={category.id}
               href={`/admin/catalog/${category.slug}/models`}
             >
-              <div className="bg-white overflow-hidden shadow rounded-lg hover:shadow-md transition-shadow cursor-pointer">
+              <div className="bg-white overflow-hidden shadow rounded-lg hover:shadow-md transition-all hover:scale-[1.02] cursor-pointer border border-gray-200">
                 <div className="p-6">
                   <div className="flex items-center">
-                    <div className="flex-shrink-0 bg-indigo-500 rounded-md p-3">
-                      <svg
-                        className="h-6 w-6 text-white"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"
-                        />
-                      </svg>
+                    <div className="flex-shrink-0 bg-gray-700 rounded-md p-3">
+                      <Smartphone className="h-6 w-6 text-white" />
                     </div>
                     <div className="ml-5 w-0 flex-1">
                       <dl>

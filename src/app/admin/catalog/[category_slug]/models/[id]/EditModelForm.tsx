@@ -3,6 +3,9 @@
 import { useState } from 'react'
 import { updateModel } from '../actions'
 import { useRouter } from 'next/navigation'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 
 interface EditModelFormProps {
   model: {
@@ -27,6 +30,31 @@ export function EditModelForm({ model, categorySlug }: EditModelFormProps) {
     setSuccess(false)
 
     const formData = new FormData(e.currentTarget)
+
+    // Client-side validation
+    const name = formData.get('name') as string
+    const releaseYear = formData.get('release_year') as string
+    const order = formData.get('order') as string
+
+    if (!name?.trim()) {
+      setError('Model name is required')
+      setLoading(false)
+      return
+    }
+
+    const year = parseInt(releaseYear)
+    if (!releaseYear || isNaN(year) || year < 2000 || year > 2030) {
+      setError('Release year must be between 2000 and 2030')
+      setLoading(false)
+      return
+    }
+
+    if (!order || parseInt(order) < 1) {
+      setError('Sort order must be at least 1')
+      setLoading(false)
+      return
+    }
+
     formData.append('id', model.id)
     formData.append('category_slug', categorySlug)
 
@@ -46,17 +74,17 @@ export function EditModelForm({ model, categorySlug }: EditModelFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-6 bg-white p-6 rounded-lg border border-gray-200">
       <h3 className="text-lg font-medium text-gray-900">Basic Properties</h3>
 
       {error && (
-        <div className="rounded-md bg-red-50 p-4">
+        <div className="p-3 bg-red-50 border border-red-200 rounded-md">
           <p className="text-sm text-red-800">{error}</p>
         </div>
       )}
 
       {success && (
-        <div className="rounded-md bg-green-50 p-4">
+        <div className="p-3 bg-green-50 border border-green-200 rounded-md">
           <p className="text-sm text-green-800">
             Model successfully updated! Redirecting...
           </p>
@@ -66,59 +94,47 @@ export function EditModelForm({ model, categorySlug }: EditModelFormProps) {
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
         {/* Model name */}
         <div className="sm:col-span-2">
-          <label
-            htmlFor="name"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Model Name
-          </label>
-          <input
-            type="text"
-            name="name"
+          <Label htmlFor="name">
+            Model Name <span className="text-red-500">*</span>
+          </Label>
+          <Input
             id="name"
-            required
+            name="name"
             defaultValue={model.name}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            disabled={loading || success}
           />
         </div>
 
         {/* Release year */}
         <div>
-          <label
-            htmlFor="release_year"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Release Year
-          </label>
-          <input
-            type="number"
-            name="release_year"
+          <Label htmlFor="release_year">
+            Release Year <span className="text-red-500">*</span>
+          </Label>
+          <Input
             id="release_year"
-            required
+            name="release_year"
+            type="number"
             min="2000"
             max="2030"
             defaultValue={model.release_year}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            disabled={loading || success}
           />
         </div>
       </div>
 
-      {/* Order */}
+      {/* Sort Order */}
       <div>
-        <label
-          htmlFor="order"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Sort Order
-        </label>
-        <input
-          type="number"
-          name="order"
+        <Label htmlFor="order">
+          Sort Order <span className="text-red-500">*</span>
+        </Label>
+        <Input
           id="order"
-          required
+          name="order"
+          type="number"
           min="1"
           defaultValue={model.order}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+          disabled={loading || success}
+          className="max-w-xs"
         />
         <p className="mt-1 text-sm text-gray-500">
           Used for sorting models in the list
@@ -126,46 +142,18 @@ export function EditModelForm({ model, categorySlug }: EditModelFormProps) {
       </div>
 
       {/* Buttons */}
-      <div className="flex justify-end space-x-3 pt-4">
-        <button
+      <div className="flex justify-end gap-2 pt-4 border-t border-gray-200">
+        <Button
           type="button"
+          variant="outline"
           onClick={() => router.back()}
-          className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          disabled={loading || success}
         >
           Cancel
-        </button>
-        <button
-          type="submit"
-          disabled={loading || success}
-          className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
-        >
-          {loading ? (
-            <>
-              <svg
-                className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <circle
-                  className="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  strokeWidth="4"
-                />
-                <path
-                  className="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                />
-              </svg>
-              Saving...
-            </>
-          ) : (
-            'Save Changes'
-          )}
-        </button>
+        </Button>
+        <Button type="submit" disabled={loading || success}>
+          {loading ? 'Saving...' : 'Save Changes'}
+        </Button>
       </div>
     </form>
   )
