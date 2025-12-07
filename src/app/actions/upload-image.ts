@@ -21,21 +21,14 @@ export async function uploadModelImage(
   modelSlug: string
 ): Promise<UploadImageResult> {
   try {
-    console.log('=== UPLOAD IMAGE DEBUG ===')
-    console.log('modelSlug:', modelSlug)
-    console.log('formData keys:', Array.from(formData.keys()))
-
     const file = formData.get('image') as File
 
     if (!file) {
-      console.log('ERROR: No file in formData')
       return {
         success: false,
         error: 'File not selected'
       }
     }
-
-    console.log('file:', { name: file.name, type: file.type, size: file.size })
 
     // Validate file type
     if (!file.type.startsWith('image/')) {

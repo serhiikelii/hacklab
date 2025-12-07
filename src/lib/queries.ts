@@ -143,7 +143,6 @@ export async function getServices(): Promise<Service[]> {
   try {
     // Fallback to mock data if Supabase is not configured
     if (!isSupabaseConfigured()) {
-      console.log('Using mock data for services');
       return [...MAIN_SERVICES, ...EXTRA_SERVICES];
     }
 

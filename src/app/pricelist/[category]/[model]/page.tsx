@@ -40,15 +40,6 @@ export default async function ModelPage({ params }: ModelPageProps) {
     getServices(),
   ]);
 
-  // 🔍 DIAGNOSTIC LOGGING
-  console.log('=== PAGE DIAGNOSTIC ===');
-  console.log('Model:', { id: model.id, name: model.name, slug: model.slug });
-  console.log('Prices count:', prices.length);
-  console.log('Services count:', allServices.length);
-  console.log('First 3 prices:', prices.slice(0, 3));
-  console.log('First 3 services:', allServices.slice(0, 3));
-  console.log('======================');
-
   return (
     <>
       <Header />

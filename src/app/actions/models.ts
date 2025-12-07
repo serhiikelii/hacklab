@@ -90,8 +90,6 @@ export async function createDeviceModel(
     image_url: formData.get('image_url') as string | null,
   }
 
-  console.log('📋 Raw FormData received:', rawFormData)
-
   // Validate form fields
   const validatedFields = DeviceModelSchema.safeParse(rawFormData)
 
@@ -257,16 +255,7 @@ export async function updateDeviceModel(
     image_url: formData.get('image_url') as string | null,
   }
 
-  console.log('=== UPDATE MODEL DEBUG ===')
-  console.log('modelId:', modelId)
-  console.log('rawFormData:', rawFormData)
-
   const validatedFields = DeviceModelSchema.safeParse(rawFormData)
-
-  console.log('validation success:', validatedFields.success)
-  if (!validatedFields.success) {
-    console.log('validation errors:', validatedFields.error.flatten())
-  }
 
   if (!validatedFields.success) {
     return {

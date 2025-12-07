@@ -23,8 +23,6 @@ export async function uploadModelImage(
   file: File
 ): Promise<ImageActionResult> {
   try {
-    console.log('[uploadModelImage] START:', { modelId, categorySlug, fileName: file.name })
-
     // 1. Validate file
     const allowedTypes = ['image/webp', 'image/png', 'image/jpeg', 'image/jpg']
     if (!allowedTypes.includes(file.type)) {
@@ -72,8 +70,6 @@ export async function uploadModelImage(
       }
     }
 
-    console.log('[uploadModelImage] Authenticated user:', user.email)
-
     // 4. Get model info (including slug for file naming)
     const { data: model, error: modelError } = await supabase
       .from('device_models')
@@ -105,7 +101,6 @@ export async function uploadModelImage(
     if (model.image_url) {
       const oldPath = model.image_url.split('/').pop()
       if (oldPath) {
-        console.log('[uploadModelImage] Deleting old image:', `${categorySlug}/${oldPath}`)
         await supabaseAdmin.storage
           .from(BUCKET_NAME)
           .remove([`${categorySlug}/${oldPath}`])
@@ -117,7 +112,6 @@ export async function uploadModelImage(
     const fileName = `${model.slug}.${fileExt}`
     const filePath = `${categorySlug}/${fileName}`
 
-    console.log('[uploadModelImage] Uploading:', filePath)
 
     const arrayBuffer = await file.arrayBuffer()
     const buffer = new Uint8Array(arrayBuffer)
@@ -144,7 +138,6 @@ export async function uploadModelImage(
 
     const imageUrlWithCacheBust = `${urlData.publicUrl}?v=${Date.now()}`
 
-    console.log('[uploadModelImage] Image uploaded:', imageUrlWithCacheBust)
 
     // 9. Update database using AUTHENTICATED client (this is the key point!)
     const { error: updateError } = await supabase
@@ -160,7 +153,6 @@ export async function uploadModelImage(
       }
     }
 
-    console.log('[uploadModelImage] DB updated successfully')
 
     // 10. Audit log
     const { getCurrentAdminId } = await import('@/lib/audit')
@@ -178,7 +170,6 @@ export async function uploadModelImage(
           model_name: model.name
         },
       })
-      console.log('[uploadModelImage] Audit log written')
     } else {
       console.warn('[uploadModelImage] Could not get adminId for audit log')
     }
@@ -203,7 +194,6 @@ export async function removeModelImage(
   modelId: string
 ): Promise<ImageActionResult> {
   try {
-    console.log('[removeModelImage] START:', { modelId })
 
     // 1. Create authenticated Supabase client
     const cookieStore = await cookies()
@@ -283,7 +273,6 @@ export async function removeModelImage(
     const fileName = model.image_url.split('/').pop()
     if (fileName) {
       const filePath = `${categorySlug}/${fileName}`
-      console.log('[removeModelImage] Deleting:', filePath)
 
       const { error: deleteError } = await supabaseAdmin.storage
         .from(BUCKET_NAME)
@@ -309,7 +298,6 @@ export async function removeModelImage(
       }
     }
 
-    console.log('[removeModelImage] DB updated successfully')
 
     // 8. Audit log
     const { getCurrentAdminId } = await import('@/lib/audit')
@@ -327,7 +315,6 @@ export async function removeModelImage(
           model_name: model.name
         },
       })
-      console.log('[removeModelImage] Audit log written')
     }
 
     return {
