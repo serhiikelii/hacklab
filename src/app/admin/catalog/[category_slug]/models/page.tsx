@@ -72,7 +72,11 @@ export default async function ModelsPage({
 
       {/* Add model form */}
       <div className="mb-8">
-        <AddModelForm categoryId={category.id} categorySlug={category_slug} />
+        <AddModelForm
+          key={`add-model-${models?.length || 0}`}
+          categoryId={category.id}
+          categorySlug={category_slug}
+        />
       </div>
 
       {/* Models list with drag-and-drop */}

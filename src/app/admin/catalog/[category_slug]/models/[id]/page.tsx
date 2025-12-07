@@ -115,6 +115,7 @@ export default async function EditModelPage({
 
         {/* Add price form */}
         <AddPriceForm
+          key={`add-price-${existingServiceIds.join('-')}`}
           modelId={id}
           categorySlug={category_slug}
           availableServices={availableServices}
