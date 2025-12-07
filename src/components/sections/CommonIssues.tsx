@@ -38,20 +38,20 @@ export function CommonIssues() {
   const t = getTranslations(locale)
 
   return (
-    <section className="py-32 bg-white">
+    <section className="py-16 bg-gray-50">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-12">
+        <h2 className="text-3xl md:text-4xl font-black text-center text-gray-900 mb-12">
           {t.commonIssuesTitle}
         </h2>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 lg:gap-6 max-w-7xl mx-auto">
           {issues.map((issue, index) => (
             <Link key={index} href="/pricelist">
               <Card className="h-full p-6 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group cursor-pointer bg-white border border-gray-200">
                 <div className="flex flex-col items-center justify-center text-center gap-3 h-full">
-                  <div className="relative bg-gray-50 p-4 rounded-full">
-                    <issue.icon className="w-8 h-8 text-[#0c5373]" />
+                  <div className="relative bg-cyan-50 p-4 rounded-full group-hover:bg-cyan-100 transition-colors">
+                    <issue.icon className="w-8 h-8 text-cyan-600" />
                   </div>
-                  <h3 className="font-semibold text-[#0c5373] text-sm md:text-base">
+                  <h3 className="font-semibold text-gray-900 text-sm md:text-base group-hover:text-cyan-700 transition-colors">
                     {t[issue.translationKey]}
                   </h3>
                 </div>

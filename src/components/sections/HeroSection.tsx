@@ -34,7 +34,7 @@ export function HeroSection() {
   const { locale } = useLocale()
   const t = getTranslations(locale)
   return (
-    <section className="relative mt-16 py-16 md:py-20 lg:py-24 min-h-[500px] md:min-h-[550px] lg:min-h-[600px] bg-cover bg-bottom bg-no-repeat overflow-hidden bg-white" style={{ backgroundImage: 'url(/images/backgrounds/hero-bg.webp)' }}>
+    <section className="relative py-16 md:py-20 lg:py-24 min-h-[500px] md:min-h-[550px] lg:min-h-[600px] bg-cover bg-bottom bg-no-repeat overflow-hidden bg-white" style={{ backgroundImage: 'url(/images/backgrounds/hero-bg.webp)' }}>
       <div className="container mx-auto px-4 relative z-10 h-full">
         <div className="flex items-center justify-end h-full min-h-[450px] md:min-h-[500px] lg:min-h-[550px]">
           {/* Category Cards - aligned to right without padding */}

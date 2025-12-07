@@ -30,7 +30,7 @@ export function AboutSection() {
     <section id="about" className="py-16 bg-white">
       <div className="container mx-auto px-4 max-w-4xl">
         {/* Main heading */}
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+        <h1 className="text-3xl md:text-4xl font-black text-gray-900 mb-6">
           {t.aboutTitle}
         </h1>
 
@@ -55,7 +55,7 @@ export function AboutSection() {
         <ul className="space-y-2 mb-4 ml-6">
           {whyChooseFeatures.map((feature, index) => (
             <li key={index} className="flex items-start gap-2 text-gray-700 leading-relaxed">
-              <Check className="w-5 h-5 text-gray-400 flex-shrink-0 mt-0.5" />
+              <Check className="w-5 h-5 text-cyan-600 flex-shrink-0 mt-0.5" />
               <span>{feature}</span>
             </li>
           ))}
@@ -76,7 +76,10 @@ export function AboutSection() {
 
         <ul className="space-y-2 mb-4 ml-6">
           {repairServices.map((service, index) => (
-            <li key={index} className="text-gray-700 leading-relaxed">{service}</li>
+            <li key={index} className="flex items-start gap-2 text-gray-700 leading-relaxed">
+              <Check className="w-5 h-5 text-cyan-600 flex-shrink-0 mt-0.5" />
+              <span>{service}</span>
+            </li>
           ))}
         </ul>
 

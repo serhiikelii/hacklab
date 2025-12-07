@@ -98,11 +98,11 @@ export const translations = {
     serviceSectionTitle: 'Мы не скрываем процесс — доверие рождается в прозрачности',
     serviceSectionDescription: 'Профессиональный и быстрый сервис для устройств.',
     feature1: 'Хотите видеть, как проходит ремонт вашего телефона? Мы предоставляем такую возможность онлайн',
-    feature2: 'Профессиональная диагностика (бесплатная*)',
+    feature2: 'Профессиональная диагностика',
     feature3: 'Быстрый ремонт',
     feature4: '2 года гарантии',
     feature5: 'Скидки на множественный ремонт',
-    bulkDiscountText: 'При множественном ремонте мы всегда предлагаем оптовую скидку.',
+    bulkDiscountText: '',
 
     // AboutSection
     aboutTitle: 'HackLab – Ваш надежный сервисный центр Apple в Праге',
@@ -274,11 +274,11 @@ export const translations = {
     serviceSectionTitle: 'We don\'t hide the process — trust is born in transparency',
     serviceSectionDescription: 'Professional and fast device service.',
     feature1: 'Want to see how your phone is being repaired? We provide this opportunity online',
-    feature2: 'Professional diagnostics (free*)',
+    feature2: 'Professional diagnostics',
     feature3: 'Fast repair',
     feature4: '2 years warranty',
     feature5: 'Discounts on multiple repairs',
-    bulkDiscountText: 'For multiple repairs we always offer bulk discounts.',
+    bulkDiscountText: '',
 
     // AboutSection
     aboutTitle: 'HackLab – Your Reliable Apple Service Center in Prague',
@@ -450,11 +450,11 @@ export const translations = {
     serviceSectionTitle: 'Neskrýváme proces — důvěra se rodí v transparentnosti',
     serviceSectionDescription: 'Profesionální a rychlý servis zařízení.',
     feature1: 'Chcete vidět, jak probíhá oprava vašeho telefonu? Poskytujeme tuto možnost online',
-    feature2: 'Profesionální diagnostika (zdarma*)',
+    feature2: 'Profesionální diagnostika',
     feature3: 'Rychlá oprava',
     feature4: '2 roky záruky',
     feature5: 'Slevy na vícenásobné opravy',
-    bulkDiscountText: 'Při vícenásobných opravách vždy nabízíme množstevní slevu.',
+    bulkDiscountText: '',
 
     // AboutSection
     aboutTitle: 'HackLab – Váš spolehlivý servisní centrum Apple v Praze',

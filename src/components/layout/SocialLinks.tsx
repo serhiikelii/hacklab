@@ -8,11 +8,13 @@ type SocialLinkItem = {
 }
 
 type SocialLinksProps = {
-  variant?: "header" | "footer"
+  variant?: "header" | "footer" | "mobile"
   className?: string
 }
 
 export function SocialLinks({ variant = "footer", className = "" }: SocialLinksProps) {
+  const iconSize = variant === "mobile" ? "w-7 h-7" : "w-5 h-5"
+
   const socialLinks: SocialLinkItem[] = [
     {
       name: "Telegram",
@@ -20,7 +22,7 @@ export function SocialLinks({ variant = "footer", className = "" }: SocialLinksP
       ariaLabel: "Visit our Telegram channel",
       icon: (
         <svg
-          className="w-5 h-5"
+          className={iconSize}
           fill="currentColor"
           viewBox="0 0 24 24"
           xmlns="http://www.w3.org/2000/svg"
@@ -35,7 +37,7 @@ export function SocialLinks({ variant = "footer", className = "" }: SocialLinksP
       ariaLabel: "Follow us on Instagram",
       icon: (
         <svg
-          className="w-5 h-5"
+          className={iconSize}
           fill="currentColor"
           viewBox="0 0 24 24"
           xmlns="http://www.w3.org/2000/svg"
@@ -50,7 +52,7 @@ export function SocialLinks({ variant = "footer", className = "" }: SocialLinksP
       ariaLabel: "Like us on Facebook",
       icon: (
         <svg
-          className="w-5 h-5"
+          className={iconSize}
           fill="currentColor"
           viewBox="0 0 24 24"
           xmlns="http://www.w3.org/2000/svg"
@@ -65,6 +67,8 @@ export function SocialLinks({ variant = "footer", className = "" }: SocialLinksP
   const linkStyles =
     variant === "header"
       ? "text-white hover:text-gray-300 transition-colors duration-200"
+      : variant === "mobile"
+      ? "text-gray-700 transition-opacity duration-200 hover:opacity-70"
       : "text-gray-400 hover:text-white transition-colors duration-200"
 
   return (

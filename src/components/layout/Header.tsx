@@ -172,7 +172,7 @@ export function Header() {
                 {/* Mobile Social Links */}
                 <div className="px-3 pb-6 flex flex-col items-center">
                   <p className="text-xs font-semibold text-gray-500 mb-3">Social Media</p>
-                  <SocialLinks variant="header" className="justify-center gap-6" />
+                  <SocialLinks variant="mobile" className="justify-center gap-6" />
                 </div>
               </div>
             </SheetContent>

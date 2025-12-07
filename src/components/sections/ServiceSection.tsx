@@ -18,12 +18,12 @@ export function ServiceSection() {
   ]
 
   return (
-    <section id="services" className="py-16 bg-white">
+    <section id="services" className="py-16 bg-gray-50">
       <div className="container mx-auto px-4">
         <div className="grid md:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
           {/* Left - Image */}
           <div className="relative">
-            <div className="aspect-square rounded-3xl overflow-hidden bg-gray-100">
+            <div className="aspect-square rounded-3xl overflow-hidden bg-gray-100 shadow-lg">
               <Image
                 src="/images/service-transparency.webp"
                 alt="HACKLAB - We don't hack, we fix"
@@ -37,7 +37,7 @@ export function ServiceSection() {
 
           {/* Right - Content */}
           <div>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+            <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-6">
               {t.serviceSectionTitle}
             </h2>
 
@@ -49,15 +49,11 @@ export function ServiceSection() {
               <ul className="space-y-3">
                 {features.map((feature, index) => (
                   <li key={index} className="flex items-start gap-3">
-                    <CheckCircle2 className="w-6 h-6 text-gray-600 flex-shrink-0 mt-0.5" />
+                    <CheckCircle2 className="w-6 h-6 text-cyan-600 flex-shrink-0 mt-0.5" />
                     <span className="text-gray-700">{feature}</span>
                   </li>
                 ))}
               </ul>
-
-              <p className="text-gray-700 mt-6">
-                {t.bulkDiscountText}
-              </p>
             </div>
           </div>
         </div>
