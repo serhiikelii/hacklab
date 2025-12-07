@@ -1,34 +1,13 @@
 import Link from 'next/link'
-import { getAdminUser, signOutAction } from './actions'
-import SignOutButton from './SignOutButton'
+import { getAdminUser } from './actions'
+import { AdminLayout } from '@/components/admin/AdminLayout'
 
 export default async function AdminDashboard() {
   const adminUser = await getAdminUser()
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      {/* Header */}
-      <nav className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
-            <div className="flex">
-              <div className="flex-shrink-0 flex items-center">
-                <h1 className="text-xl font-bold">MojService Admin</h1>
-              </div>
-            </div>
-            <div className="flex items-center space-x-4">
-              <span className="text-sm text-gray-700">
-                {adminUser.email} ({adminUser.role})
-              </span>
-              <SignOutButton />
-            </div>
-          </div>
-        </div>
-      </nav>
-
-      {/* Main Content */}
-      <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-        <div className="px-4 py-6 sm:px-0">
+    <AdminLayout userEmail={adminUser.email} userRole={adminUser.role}>
+      <div>
           <h2 className="text-2xl font-semibold text-gray-900 mb-6">
             Control Panel
           </h2>
@@ -109,22 +88,7 @@ export default async function AdminDashboard() {
             )}
 
           </div>
-
-          {/* Quick Stats */}
-          <div className="mt-8">
-            <h3 className="text-lg font-medium text-gray-900 mb-4">
-              Quick Statistics
-            </h3>
-            <div className="bg-white shadow overflow-hidden sm:rounded-lg">
-              <div className="px-4 py-5 sm:p-6">
-                <p className="text-sm text-gray-500">
-                  Statistics for devices, prices, and orders will be displayed here.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
-    </div>
+    </AdminLayout>
   )
 }

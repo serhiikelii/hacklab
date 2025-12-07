@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useActionState } from 'react'
+import { useState, useActionState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -47,10 +47,12 @@ export function AddPriceForm({
   )
 
   // Automatically close form on success
-  if (state?.success && isOpen) {
-    setIsOpen(false)
-    setSelectedServiceId('')
-  }
+  useEffect(() => {
+    if (state?.success && isOpen) {
+      setIsOpen(false)
+      setSelectedServiceId('')
+    }
+  }, [state?.success, isOpen])
 
   if (!isOpen) {
     return (

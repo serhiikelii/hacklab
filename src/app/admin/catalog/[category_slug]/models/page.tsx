@@ -1,4 +1,7 @@
 import { createClient } from '@/lib/supabase-server'
+import { getAdminUser } from '@/app/admin/actions'
+import { AdminLayout } from '@/components/admin/AdminLayout'
+import { CategoryTabs } from '@/components/admin/CategoryTabs'
 import { AddModelForm } from './AddModelForm'
 import { ModelsList } from './ModelsList'
 
@@ -19,11 +22,12 @@ export default async function ModelsPage({
 
   // Create client inside component, NOT at top-level
   const supabase = await createClient()
+  const adminUser = await getAdminUser()
 
   // Get category
   const { data: category, error: categoryError } = await supabase
     .from('device_categories')
-    .select('id, name_ru, slug')
+    .select('id, name_ru, name_en, slug')
     .eq('slug', category_slug)
     .single()
 
@@ -43,7 +47,17 @@ export default async function ModelsPage({
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <AdminLayout
+      userEmail={adminUser.email}
+      userRole={adminUser.role}
+      breadcrumbs={[
+        { label: 'Catalog', href: '/admin/catalog' },
+        { label: category.name_en },
+      ]}
+    >
+      <CategoryTabs categorySlug={category_slug} />
+
+      <div>
       {/* Header with add button */}
       <div className="mb-6 flex justify-between items-center">
         <div>
@@ -63,6 +77,7 @@ export default async function ModelsPage({
 
       {/* Models list with drag-and-drop */}
       <ModelsList initialModels={models || []} categorySlug={category_slug} />
-    </div>
+      </div>
+    </AdminLayout>
   )
 }
