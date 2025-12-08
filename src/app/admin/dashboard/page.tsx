@@ -13,9 +13,9 @@ export default function AdminDashboard() {
           <p className="mb-2">Role: superadmin</p>
         </div>
 
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
-          <h3 className="font-semibold mb-2">Next Steps:</h3>
-          <ol className="list-decimal list-inside space-y-2">
+        <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-6">
+          <h3 className="font-semibold mb-2 text-emerald-900">Next Steps:</h3>
+          <ol className="list-decimal list-inside space-y-2 text-emerald-800">
             <li>Test CRUD operations (creating device model)</li>
             <li>Restore proper RLS policies</li>
             <li>Re-enable audit triggers</li>

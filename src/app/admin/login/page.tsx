@@ -12,7 +12,7 @@ function SubmitButton() {
     <button
       type="submit"
       disabled={pending}
-      className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
+      className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-[#052533] hover:bg-[#041d28] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#052533] disabled:opacity-50 disabled:cursor-not-allowed"
     >
       {pending ? 'Logging in...' : 'Login'}
     </button>
@@ -76,7 +76,7 @@ function LoginForm() {
                 type="email"
                 autoComplete="email"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-[#052533] focus:border-[#052533] focus:z-10 sm:text-sm"
                 placeholder="Email address"
               />
             </div>
@@ -90,7 +90,7 @@ function LoginForm() {
                 type="password"
                 autoComplete="current-password"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-[#052533] focus:border-[#052533] focus:z-10 sm:text-sm"
                 placeholder="Password"
               />
             </div>
@@ -110,7 +110,7 @@ export default function AdminLoginPageSimple() {
     <Suspense fallback={
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
+          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-[#052533]"></div>
           <p className="mt-2 text-sm text-gray-600">Loading...</p>
         </div>
       </div>

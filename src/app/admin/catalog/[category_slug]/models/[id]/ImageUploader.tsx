@@ -135,7 +135,7 @@ export function ImageUploader({
         <input
           ref={fileInputRef}
           type="file"
-          accept=".webp,.png,.jpg,.jpeg"
+          accept=".webp"
           onChange={handleFileSelect}
           disabled={isUploading}
           className="hidden"
@@ -148,10 +148,10 @@ export function ImageUploader({
             text-sm font-medium rounded-md shadow-sm text-white
             ${
               isUploading
-                ? 'bg-blue-400 cursor-not-allowed'
-                : 'bg-blue-600 hover:bg-blue-700 cursor-pointer'
+                ? 'bg-[#052533] cursor-not-allowed'
+                : 'bg-[#052533] hover:bg-[#041d28] cursor-pointer'
             }
-            focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
+            focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#052533]
           `}
         >
           {isUploading ? (
@@ -177,7 +177,7 @@ export function ImageUploader({
 
       {/* Helper Text */}
       <p className="text-xs text-gray-500">
-        Formats: .webp, .png, .jpg • Maximum 5 MB
+        Format: .webp only • Maximum 5 MB
       </p>
 
       {/* Delete Confirmation Dialog */}
@@ -192,7 +192,7 @@ export function ImageUploader({
           <DialogFooter>
             <button
               onClick={() => setShowDeleteDialog(false)}
-              className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#052533]"
             >
               Cancel
             </button>

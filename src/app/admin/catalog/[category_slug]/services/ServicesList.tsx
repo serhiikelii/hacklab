@@ -86,7 +86,7 @@ function SortableServiceItem({
             <span
               className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                 service.service_type === 'main'
-                  ? 'bg-blue-100 text-blue-800'
+                  ? 'bg-emerald-100 text-emerald-800'
                   : 'bg-purple-100 text-purple-800'
               }`}
             >
@@ -200,7 +200,7 @@ export function ServicesList({
                   <span
                     className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                       service.service_type === 'main'
-                        ? 'bg-blue-100 text-blue-800'
+                        ? 'bg-emerald-100 text-emerald-800'
                         : 'bg-purple-100 text-purple-800'
                     }`}
                   >
@@ -230,7 +230,7 @@ export function ServicesList({
         <div className="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center z-10">
           <div className="flex items-center space-x-2">
             <svg
-              className="animate-spin h-5 w-5 text-indigo-600"
+              className="animate-spin h-5 w-5 text-[#052533]"
               fill="none"
               viewBox="0 0 24 24"
             >
@@ -274,8 +274,8 @@ export function ServicesList({
         </SortableContext>
       </DndContext>
 
-      <div className="mt-4 px-4 py-3 bg-blue-50 rounded-md">
-        <p className="text-sm text-blue-800">
+      <div className="mt-4 px-4 py-3 bg-gray-50 rounded-md">
+        <p className="text-sm text-gray-800">
           💡 <strong>Tip:</strong> Drag services to reorder display
         </p>
       </div>

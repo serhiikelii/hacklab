@@ -73,13 +73,13 @@ export default async function ServicesPage({
       </div>
 
       {/* Global Services Configuration Section */}
-      <div className="mb-8 p-4 bg-blue-50 rounded-lg border border-blue-200">
+      <div className="mb-8 p-4 bg-teal-50 rounded-lg border border-teal-200">
         <div className="flex items-center justify-between">
           <div>
             <h3 className="text-base font-medium text-gray-900">
               Services Configuration for all categories
             </h3>
-            <p className="text-sm text-gray-600 mt-1">
+            <p className="text-sm text-teal-800 mt-1">
               Add new global services, set service types (Main/Extra)
             </p>
           </div>

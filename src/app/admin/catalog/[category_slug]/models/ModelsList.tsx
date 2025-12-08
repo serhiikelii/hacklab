@@ -197,7 +197,7 @@ export function ModelsList({ initialModels, categorySlug }: ModelsListProps) {
         </h3>
         <p className="mt-1 text-sm text-gray-500">
           Drag models to change order
-          {isSaving && <span className="ml-2 text-indigo-600">Saving...</span>}
+          {isSaving && <span className="ml-2 text-[#052533]">Saving...</span>}
         </p>
       </div>
 

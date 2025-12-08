@@ -33,7 +33,7 @@ export function Breadcrumbs({ items }: BreadcrumbsProps) {
               {item.href && !isLast ? (
                 <Link
                   href={item.href}
-                  className="text-gray-500 hover:text-indigo-600 font-medium transition-colors hover:underline"
+                  className="text-gray-600 hover:text-[#052533] font-medium transition-colors hover:underline"
                 >
                   {item.label}
                 </Link>
@@ -41,7 +41,7 @@ export function Breadcrumbs({ items }: BreadcrumbsProps) {
                 <span
                   className={
                     isLast
-                      ? 'text-indigo-600 font-bold text-lg'
+                      ? 'text-[#052533] font-bold text-lg'
                       : 'text-gray-800 font-medium'
                   }
                 >

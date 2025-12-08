@@ -117,7 +117,7 @@ export function AddPriceForm({
                     <span
                       className={`text-xs px-2 py-0.5 rounded-full ${
                         service.service_type === 'main'
-                          ? 'bg-blue-100 text-blue-800'
+                          ? 'bg-emerald-100 text-emerald-800'
                           : 'bg-purple-100 text-purple-800'
                       }`}
                     >

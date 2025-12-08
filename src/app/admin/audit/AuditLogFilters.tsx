@@ -56,7 +56,7 @@ export function AuditLogFilters({
           <select
             value={currentAction || 'all'}
             onChange={(e) => handleFilterChange('action', e.target.value)}
-            className="rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            className="rounded-md border-gray-300 shadow-sm focus:border-[#052533] focus:ring-[#052533]"
           >
             <option value="all">All</option>
             {ACTIONS.map((action) => (
@@ -73,7 +73,7 @@ export function AuditLogFilters({
           <select
             value={currentTable || 'all'}
             onChange={(e) => handleFilterChange('table', e.target.value)}
-            className="rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            className="rounded-md border-gray-300 shadow-sm focus:border-[#052533] focus:ring-[#052533]"
           >
             <option value="all">All</option>
             {TABLES.map((table) => (

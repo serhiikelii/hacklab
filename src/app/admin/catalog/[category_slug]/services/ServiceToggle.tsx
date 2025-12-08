@@ -42,8 +42,8 @@ export function ServiceToggle({
     <button
       onClick={handleToggle}
       disabled={loading}
-      className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 disabled:opacity-50 ${
-        localIsActive ? 'bg-indigo-600' : 'bg-gray-200'
+      className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#334155] focus:ring-offset-2 disabled:opacity-50 ${
+        localIsActive ? 'bg-[#334155]' : 'bg-gray-200'
       }`}
       role="switch"
       aria-checked={localIsActive}

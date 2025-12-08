@@ -19,7 +19,7 @@ export default async function AdminDashboard() {
               <div className="bg-white overflow-hidden shadow rounded-lg hover:shadow-md transition-shadow cursor-pointer">
                 <div className="p-6">
                   <div className="flex items-center">
-                    <div className="flex-shrink-0 bg-indigo-500 rounded-md p-3">
+                    <div className="flex-shrink-0 bg-[#052533] rounded-md p-3">
                       <svg
                         className="h-6 w-6 text-white"
                         fill="none"
@@ -56,7 +56,7 @@ export default async function AdminDashboard() {
                 <div className="bg-white overflow-hidden shadow rounded-lg hover:shadow-md transition-shadow cursor-pointer">
                   <div className="p-6">
                     <div className="flex items-center">
-                      <div className="flex-shrink-0 bg-purple-500 rounded-md p-3">
+                      <div className="flex-shrink-0 bg-teal-500 rounded-md p-3">
                         <svg
                           className="h-6 w-6 text-white"
                           fill="none"
