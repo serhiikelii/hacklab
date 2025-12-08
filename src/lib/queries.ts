@@ -1,9 +1,8 @@
 /**
  * Database queries for fetching data from Supabase
- * Optimized with Next.js 15 unstable_cache for performance
+ * NO CACHING - Direct queries for real-time data
  */
 
-import { unstable_cache } from 'next/cache';
 import { supabase } from './supabase';
 import { MAIN_SERVICES, EXTRA_SERVICES } from '@/types/pricelist';
 import type { DeviceModel as DBDeviceModel, Service as DBService, Price as DBPrice, Category } from '@/types/database';
@@ -97,44 +96,37 @@ function transformPrice(dbPrice: DBPrice): ServicePrice {
 // ========== Query Functions ==========
 
 /**
- * Get model by slug with category information (cached)
+ * Get model by slug with category information (no cache)
  */
-export const getModelBySlug = unstable_cache(
-  async (slug: string): Promise<DeviceModel | null> => {
-    try {
-      if (!slug || typeof slug !== 'string') {
-        console.error('Invalid slug parameter');
-        return null;
-      }
-
-      if (!isSupabaseConfigured()) {
-        console.warn('Supabase not configured');
-        return null;
-      }
-
-      const { data, error } = await supabase
-        .from('device_models')
-        .select('*, device_categories(*)')
-        .eq('slug', slug)
-        .single();
-
-      if (error) {
-        console.error('Error fetching model:', error);
-        return null;
-      }
-
-      return data ? transformDeviceModel(data) : null;
-    } catch (error) {
-      console.error('Unexpected error in getModelBySlug:', error);
+export async function getModelBySlug(slug: string): Promise<DeviceModel | null> {
+  try {
+    if (!slug || typeof slug !== 'string') {
+      console.error('Invalid slug parameter');
       return null;
     }
-  },
-  ['model-by-slug'],
-  {
-    revalidate: 3600,
-    tags: ['models']
+
+    if (!isSupabaseConfigured()) {
+      console.warn('Supabase not configured');
+      return null;
+    }
+
+    const { data, error } = await supabase
+      .from('device_models')
+      .select('*, device_categories(*)')
+      .eq('slug', slug)
+      .single();
+
+    if (error) {
+      console.error('Error fetching model:', error);
+      return null;
+    }
+
+    return data ? transformDeviceModel(data) : null;
+  } catch (error) {
+    console.error('Unexpected error in getModelBySlug:', error);
+    return null;
   }
-);
+}
 
 /**
  * Get all services
@@ -164,140 +156,119 @@ export async function getServices(): Promise<Service[]> {
 }
 
 /**
- * Get services for a specific category using optimized VIEW (cached)
+ * Get services for a specific category using optimized VIEW (no cache)
  * Uses category_services_view - pre-compiled JOIN for maximum performance
  */
-export const getServicesForCategory = unstable_cache(
-  async (categorySlug: DeviceCategory): Promise<Service[]> => {
-    try {
-      if (!isSupabaseConfigured()) {
-        console.warn('Supabase not configured');
-        return [];
-      }
-
-      // Use optimized VIEW instead of multiple JOINs
-      const { data, error } = await supabase
-        .from('category_services_view')
-        .select('*')
-        .eq('category_slug', categorySlug)
-        .eq('is_active', true)
-        .order('order', { ascending: true });
-
-      if (error) {
-        console.error('Error fetching services for category:', error);
-        return [];
-      }
-
-      // Transform VIEW data to Service type
-      return data ? data.map((item: any) => ({
-        id: item.service_id,
-        slug: item.service_slug,
-        name_en: item.service_name_en,
-        name_cz: item.service_name_cz,
-        name_ru: item.service_name_ru,
-        category: item.service_type,
-        price_type: 'fixed' as const,
-      })) : [];
-    } catch (error) {
-      console.error('Unexpected error in getServicesForCategory:', error);
+export async function getServicesForCategory(categorySlug: DeviceCategory): Promise<Service[]> {
+  try {
+    if (!isSupabaseConfigured()) {
+      console.warn('Supabase not configured');
       return [];
     }
-  },
-  ['services-by-category'],
-  {
-    revalidate: 3600, // 1 hour cache
-    tags: ['services', 'categories']
+
+    // Use optimized VIEW instead of multiple JOINs
+    const { data, error } = await supabase
+      .from('category_services_view')
+      .select('*')
+      .eq('category_slug', categorySlug)
+      .eq('is_active', true)
+      .order('order', { ascending: true });
+
+    if (error) {
+      console.error('Error fetching services for category:', error);
+      return [];
+    }
+
+    // Transform VIEW data to Service type
+    return data ? data.map((item: any) => ({
+      id: item.service_id,
+      slug: item.service_slug,
+      name_en: item.service_name_en,
+      name_cz: item.service_name_cz,
+      name_ru: item.service_name_ru,
+      category: item.service_type,
+      price_type: 'fixed' as const,
+    })) : [];
+  } catch (error) {
+    console.error('Unexpected error in getServicesForCategory:', error);
+    return [];
   }
-);
+}
 
 /**
- * Get prices for a specific model (cached)
+ * Get prices for a specific model (no cache - Next.js deduplicates automatically)
  */
-export const getPricesForModel = unstable_cache(
-  async (modelId: string): Promise<ServicePrice[]> => {
-    try {
-      if (!modelId || typeof modelId !== 'string') {
-        console.error('Invalid modelId parameter');
-        return [];
-      }
-
-      if (!isSupabaseConfigured()) {
-        console.warn('Supabase not configured');
-        return [];
-      }
-
-      const { data, error } = await supabase
-        .from('prices')
-        .select('*')
-        .eq('model_id', modelId)
-        .order('service_id');
-
-      if (error) {
-        console.error('Error fetching prices:', error);
-        return [];
-      }
-
-      return data ? data.map(transformPrice) : [];
-    } catch (error) {
-      console.error('Unexpected error in getPricesForModel:', error);
+export async function getPricesForModel(modelId: string): Promise<ServicePrice[]> {
+  try {
+    if (!modelId || typeof modelId !== 'string') {
+      console.error('Invalid modelId parameter');
       return [];
     }
-  },
-  ['prices-by-model'],
-  {
-    revalidate: 1800, // 30 minutes cache (prices change more often)
-    tags: ['prices']
+
+    if (!isSupabaseConfigured()) {
+      console.warn('Supabase not configured');
+      return [];
+    }
+
+    const { data, error } = await supabase
+      .from('prices')
+      .select('*')
+      .eq('model_id', modelId)
+      .order('service_id');
+
+    if (error) {
+      console.error('Error fetching prices:', error);
+      return [];
+    }
+
+    return data ? data.map(transformPrice) : [];
+  } catch (error) {
+    console.error('Unexpected error in getPricesForModel:', error);
+    return [];
   }
-);
+}
 
 /**
- * Get models for a specific category (optimized with caching and single query)
+ * Get models for a specific category (no cache)
  */
-export const getModelsForCategory = unstable_cache(
-  async (categorySlug: string): Promise<DeviceModel[]> => {
-    try {
-      if (!categorySlug || typeof categorySlug !== 'string') {
-        console.error('Invalid categorySlug parameter');
-        return [];
-      }
-
-      // Return empty if Supabase is not configured
-      if (!isSupabaseConfigured()) {
-        console.warn('Supabase not configured');
-        return [];
-      }
-
-      // Optimized: Single query with JOIN instead of N+1
-      const { data, error } = await supabase
-        .from('device_models')
-        .select('*, device_categories!inner(*)')
-        .eq('device_categories.slug', categorySlug)
-        .order('order', { ascending: true, nullsFirst: false })
-        .order('release_year', { ascending: false })
-        .order('name', { ascending: true });
-
-      if (error) {
-        console.error('Error fetching models for category:', error);
-        return [];
-      }
-
-      if (!data || data.length === 0) {
-        console.warn(`No models found for category: ${categorySlug}`);
-        return [];
-      }
-
-      return data.map(transformDeviceModel);
-    } catch (error) {
-      console.error('Unexpected error in getModelsForCategory:', error);
+export async function getModelsForCategory(categorySlug: string): Promise<DeviceModel[]> {
+  try {
+    if (!categorySlug || typeof categorySlug !== 'string') {
+      console.error('Invalid categorySlug parameter');
       return [];
     }
-  },
-  ['models-by-category'],
-  {
-    revalidate: 3600, // 1 hour cache
-    tags: ['models', 'categories']
+
+    // Return empty if Supabase is not configured
+    if (!isSupabaseConfigured()) {
+      console.warn('Supabase not configured');
+      return [];
+    }
+
+    // Optimized: Single query with JOIN instead of N+1
+    const { data, error } = await supabase
+      .from('device_models')
+      .select('*, device_categories!inner(*)')
+      .eq('device_categories.slug', categorySlug)
+      .order('order', { ascending: true, nullsFirst: false })
+      .order('release_year', { ascending: false })
+      .order('name', { ascending: true });
+
+    if (error) {
+      console.error('Error fetching models for category:', error);
+      return [];
+    }
+
+    if (!data || data.length === 0) {
+      console.warn(`No models found for category: ${categorySlug}`);
+      return [];
+    }
+
+    return data.map(transformDeviceModel);
+  } catch (error) {
+    console.error('Unexpected error in getModelsForCategory:', error);
+    return [];
   }
-);
+}
 
 /**
  * Get all categories

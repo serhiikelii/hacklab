@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { createClient } from '@/lib/supabase-server'
 import { getAdminUser } from '../actions'
 import { AdminLayout } from '@/components/admin/AdminLayout'
+import React from 'react'
 
 interface DeviceCategory {
   id: string
@@ -85,7 +86,7 @@ export default async function CatalogPage() {
 
 // Helper function to get category-specific SVG icons
 function getCategoryIcon(slug: string) {
-  const icons: Record<string, JSX.Element> = {
+  const icons: Record<string, React.JSX.Element> = {
     'iphone': (
       // Smartphone icon
       <path

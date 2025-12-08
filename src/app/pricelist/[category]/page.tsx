@@ -57,7 +57,6 @@ export async function generateStaticParams() {
 }
 
 /**
- * Enable ISR with 1 hour revalidation
- * Pages will be statically generated at build time and revalidated every hour
+ * Disable caching - always fetch fresh data
  */
-export const revalidate = 3600;
+export const revalidate = 0;
