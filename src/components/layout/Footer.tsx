@@ -78,11 +78,11 @@ export function Footer() {
                 721 042 342
               </Link>
               <Link
-                href="mailto:info@mojservice.cz"
+                href="mailto:info@hacklab.com"
                 className="flex items-center gap-2 text-sm text-gray-400 hover:text-white transition"
               >
                 <Mail className="w-4 h-4" />
-                info@mojservice.cz
+                info@hacklab.com
               </Link>
 
               {/* Social Media Links */}

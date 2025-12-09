@@ -108,7 +108,7 @@ function CategoryCard({ category, onClick }: CategoryCardProps) {
 
         {/* Text Section */}
         <div className="flex-1 min-w-0">
-          <h3 className="text-sm font-medium text-gray-900 line-clamp-2 leading-tight">
+          <h3 className="text-xl font-medium text-gray-900 line-clamp-2 leading-tight">
             {category.name}
           </h3>
         </div>

@@ -78,7 +78,7 @@ export function DeviceModelGrid({
 
         {/* Models Grid */}
         <div className="container max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
             {models.map((model) => (
               <ModelCard
                 key={model.id}
@@ -127,7 +127,7 @@ function ModelCard({ model, category, onClick }: ModelCardProps) {
                    transition-all duration-300 ease-out cursor-pointer
                    border border-gray-200
                    hover:shadow-xl hover:scale-[1.02] hover:border-gray-300
-                   flex items-center gap-2 p-3"
+                   flex items-center gap-4 p-3"
       >
         {/* Icon Section - Outline Style */}
         <div className="flex-shrink-0 w-10 h-10 flex items-center justify-center">
@@ -143,8 +143,8 @@ function ModelCard({ model, category, onClick }: ModelCardProps) {
         </div>
 
         {/* Text Section */}
-        <div className="flex-1 min-w-0 text-center">
-          <h3 className="text-base font-medium text-gray-900 line-clamp-2 leading-tight">
+        <div className="flex-1 min-w-0">
+          <h3 className="text-[15px] font-medium text-gray-900 line-clamp-2 leading-[1.3]">
             {mainName}
           </h3>
           {modelCodes && (

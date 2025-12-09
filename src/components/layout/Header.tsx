@@ -69,17 +69,8 @@ export function Header() {
             ))}
           </nav>
 
-          {/* Right: Phone + Language Switcher (Desktop only) */}
+          {/* Right: Language Switcher (Desktop only) */}
           <div className="hidden lg:flex items-center gap-6">
-            {/* Phone */}
-            <Link
-              href="tel:+420721042342"
-              className="flex items-center gap-2 text-white hover:text-gray-300 transition-colors duration-250"
-            >
-              <Phone className="w-5 h-5" />
-              <span className="font-medium">+420 721 042 342</span>
-            </Link>
-
             {/* Language Switcher - Simple inline */}
             <div className="flex items-center gap-2 text-white text-base font-medium">
               {languages.map((lang, index) => (

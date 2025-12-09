@@ -1,7 +1,7 @@
 'use client'
 
 import { Card } from "@/components/ui/card"
-import { MapPin, Train, Clock, Star } from "lucide-react"
+import { MapPin, Train, Clock, Star, Phone, Mail } from "lucide-react"
 import { MapSection } from "./MapSection"
 import { useLocale } from "@/contexts/LocaleContext"
 import { getTranslations } from "@/lib/i18n"
@@ -26,6 +26,28 @@ export function ContactSection() {
                 <p className="text-gray-700">Seifertova 83</p>
                 <p className="text-gray-700">Praha 3 - Žižkov</p>
                 <p className="text-gray-700">130 00</p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-4">
+              <div className="bg-teal-100 p-3 rounded-full">
+                <Phone className="w-6 h-6 text-teal-700" />
+              </div>
+              <div>
+                <h3 className="font-bold text-gray-900 mb-2">{t.footerContactTitle}</h3>
+                <a
+                  href="tel:+420721042342"
+                  className="text-gray-700 hover:text-teal-700 transition-colors duration-200 block"
+                >
+                  +420 721 042 342
+                </a>
+                <a
+                  href="mailto:info@hacklab.com"
+                  className="text-gray-700 hover:text-teal-700 transition-colors duration-200 flex items-center gap-2 mt-1"
+                >
+                  <Mail className="w-4 h-4" />
+                  info@hacklab.com
+                </a>
               </div>
             </div>
 
