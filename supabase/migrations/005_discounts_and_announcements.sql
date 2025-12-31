@@ -190,4 +190,16 @@ CREATE TRIGGER set_updated_at
   FOR EACH ROW
   EXECUTE FUNCTION update_updated_at_column();
 
+-- ================================================================
+-- 7. GRANT PERMISSIONS
+-- ================================================================
+
+-- Grant SELECT to anon and authenticated for public read access
+GRANT SELECT ON discount_services TO anon, authenticated;
+GRANT SELECT ON announcements TO anon, authenticated;
+
+-- Discounts already have permissions from previous migrations,
+-- but ensure SELECT is granted for anon/authenticated
+GRANT SELECT ON discounts TO anon, authenticated;
+
 COMMIT;
