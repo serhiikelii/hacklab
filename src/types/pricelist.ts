@@ -89,22 +89,87 @@ export interface CategoryService {
 
 // ========== Скидки ==========
 
+export type DiscountType = 'percentage' | 'fixed' | 'bonus';
+
 export interface Discount {
   id: string;
   name_ru: string;
   name_en: string;
   name_cz: string;
-  type: 'percentage' | 'fixed' | 'bonus';
-  value: string; // "5%", "10%", "+1 app" и т.д.
-  description_ru?: string;
-  description_en?: string;
-  description_cz?: string;
-  conditions_ru?: string;
-  conditions_en?: string;
-  conditions_cz?: string;
-  valid_from?: string | null;
-  valid_until?: string | null;
-  is_active?: boolean; // Used in discounts table (different from prices)
+  discount_type: DiscountType;
+  value: number; // Numeric value: 5, 10, 100, etc.
+  conditions_ru?: string | null;
+  conditions_en?: string | null;
+  conditions_cz?: string | null;
+
+  // New fields for discount system
+  start_date?: string | null; // ISO date string
+  end_date?: string | null; // ISO date string
+  is_auto_apply?: boolean; // TRUE = auto-discount on services, FALSE = info-discount for banner
+  display_badge?: boolean; // Show discount badge (-10%) on service card
+
+  active: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+// Junction table for discount-service relationships
+export interface DiscountService {
+  id: string;
+  discount_id: string;
+  service_id: string;
+  created_at: string;
+}
+
+// Result of discount calculation
+export interface DiscountedPrice {
+  final_price: number;
+  original_price: number;
+  discount_id: string;
+  discount_value: number;
+  discount_type: DiscountType;
+  discount?: Discount; // Optional full discount object
+}
+
+// ========== Announcements/Promotions ==========
+
+export type AnnouncementType = 'promo' | 'warning' | 'info' | 'sale';
+
+export interface Announcement {
+  id: string;
+  type: AnnouncementType;
+
+  // Multilingual content
+  title_ru: string;
+  title_en: string;
+  title_cz: string;
+  message_ru?: string | null;
+  message_en?: string | null;
+  message_cz?: string | null;
+
+  // Validity period
+  start_date: string; // ISO timestamp
+  end_date?: string | null; // ISO timestamp
+
+  // Display settings
+  display_order: number; // Lower = higher priority in rotation
+  background_color?: string | null; // HEX: #FF5733
+  text_color?: string | null; // HEX: #FFFFFF
+  icon?: string | null; // emoji or lucide icon name
+
+  // Optional link
+  link_url?: string | null;
+  link_text_ru?: string | null;
+  link_text_en?: string | null;
+  link_text_cz?: string | null;
+
+  // Optional link to informational discount
+  discount_id?: string | null;
+  discount?: Discount; // Populated via join
+
+  active: boolean;
+  created_at: string;
+  updated_at: string;
 }
 
 // ========== Компоненты прайс-листа ==========
@@ -124,12 +189,14 @@ export interface ServicePriceTableProps {
   model: DeviceModel;
   services: Service[];
   prices: ServicePrice[];
+  discounts?: Discount[]; // Optional array of active discounts
   onReserve?: (service: Service, model: DeviceModel) => void;
 }
 
 export interface ServiceRowProps {
   service: Service;
   price: ServicePrice;
+  discount?: DiscountedPrice; // Optional discount information for this service
   onReserve?: () => void;
 }
 
@@ -242,13 +309,13 @@ export const EXTRA_SERVICES: Service[] = [
 /**
  * @deprecated Устаревший список скидок.
  * ВНИМАНИЕ: Данные могут НЕ соответствовать текущим акциям!
- * Используйте данные из БД или актуальной документации.
+ * Используйте данные из БД через API endpoints.
  * Оставлено для обратной совместимости, будет удалено в будущих версиях.
  */
 export const DISCOUNTS: Discount[] = [
-  { id: '1', name_ru: 'Скидка подписчикам Facebook', name_en: 'Facebook followers discount', name_cz: 'Sleva pro followery na Facebooku', type: 'percentage', value: '5%' },
-  { id: '2', name_ru: 'Студенческая скидка', name_en: 'Student discount', name_cz: 'Studentská sleva', type: 'percentage', value: '10%' },
-  { id: '3', name_ru: 'Скидка за несколько услуг', name_en: 'Bulk discount', name_cz: 'Sleva za více služeb', type: 'percentage', value: 'variable' },
-  { id: '4', name_ru: 'Скидка на следующий ремонт', name_en: 'Discount on next purchase', name_cz: 'Sleva na další opravu', type: 'percentage', value: '10%' },
-  { id: '5', name_ru: 'Бесплатное приложение после ремонта', name_en: 'Free app after any repair', name_cz: 'Aplikace zdarma po opravě', type: 'bonus', value: '+1' },
+  { id: '1', name_ru: 'Скидка подписчикам Facebook', name_en: 'Facebook followers discount', name_cz: 'Sleva pro followery na Facebooku', discount_type: 'percentage', value: 5, active: true, created_at: '2024-01-01T00:00:00Z', updated_at: '2024-01-01T00:00:00Z' },
+  { id: '2', name_ru: 'Студенческая скидка', name_en: 'Student discount', name_cz: 'Studentská sleva', discount_type: 'percentage', value: 10, active: true, created_at: '2024-01-01T00:00:00Z', updated_at: '2024-01-01T00:00:00Z' },
+  { id: '3', name_ru: 'Скидка за несколько услуг', name_en: 'Bulk discount', name_cz: 'Sleva za více služeb', discount_type: 'percentage', value: 15, active: true, created_at: '2024-01-01T00:00:00Z', updated_at: '2024-01-01T00:00:00Z' },
+  { id: '4', name_ru: 'Скидка на следующий ремонт', name_en: 'Discount on next purchase', name_cz: 'Sleva na další opravu', discount_type: 'percentage', value: 10, active: true, created_at: '2024-01-01T00:00:00Z', updated_at: '2024-01-01T00:00:00Z' },
+  { id: '5', name_ru: 'Бесплатное приложение после ремонта', name_en: 'Free app after any repair', name_cz: 'Aplikace zdarma po opravě', discount_type: 'bonus', value: 1, active: true, created_at: '2024-01-01T00:00:00Z', updated_at: '2024-01-01T00:00:00Z' },
 ];
