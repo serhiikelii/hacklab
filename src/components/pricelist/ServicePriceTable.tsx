@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { Home, ChevronRight } from 'lucide-react';
 import { getTranslations, getServiceName, formatMessage, getCategoryName } from '@/lib/i18n';
 import { useLocale } from '@/contexts/LocaleContext';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -58,6 +58,14 @@ export function ServicePriceTable({
   const [discounts, setDiscounts] = useState<Map<string, DiscountResponse>>(new Map());
   const [isLoadingDiscounts, setIsLoadingDiscounts] = useState(true);
 
+  // Parse model name for iPad/MacBook
+  const { mainName, modelCodes } = parseModelName(model.name, model.category);
+
+  // Create price map for quick access using useMemo to avoid recreation on every render
+  const priceMap = useMemo(() => {
+    return new Map(prices.map((p) => [p.serviceId, p]));
+  }, [prices]);
+
   // Load active discounts for services
   useEffect(() => {
     async function fetchDiscounts() {
@@ -105,15 +113,7 @@ export function ServicePriceTable({
     }
 
     fetchDiscounts();
-  }, [services, prices]);
-
-  // Parse model name for iPad/MacBook
-  const { mainName, modelCodes } = parseModelName(model.name, model.category);
-
-  // Create price map for quick access
-  const priceMap = new Map(
-    prices.map((p) => [p.serviceId, p])
-  );
+  }, [services, priceMap]);
 
   const hasPrices = prices.length > 0;
   const hasServices = services.length > 0;
