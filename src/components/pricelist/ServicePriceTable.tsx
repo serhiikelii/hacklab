@@ -1,12 +1,12 @@
 'use client';
 
-import { DeviceModel, Service, ServicePrice } from '@/types/pricelist';
+import { DeviceModel, Service, ServicePrice, Discount } from '@/types/pricelist';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Home, ChevronRight } from 'lucide-react';
 import { getTranslations, getServiceName, formatMessage, getCategoryName } from '@/lib/i18n';
 import { useLocale } from '@/contexts/LocaleContext';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -17,6 +17,12 @@ export interface ServicePriceTableProps {
   services: Service[];
   prices: ServicePrice[];
   onReserve?: (service: Service, model: DeviceModel) => void;
+}
+
+interface DiscountResponse {
+  service_id: string;
+  discount: Discount;
+  discounted_price?: number;
 }
 
 
@@ -47,6 +53,59 @@ export function ServicePriceTable({
 
   // State for fallback image on load error
   const [imageError, setImageError] = useState(false);
+
+  // State for discounts
+  const [discounts, setDiscounts] = useState<Map<string, DiscountResponse>>(new Map());
+  const [isLoadingDiscounts, setIsLoadingDiscounts] = useState(true);
+
+  // Load active discounts for services
+  useEffect(() => {
+    async function fetchDiscounts() {
+      try {
+        setIsLoadingDiscounts(true);
+
+        // Get all service IDs
+        const serviceIds = services.map(s => s.id).join(',');
+        if (!serviceIds) {
+          setIsLoadingDiscounts(false);
+          return;
+        }
+
+        // Get all prices for current services
+        const originalPrices = services
+          .map(s => {
+            const price = priceMap.get(s.id);
+            return price?.price || 0;
+          })
+          .join(',');
+
+        // Fetch active discounts
+        const response = await fetch(
+          `/api/discounts/active?service_ids=${serviceIds}&original_prices=${originalPrices}`
+        );
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch discounts');
+        }
+
+        const data = await response.json();
+
+        // Convert array to Map for quick lookup
+        const discountMap = new Map<string, DiscountResponse>();
+        (data.discounts || []).forEach((d: DiscountResponse) => {
+          discountMap.set(d.service_id, d);
+        });
+
+        setDiscounts(discountMap);
+      } catch (err) {
+        console.error('Error fetching discounts:', err);
+      } finally {
+        setIsLoadingDiscounts(false);
+      }
+    }
+
+    fetchDiscounts();
+  }, [services, prices]);
 
   // Parse model name for iPad/MacBook
   const { mainName, modelCodes } = parseModelName(model.name, model.category);
@@ -141,9 +200,45 @@ export function ServicePriceTable({
                           </div>
                         </td>
                         <td className="px-4 sm:px-6 py-4 text-right">
-                          <div className="font-semibold text-gray-900 text-lg">
-                            {price.price} Kč
-                          </div>
+                          {(() => {
+                            const discountData = discounts.get(service.id);
+
+                            if (discountData && discountData.discounted_price !== undefined) {
+                              // Service has an active discount
+                              const originalPrice = price.price;
+                              const discountedPrice = discountData.discounted_price;
+                              const discount = discountData.discount;
+
+                              return (
+                                <div className="flex flex-col items-end gap-1">
+                                  {/* Original price (strikethrough) */}
+                                  <div className="text-sm text-gray-400 line-through">
+                                    {originalPrice} Kč
+                                  </div>
+
+                                  {/* Discounted price */}
+                                  <div className="font-semibold text-green-600 text-xl">
+                                    {discountedPrice} Kč
+                                  </div>
+
+                                  {/* Discount badge (optional) */}
+                                  {discount.display_badge && (
+                                    <span className="text-xs bg-red-500 text-white px-2 py-0.5 rounded">
+                                      -{discount.value}
+                                      {discount.discount_type === 'percentage' ? '%' : ' Kč'}
+                                    </span>
+                                  )}
+                                </div>
+                              );
+                            }
+
+                            // No discount - show regular price
+                            return (
+                              <div className="font-semibold text-gray-900 text-lg">
+                                {price.price} Kč
+                              </div>
+                            );
+                          })()}
                         </td>
                       </tr>
                     );
