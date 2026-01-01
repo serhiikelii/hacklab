@@ -223,6 +223,9 @@ export async function getPricesForModel(modelId: string): Promise<ServicePrice[]
       return [];
     }
 
+    // TypeScript type narrowing fix for .single() return type
+    const modelCategory = model as { category_id: string };
+
     // Get prices for the model
     const { data: pricesData, error: pricesError } = await supabase
       .from('prices')
@@ -239,16 +242,19 @@ export async function getPricesForModel(modelId: string): Promise<ServicePrice[]
     const { data: categoryServices, error: csError } = await supabase
       .from('category_services')
       .select('id, service_id')
-      .eq('category_id', model.category_id);
+      .eq('category_id', modelCategory.category_id);
 
     if (csError) {
       console.error('Error fetching category_services:', csError);
       return pricesData ? pricesData.map(transformPrice) : [];
     }
 
+    // TypeScript type narrowing fix
+    const csData = (categoryServices || []) as Array<{ id: string; service_id: string }>;
+
     // Create map: service_id -> category_service_id
     const serviceMap = new Map(
-      (categoryServices || []).map(cs => [cs.service_id, cs.id])
+      csData.map(cs => [cs.service_id, cs.id])
     );
 
     // Transform prices and add category_service_id
