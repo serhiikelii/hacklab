@@ -29,7 +29,8 @@ export function AddDiscountForm() {
   const [isOpen, setIsOpen] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  const [isAutoApply, setIsAutoApply] = useState(false)
+  // All discounts are now automatic (migration 007)
+  const isAutoApply = true
   const [discountType, setDiscountType] = useState<DiscountType>('percentage')
   const [categoryServices, setCategoryServices] = useState<
     CategoryServiceOption[]
@@ -72,7 +73,6 @@ export function AddDiscountForm() {
       setIsOpen(false)
       setSelectedServices(new Set())
       ;(e.target as HTMLFormElement).reset()
-      setIsAutoApply(false)
     } else {
       setError(result.error || 'Error creating discount')
     }
@@ -124,37 +124,6 @@ export function AddDiscountForm() {
       )}
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Discount Type (Info/Auto) */}
-        <div>
-          <Label className="text-sm font-medium mb-2 block">
-            Discount Type *
-          </Label>
-          <div className="flex gap-4">
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input
-                type="radio"
-                name="is_auto_apply"
-                value="false"
-                checked={!isAutoApply}
-                onChange={() => setIsAutoApply(false)}
-                className="w-4 h-4"
-              />
-              <span className="text-sm">Informational (for banner)</span>
-            </label>
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input
-                type="radio"
-                name="is_auto_apply"
-                value="true"
-                checked={isAutoApply}
-                onChange={() => setIsAutoApply(true)}
-                className="w-4 h-4"
-              />
-              <span className="text-sm">Automatic (applies to prices)</span>
-            </label>
-          </div>
-        </div>
-
         {/* Names (RU/EN/CZ) */}
         <div className="grid grid-cols-3 gap-4">
           <div>

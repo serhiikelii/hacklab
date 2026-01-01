@@ -67,28 +67,12 @@ export async function getAnnouncements(): Promise<Announcement[]> {
 
 /**
  * Get informational discounts (for announcement linking)
+ * Note: After migration 007, all discounts are automatic.
+ * Informational promotions are now handled as announcements only.
  */
 export async function getInfoDiscounts(): Promise<InfoDiscount[]> {
-  try {
-    const supabase = await createClient()
-
-    const { data, error } = await supabase
-      .from('discounts')
-      .select('id, name_ru, name_en, name_cz, discount_type, value')
-      .eq('is_auto_apply', false)
-      .eq('active', true)
-      .order('name_ru')
-
-    if (error) {
-      console.error('Error fetching info discounts:', error)
-      return []
-    }
-
-    return (data || []) as InfoDiscount[]
-  } catch (error) {
-    console.error('Error in getInfoDiscounts:', error)
-    return []
-  }
+  // No informational discounts exist anymore (migration 007)
+  return []
 }
 
 interface CreateAnnouncementData {

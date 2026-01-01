@@ -113,7 +113,6 @@ export async function GET() {
         conditions_cz: null,
         start_date: null,
         end_date: null,
-        is_auto_apply: false,
         display_badge: false,
         active: true,
         created_at: '',

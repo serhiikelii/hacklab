@@ -139,7 +139,6 @@ export async function createDiscount(
       conditions_cz: (formData.get('conditions_cz') as string)?.trim() || undefined,
       start_date: (formData.get('start_date') as string) || undefined,
       end_date: (formData.get('end_date') as string) || undefined,
-      is_auto_apply: formData.get('is_auto_apply') === 'true',
       display_badge: formData.get('display_badge') === 'true',
       active: formData.get('active') === 'true',
     }
@@ -171,11 +170,11 @@ export async function createDiscount(
       ? categoryServiceIds.split(',').filter((id) => id.trim())
       : []
 
-    // If auto-apply, at least one service must be selected
-    if (data.is_auto_apply && parsedCategoryServiceIds.length === 0) {
+    // All discounts are automatic, require at least one service
+    if (parsedCategoryServiceIds.length === 0) {
       return {
         success: false,
-        error: 'Automatic discounts require at least one service',
+        error: 'At least one service must be selected',
       }
     }
 
@@ -193,7 +192,6 @@ export async function createDiscount(
         conditions_cz: data.conditions_cz,
         start_date: data.start_date,
         end_date: data.end_date,
-        is_auto_apply: data.is_auto_apply,
         display_badge: data.display_badge,
         active: data.active,
       })
@@ -268,7 +266,6 @@ export async function updateDiscount(
       conditions_cz: (formData.get('conditions_cz') as string)?.trim() || undefined,
       start_date: (formData.get('start_date') as string) || undefined,
       end_date: (formData.get('end_date') as string) || undefined,
-      is_auto_apply: formData.get('is_auto_apply') === 'true',
       display_badge: formData.get('display_badge') === 'true',
       active: formData.get('active') === 'true',
     }

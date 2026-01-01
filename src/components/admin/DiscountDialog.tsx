@@ -336,7 +336,6 @@ export function DiscountDialog({ discount, trigger, open: controlledOpen, onOpen
                 </p>
               )}
             </div>
-          )}
 
           <DialogFooter>
             <Button type="button" variant="outline" onClick={() => setOpen(false)} disabled={loading}>

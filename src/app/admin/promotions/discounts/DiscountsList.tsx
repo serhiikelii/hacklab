@@ -73,20 +73,6 @@ export function DiscountsList({ discounts }: DiscountsListProps) {
     return <Badge variant="default" className="bg-green-600">Active</Badge>
   }
 
-  const getTypeBadge = (isAutoApply: boolean | undefined) => {
-    if (isAutoApply) {
-      return (
-        <Badge variant="default" className="bg-blue-600">
-          Auto
-        </Badge>
-      )
-    }
-    return (
-      <Badge variant="outline" className="border-purple-600 text-purple-600">
-        Info
-      </Badge>
-    )
-  }
 
   if (discounts.length === 0) {
     return (
@@ -102,7 +88,6 @@ export function DiscountsList({ discounts }: DiscountsListProps) {
         <TableHeader>
           <TableRow>
             <TableHead>Name</TableHead>
-            <TableHead>Type</TableHead>
             <TableHead>Discount</TableHead>
             <TableHead>Period</TableHead>
             <TableHead>Status</TableHead>
@@ -123,9 +108,6 @@ export function DiscountsList({ discounts }: DiscountsListProps) {
                     </div>
                   )}
                 </div>
-              </TableCell>
-              <TableCell>
-                {getTypeBadge(discount.is_auto_apply)}
               </TableCell>
               <TableCell>
                 <div>

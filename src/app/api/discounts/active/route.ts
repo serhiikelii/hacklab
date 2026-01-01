@@ -67,7 +67,6 @@ export async function GET(request: Request) {
         discount_category_services(category_service_id)
       `)
       .eq('active', true)
-      .eq('is_auto_apply', true)
       .order('value', { ascending: false }); // Highest discount first
 
     if (discountsError) {
@@ -114,7 +113,6 @@ export async function GET(request: Request) {
             conditions_cz: matchingDiscount.conditions_cz,
             start_date: matchingDiscount.start_date,
             end_date: matchingDiscount.end_date,
-            is_auto_apply: matchingDiscount.is_auto_apply,
             display_badge: matchingDiscount.display_badge,
             active: matchingDiscount.active,
             created_at: matchingDiscount.created_at,
