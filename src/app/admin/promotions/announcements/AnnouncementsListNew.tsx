@@ -3,6 +3,16 @@
 import { useState } from 'react'
 import { deleteAnnouncement, type Announcement } from './actions'
 import { Button } from '@/components/ui/button'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog'
 import { Pencil, Trash2, GripVertical } from 'lucide-react'
 import { AnnouncementDialog } from '@/components/admin/AnnouncementDialog'
 import {
@@ -132,6 +142,8 @@ export function AnnouncementsListNew({ announcements: initialAnnouncements }: An
   const [announcements, setAnnouncements] = useState(initialAnnouncements)
   const [editingId, setEditingId] = useState<string | null>(null)
   const [deletingId, setDeletingId] = useState<string | null>(null)
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
+  const [announcementToDelete, setAnnouncementToDelete] = useState<string | null>(null)
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -140,21 +152,27 @@ export function AnnouncementsListNew({ announcements: initialAnnouncements }: An
     })
   )
 
-  const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this announcement?')) {
-      return
-    }
+  const handleDeleteClick = (id: string) => {
+    setAnnouncementToDelete(id)
+    setDeleteDialogOpen(true)
+  }
 
-    setDeletingId(id)
-    const result = await deleteAnnouncement(id)
+  const handleDeleteConfirm = async () => {
+    if (!announcementToDelete) return
+
+    setDeletingId(announcementToDelete)
+    setDeleteDialogOpen(false)
+
+    const result = await deleteAnnouncement(announcementToDelete)
 
     if (!result.success) {
-      alert(result.error || 'Failed to delete announcement')
+      console.error('Failed to delete announcement:', result.error)
     } else {
-      setAnnouncements((prev) => prev.filter((a) => a.id !== id))
+      setAnnouncements((prev) => prev.filter((a) => a.id !== announcementToDelete))
     }
 
     setDeletingId(null)
+    setAnnouncementToDelete(null)
   }
 
   const handleDragEnd = async (event: DragEndEvent) => {
@@ -196,7 +214,6 @@ export function AnnouncementsListNew({ announcements: initialAnnouncements }: An
       }
     } catch (error) {
       console.error('Error updating order:', error)
-      alert('Failed to save new order')
       // Revert on error
       setAnnouncements(announcements)
     }
@@ -259,7 +276,7 @@ export function AnnouncementsListNew({ announcements: initialAnnouncements }: An
                       key={announcement.id}
                       announcement={announcement}
                       onEdit={setEditingId}
-                      onDelete={handleDelete}
+                      onDelete={handleDeleteClick}
                       deletingId={deletingId}
                     />
                   ))}
@@ -269,6 +286,26 @@ export function AnnouncementsListNew({ announcements: initialAnnouncements }: An
           </DndContext>
         </div>
       </div>
+
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete this announcement.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDeleteConfirm}
+              className="bg-red-600 hover:bg-red-700"
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   )
 }

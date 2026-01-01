@@ -12,6 +12,16 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog'
 import { Pencil, Trash2 } from 'lucide-react'
 import { DiscountDialog } from '@/components/admin/DiscountDialog'
 import type { Discount } from '@/types/pricelist'
@@ -23,24 +33,28 @@ interface DiscountsListProps {
 export function DiscountsList({ discounts }: DiscountsListProps) {
   const [deletingId, setDeletingId] = useState<string | null>(null)
   const [editingId, setEditingId] = useState<string | null>(null)
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
+  const [discountToDelete, setDiscountToDelete] = useState<string | null>(null)
 
-  const handleDelete = async (id: string) => {
-    if (
-      !confirm(
-        'Are you sure you want to delete this discount? This action cannot be undone.'
-      )
-    ) {
-      return
-    }
+  const handleDeleteClick = (id: string) => {
+    setDiscountToDelete(id)
+    setDeleteDialogOpen(true)
+  }
 
-    setDeletingId(id)
-    const result = await deleteDiscount(id)
+  const handleDeleteConfirm = async () => {
+    if (!discountToDelete) return
+
+    setDeletingId(discountToDelete)
+    setDeleteDialogOpen(false)
+
+    const result = await deleteDiscount(discountToDelete)
 
     if (!result.success) {
-      alert(result.error || 'Failed to delete discount')
+      console.error('Failed to delete discount:', result.error)
     }
 
     setDeletingId(null)
+    setDiscountToDelete(null)
   }
 
   const formatDate = (dateString: string | null | undefined) => {
@@ -141,7 +155,7 @@ export function DiscountsList({ discounts }: DiscountsListProps) {
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() => handleDelete(discount.id)}
+                    onClick={() => handleDeleteClick(discount.id)}
                     disabled={deletingId === discount.id}
                     title="Delete"
                     className="text-red-600 hover:text-red-700 hover:bg-red-50"
@@ -154,6 +168,26 @@ export function DiscountsList({ discounts }: DiscountsListProps) {
           ))}
         </TableBody>
       </Table>
+
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete this discount.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDeleteConfirm}
+              className="bg-red-600 hover:bg-red-700"
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }

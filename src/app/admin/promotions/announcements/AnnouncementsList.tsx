@@ -3,6 +3,16 @@
 import { useState } from 'react'
 import { deleteAnnouncement, type Announcement } from './actions'
 import { Button } from '@/components/ui/button'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog'
 import { Pencil, Trash2, Eye, Megaphone, AlertTriangle, Info, Percent } from 'lucide-react'
 import { AnnouncementForm } from './AnnouncementForm'
 
@@ -28,20 +38,28 @@ export function AnnouncementsList({ announcements }: AnnouncementsListProps) {
   const [editingId, setEditingId] = useState<string | null>(null)
   const [deletingId, setDeletingId] = useState<string | null>(null)
   const [previewId, setPreviewId] = useState<string | null>(null)
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
+  const [announcementToDelete, setAnnouncementToDelete] = useState<string | null>(null)
 
-  const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this announcement?')) {
-      return
-    }
+  const handleDeleteClick = (id: string) => {
+    setAnnouncementToDelete(id)
+    setDeleteDialogOpen(true)
+  }
 
-    setDeletingId(id)
-    const result = await deleteAnnouncement(id)
+  const handleDeleteConfirm = async () => {
+    if (!announcementToDelete) return
+
+    setDeletingId(announcementToDelete)
+    setDeleteDialogOpen(false)
+
+    const result = await deleteAnnouncement(announcementToDelete)
 
     if (!result.success) {
-      alert(result.error || 'Failed to delete announcement')
+      console.error('Failed to delete announcement:', result.error)
     }
 
     setDeletingId(null)
+    setAnnouncementToDelete(null)
   }
 
   const formatDate = (dateStr: string | null) => {
@@ -192,7 +210,7 @@ export function AnnouncementsList({ announcements }: AnnouncementsListProps) {
                     <Button
                       variant="ghost"
                       size="sm"
-                      onClick={() => handleDelete(announcement.id)}
+                      onClick={() => handleDeleteClick(announcement.id)}
                       disabled={deletingId === announcement.id}
                       title="Delete"
                       className="text-red-600 hover:text-red-700 hover:bg-red-50"
@@ -206,6 +224,26 @@ export function AnnouncementsList({ announcements }: AnnouncementsListProps) {
           </tbody>
         </table>
       </div>
+
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete this announcement.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDeleteConfirm}
+              className="bg-red-600 hover:bg-red-700"
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }
