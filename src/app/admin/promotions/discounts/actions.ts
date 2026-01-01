@@ -27,8 +27,8 @@ export async function getCategoryServices(): Promise<CategoryServiceWithNames[]>
         id,
         category_id,
         service_id,
-        device_categories(name_ru),
-        services(name_ru)
+        device_categories(name_en),
+        services(name_en)
       `)
       .order('category_id')
 
@@ -42,8 +42,8 @@ export async function getCategoryServices(): Promise<CategoryServiceWithNames[]>
       id: item.id,
       category_id: item.category_id,
       service_id: item.service_id,
-      category_name: item.device_categories?.name_ru || 'Unknown',
-      service_name: item.services?.name_ru || 'Unknown',
+      category_name: item.device_categories?.name_en || 'Unknown',
+      service_name: item.services?.name_en || 'Unknown',
     }))
   } catch (error) {
     console.error('Error in getCategoryServices:', error)

@@ -113,12 +113,12 @@ export function DiscountsList({ discounts }: DiscountsListProps) {
             <TableRow key={discount.id}>
               <TableCell className="font-medium">
                 <div>
-                  <div>{discount.name_ru}</div>
-                  {discount.conditions_ru && (
+                  <div>{discount.name_en}</div>
+                  {discount.conditions_en && (
                     <div className="text-xs text-gray-500 mt-1">
-                      {discount.conditions_ru.length > 50
-                        ? `${discount.conditions_ru.substring(0, 50)}...`
-                        : discount.conditions_ru}
+                      {discount.conditions_en.length > 50
+                        ? `${discount.conditions_en.substring(0, 50)}...`
+                        : discount.conditions_en}
                     </div>
                   )}
                 </div>

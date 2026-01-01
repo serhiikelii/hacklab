@@ -85,11 +85,11 @@ function SortableRow({ announcement, onEdit, onDelete, deletingId }: {
       {/* Title */}
       <td className="px-6 py-4">
         <div className="text-sm font-medium text-gray-900">
-          {announcement.title_ru}
+          {announcement.title_en}
         </div>
-        {announcement.message_ru && (
+        {announcement.message_en && (
           <div className="text-xs text-gray-500 mt-1 truncate max-w-xs">
-            {announcement.message_ru}
+            {announcement.message_en}
           </div>
         )}
       </td>
