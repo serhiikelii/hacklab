@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
-import type { Announcement, AnnouncementType, DiscountType } from '@/types/pricelist';
+import type { Announcement, AnnouncementType } from '@/types/pricelist';
 
 interface AnnouncementFromDB {
   id: string;
@@ -21,18 +21,9 @@ interface AnnouncementFromDB {
   link_text_ru: string | null;
   link_text_en: string | null;
   link_text_cz: string | null;
-  discount_id: string | null;
   active: boolean;
   created_at: string;
   updated_at: string;
-  discount: {
-    id: string;
-    name_ru: string;
-    name_en: string;
-    name_cz: string;
-    discount_type: string;
-    value: number;
-  } | null;
 }
 
 /**
@@ -43,26 +34,17 @@ interface AnnouncementFromDB {
  * Returns:
  * - Array of active announcements sorted by display_order
  * - Only returns announcements within their validity period
- * - Includes linked discount information if available
+ *
+ * Note: After migration 007, announcements are independent from discounts
  */
 export async function GET() {
   try {
     const now = new Date().toISOString();
 
-    // Fetch active announcements with optional discount info
+    // Fetch active announcements
     const { data: announcements, error: announcementsError } = await supabase
       .from('announcements')
-      .select(`
-        *,
-        discount:discounts(
-          id,
-          name_ru,
-          name_en,
-          name_cz,
-          discount_type,
-          value
-        )
-      `)
+      .select('*')
       .eq('active', true)
       .lte('start_date', now) // start_date <= now
       .or(`end_date.is.null,end_date.gte.${now}`) // end_date is null OR end_date >= now
@@ -100,24 +82,6 @@ export async function GET() {
       link_text_ru: announcement.link_text_ru,
       link_text_en: announcement.link_text_en,
       link_text_cz: announcement.link_text_cz,
-      discount_id: announcement.discount_id,
-      discount: announcement.discount ? {
-        id: announcement.discount.id,
-        name_ru: announcement.discount.name_ru,
-        name_en: announcement.discount.name_en,
-        name_cz: announcement.discount.name_cz,
-        discount_type: announcement.discount.discount_type as DiscountType,
-        value: announcement.discount.value,
-        conditions_ru: null,
-        conditions_en: null,
-        conditions_cz: null,
-        start_date: null,
-        end_date: null,
-        display_badge: false,
-        active: true,
-        created_at: '',
-        updated_at: '',
-      } : undefined,
       active: announcement.active,
       created_at: announcement.created_at,
       updated_at: announcement.updated_at,
