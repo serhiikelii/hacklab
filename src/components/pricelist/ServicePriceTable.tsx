@@ -20,7 +20,7 @@ export interface ServicePriceTableProps {
 }
 
 interface DiscountResponse {
-  service_id: string;
+  category_service_id: string;
   discount: Discount;
   discounted_price?: number;
 }
@@ -66,30 +66,32 @@ export function ServicePriceTable({
     return new Map(prices.map((p) => [p.serviceId, p]));
   }, [prices]);
 
-  // Load active discounts for services
+  // Load active discounts for category-service combinations
   useEffect(() => {
     async function fetchDiscounts() {
       try {
         setIsLoadingDiscounts(true);
 
-        // Get all service IDs
-        const serviceIds = services.map(s => s.id).join(',');
-        if (!serviceIds) {
+        // Get all category_service IDs from prices
+        const categoryServiceIds = Array.from(priceMap.values())
+          .map(p => p.categoryServiceId)
+          .filter((id): id is string => id !== null && id !== undefined)
+          .join(',');
+
+        if (!categoryServiceIds) {
           setIsLoadingDiscounts(false);
           return;
         }
 
-        // Get all prices for current services
-        const originalPrices = services
-          .map(s => {
-            const price = priceMap.get(s.id);
-            return price?.price || 0;
-          })
+        // Get original prices in the same order as category_service_ids
+        const originalPrices = Array.from(priceMap.values())
+          .filter(p => p.categoryServiceId)
+          .map(p => p.price || 0)
           .join(',');
 
-        // Fetch active discounts
+        // Fetch active discounts using category_service_ids
         const response = await fetch(
-          `/api/discounts/active?service_ids=${serviceIds}&original_prices=${originalPrices}`
+          `/api/discounts/active?category_service_ids=${categoryServiceIds}&original_prices=${originalPrices}`
         );
 
         if (!response.ok) {
@@ -98,10 +100,10 @@ export function ServicePriceTable({
 
         const data = await response.json();
 
-        // Convert array to Map for quick lookup
+        // Convert array to Map for quick lookup by category_service_id
         const discountMap = new Map<string, DiscountResponse>();
         (data.discounts || []).forEach((d: DiscountResponse) => {
-          discountMap.set(d.service_id, d);
+          discountMap.set(d.category_service_id, d);
         });
 
         setDiscounts(discountMap);
@@ -113,7 +115,7 @@ export function ServicePriceTable({
     }
 
     fetchDiscounts();
-  }, [services, priceMap]);
+  }, [priceMap]);
 
   const hasPrices = prices.length > 0;
   const hasServices = services.length > 0;
@@ -201,7 +203,9 @@ export function ServicePriceTable({
                         </td>
                         <td className="px-4 sm:px-6 py-4 text-right">
                           {(() => {
-                            const discountData = discounts.get(service.id);
+                            const discountData = price.categoryServiceId
+                              ? discounts.get(price.categoryServiceId)
+                              : null;
 
                             if (discountData && discountData.discounted_price !== undefined) {
                               // Service has an active discount

@@ -74,6 +74,7 @@ export interface ServicePrice {
   note_ru?: string | null; // Дополнительная информация (русский)
   note_en?: string | null; // Дополнительная информация (английский)
   note_cz?: string | null; // Дополнительная информация (чешский)
+  categoryServiceId?: string | null; // ID from category_services junction table for discount lookups
   // is_active REMOVED - field doesn't exist in prices table
 }
 

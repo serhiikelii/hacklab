@@ -2,12 +2,12 @@ import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
 import type { Discount, DiscountedPrice } from '@/types/pricelist';
 
-interface DiscountWithServices extends Discount {
-  discount_services: Array<{ service_id: string }>;
+interface DiscountWithCategoryServices extends Discount {
+  discount_category_services: Array<{ category_service_id: string }>;
 }
 
 interface DiscountResponse {
-  service_id: string;
+  category_service_id: string;
   discount: Discount;
   discounted_price?: number;
 }
@@ -15,56 +15,56 @@ interface DiscountResponse {
 /**
  * GET /api/discounts/active
  *
- * Retrieves active automatic discounts for specified services
+ * Retrieves active automatic discounts for specified category-service combinations
  *
  * Query params:
- * - service_ids: comma-separated list of service UUIDs
- * - original_prices: optional comma-separated list of prices (same order as service_ids)
+ * - category_service_ids: comma-separated list of category_service UUIDs
+ * - original_prices: optional comma-separated list of prices (same order as category_service_ids)
  *
  * Returns:
- * - Array of active discounts mapped to services
+ * - Array of active discounts mapped to category-service combinations
  * - Calculated discounted prices if original_prices provided
  */
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
-    const serviceIdsParam = searchParams.get('service_ids');
+    const categoryServiceIdsParam = searchParams.get('category_service_ids');
     const originalPricesParam = searchParams.get('original_prices');
 
     // Validate required parameters
-    if (!serviceIdsParam) {
+    if (!categoryServiceIdsParam) {
       return NextResponse.json(
-        { error: 'service_ids parameter is required' },
+        { error: 'category_service_ids parameter is required' },
         { status: 400 }
       );
     }
 
-    const serviceIds = serviceIdsParam.split(',').map(id => id.trim());
+    const categoryServiceIds = categoryServiceIdsParam.split(',').map(id => id.trim());
     const originalPrices = originalPricesParam
       ? originalPricesParam.split(',').map(p => parseFloat(p.trim()))
       : [];
 
-    if (serviceIds.length === 0) {
+    if (categoryServiceIds.length === 0) {
       return NextResponse.json(
-        { error: 'At least one service_id is required' },
+        { error: 'At least one category_service_id is required' },
         { status: 400 }
       );
     }
 
     // Validate prices if provided
-    if (originalPrices.length > 0 && originalPrices.length !== serviceIds.length) {
+    if (originalPrices.length > 0 && originalPrices.length !== categoryServiceIds.length) {
       return NextResponse.json(
-        { error: 'Number of original_prices must match number of service_ids' },
+        { error: 'Number of original_prices must match number of category_service_ids' },
         { status: 400 }
       );
     }
 
-    // Fetch active automatic discounts with their linked services
+    // Fetch active automatic discounts with their linked category-service combinations
     const { data: discounts, error: discountsError } = await supabase
       .from('discounts')
       .select(`
         *,
-        discount_services(service_id)
+        discount_category_services(category_service_id)
       `)
       .eq('active', true)
       .eq('is_auto_apply', true)
@@ -84,24 +84,24 @@ export async function GET(request: Request) {
 
     // Filter discounts by date validity
     const now = new Date();
-    const validDiscounts = (discounts as DiscountWithServices[]).filter(discount => {
+    const validDiscounts = (discounts as DiscountWithCategoryServices[]).filter(discount => {
       const startValid = !discount.start_date || new Date(discount.start_date) <= now;
       const endValid = !discount.end_date || new Date(discount.end_date) >= now;
       return startValid && endValid;
     });
 
-    // Map discounts to services
+    // Map discounts to category-service combinations
     const result: DiscountResponse[] = [];
 
-    serviceIds.forEach((serviceId, index) => {
-      // Find first matching discount for this service (already sorted by value DESC)
+    categoryServiceIds.forEach((categoryServiceId, index) => {
+      // Find first matching discount for this category-service combination (already sorted by value DESC)
       const matchingDiscount = validDiscounts.find(discount =>
-        discount.discount_services.some(ds => ds.service_id === serviceId)
+        discount.discount_category_services.some(dcs => dcs.category_service_id === categoryServiceId)
       );
 
       if (matchingDiscount) {
         const response: DiscountResponse = {
-          service_id: serviceId,
+          category_service_id: categoryServiceId,
           discount: {
             id: matchingDiscount.id,
             name_ru: matchingDiscount.name_ru,
