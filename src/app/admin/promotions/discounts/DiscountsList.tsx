@@ -12,7 +12,8 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { Trash2 } from 'lucide-react'
+import { Pencil, Trash2 } from 'lucide-react'
+import { DiscountDialog } from '@/components/admin/DiscountDialog'
 import type { Discount } from '@/types/pricelist'
 
 interface DiscountsListProps {
@@ -21,6 +22,7 @@ interface DiscountsListProps {
 
 export function DiscountsList({ discounts }: DiscountsListProps) {
   const [deletingId, setDeletingId] = useState<string | null>(null)
+  const [editingId, setEditingId] = useState<string | null>(null)
 
   const handleDelete = async (id: string) => {
     if (
@@ -143,15 +145,28 @@ export function DiscountsList({ discounts }: DiscountsListProps) {
               </TableCell>
               <TableCell>{getStatusBadge(discount)}</TableCell>
               <TableCell className="text-right">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => handleDelete(discount.id)}
-                  disabled={deletingId === discount.id}
-                  className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
+                <div className="flex justify-end gap-2">
+                  <DiscountDialog
+                    discount={discount}
+                    trigger={
+                      <Button variant="ghost" size="sm" title="Edit">
+                        <Pencil className="h-4 w-4" />
+                      </Button>
+                    }
+                    open={editingId === discount.id}
+                    onOpenChange={(open) => setEditingId(open ? discount.id : null)}
+                  />
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => handleDelete(discount.id)}
+                    disabled={deletingId === discount.id}
+                    title="Delete"
+                    className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </div>
               </TableCell>
             </TableRow>
           ))}

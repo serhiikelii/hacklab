@@ -1,8 +1,8 @@
 import { getAdminUser } from '@/app/admin/actions'
 import { AdminLayout } from '@/components/admin/AdminLayout'
 import { getAnnouncements } from './actions'
-import { AnnouncementForm } from './AnnouncementForm'
-import { AnnouncementsList } from './AnnouncementsList'
+import { AnnouncementDialog } from '@/components/admin/AnnouncementDialog'
+import { AnnouncementsListNew } from './AnnouncementsListNew'
 
 export default async function AnnouncementsPage() {
   const adminUser = await getAdminUser()
@@ -31,15 +31,12 @@ export default async function AnnouncementsPage() {
               Create and manage promotional banners for the homepage
             </p>
           </div>
+          {/* Add Announcement Button */}
+          <AnnouncementDialog key={`add-announcement-${announcements.length}`} />
         </div>
 
-        {/* Add Announcement Form */}
-        <div className="mb-8">
-          <AnnouncementForm key={`add-announcement-${announcements.length}`} />
-        </div>
-
-        {/* Announcements List */}
-        <AnnouncementsList announcements={announcements} />
+        {/* Announcements List with Drag-and-Drop */}
+        <AnnouncementsListNew announcements={announcements} />
       </div>
     </AdminLayout>
   )

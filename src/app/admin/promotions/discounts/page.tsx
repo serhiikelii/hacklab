@@ -1,7 +1,7 @@
 import { getAdminUser } from '@/app/admin/actions'
 import { AdminLayout } from '@/components/admin/AdminLayout'
 import { getDiscounts } from './actions'
-import { AddDiscountForm } from './AddDiscountForm'
+import { DiscountDialog } from '@/components/admin/DiscountDialog'
 import { DiscountsList } from './DiscountsList'
 
 export default async function DiscountsPage() {
@@ -31,11 +31,8 @@ export default async function DiscountsPage() {
               Create and manage promotional discounts
             </p>
           </div>
-        </div>
-
-        {/* Add Discount Form */}
-        <div className="mb-8">
-          <AddDiscountForm key={`add-discount-${discounts.length}`} />
+          {/* Add Discount Button */}
+          <DiscountDialog key={`add-discount-${discounts.length}`} />
         </div>
 
         {/* Discounts List */}

@@ -103,15 +103,17 @@ export interface Discount {
   conditions_en?: string | null;
   conditions_cz?: string | null;
 
-  // New fields for discount system
+  // Discount validity period
   start_date?: string | null; // ISO date string
   end_date?: string | null; // ISO date string
-  is_auto_apply?: boolean; // TRUE = auto-discount on services, FALSE = info-discount for banner
   display_badge?: boolean; // Show discount badge (-10%) on service card
 
   active: boolean;
   created_at: string;
   updated_at: string;
+
+  // NOTE: All discounts are now automatic (linked to services via discount_category_services)
+  // Removed: is_auto_apply (migration 007)
 }
 
 // Junction table for discount-service relationships
@@ -164,13 +166,12 @@ export interface Announcement {
   link_text_en?: string | null;
   link_text_cz?: string | null;
 
-  // Optional link to informational discount
-  discount_id?: string | null;
-  discount?: Discount; // Populated via join
-
   active: boolean;
   created_at: string;
   updated_at: string;
+
+  // NOTE: Announcements are now independent from discounts
+  // Removed: discount_id, discount (migration 007)
 }
 
 // ========== Компоненты прайс-листа ==========
