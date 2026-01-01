@@ -25,7 +25,6 @@ export interface Announcement {
   link_text_ru: string | null
   link_text_en: string | null
   link_text_cz: string | null
-  discount_id: string | null
   active: boolean
   created_at: string
   updated_at: string
@@ -93,7 +92,6 @@ interface CreateAnnouncementData {
   link_text_ru?: string | null
   link_text_en?: string | null
   link_text_cz?: string | null
-  discount_id?: string | null
   active: boolean
 }
 
@@ -125,7 +123,6 @@ export async function createAnnouncement(
       link_text_ru: (formData.get('link_text_ru') as string)?.trim() || null,
       link_text_en: (formData.get('link_text_en') as string)?.trim() || null,
       link_text_cz: (formData.get('link_text_cz') as string)?.trim() || null,
-      discount_id: (formData.get('discount_id') as string) || null,
       active: formData.get('active') === 'true',
     }
 
@@ -171,7 +168,6 @@ export async function createAnnouncement(
         link_text_ru: data.link_text_ru,
         link_text_en: data.link_text_en,
         link_text_cz: data.link_text_cz,
-        discount_id: data.discount_id,
         active: data.active,
       })
       .select()
@@ -222,7 +218,6 @@ export async function updateAnnouncement(
       link_text_ru: (formData.get('link_text_ru') as string)?.trim() || null,
       link_text_en: (formData.get('link_text_en') as string)?.trim() || null,
       link_text_cz: (formData.get('link_text_cz') as string)?.trim() || null,
-      discount_id: (formData.get('discount_id') as string) || null,
       active: formData.get('active') === 'true',
     }
 
@@ -275,7 +270,6 @@ export async function updateAnnouncement(
         link_text_ru: data.link_text_ru,
         link_text_en: data.link_text_en,
         link_text_cz: data.link_text_cz,
-        discount_id: data.discount_id,
         active: data.active,
       })
       .eq('id', announcementId)

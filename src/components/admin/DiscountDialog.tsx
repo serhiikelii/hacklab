@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { createDiscount, updateDiscount, getCategoryServices } from '@/app/admin/promotions/discounts/actions'
+import { createDiscount, updateDiscount, getCategoryServices, getDiscountCategoryServices } from '@/app/admin/promotions/discounts/actions'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -65,8 +65,9 @@ export function DiscountDialog({ discount, trigger, open: controlledOpen, onOpen
   // Load selected services when editing
   useEffect(() => {
     if (discount && open) {
-      // TODO: Load selected category_service_ids from backend
-      // For now, we'll need to add this to the Discount type or fetch separately
+      getDiscountCategoryServices(discount.id).then((serviceIds) => {
+        setSelectedServices(new Set(serviceIds))
+      })
     }
   }, [discount, open])
 

@@ -210,7 +210,9 @@ export function AnnouncementsListNew({ announcements: initialAnnouncements }: An
       })
 
       if (!response.ok) {
-        throw new Error('Failed to update order')
+        const errorData = await response.json()
+        console.error('API Error:', errorData)
+        throw new Error(errorData.error || 'Failed to update order')
       }
     } catch (error) {
       console.error('Error updating order:', error)
