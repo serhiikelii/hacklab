@@ -207,7 +207,6 @@ export function ServicePriceTable({
                               // Service has an active discount
                               const originalPrice = price.price;
                               const discountedPrice = discountData.discounted_price;
-                              const discount = discountData.discount;
 
                               return (
                                 <div className="flex flex-col items-end gap-1">
@@ -216,18 +215,10 @@ export function ServicePriceTable({
                                     {originalPrice} Kč
                                   </div>
 
-                                  {/* Discounted price */}
+                                  {/* Discounted price (green) */}
                                   <div className="font-semibold text-green-600 text-xl">
                                     {discountedPrice} Kč
                                   </div>
-
-                                  {/* Discount badge (optional) */}
-                                  {discount.display_badge && (
-                                    <span className="text-xs bg-red-500 text-white px-2 py-0.5 rounded">
-                                      -{discount.value}
-                                      {discount.discount_type === 'percentage' ? '%' : ' Kč'}
-                                    </span>
-                                  )}
                                 </div>
                               );
                             }

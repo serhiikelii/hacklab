@@ -133,7 +133,8 @@ export async function GET(request: Request) {
             discountedPrice = Math.max(originalPrice - matchingDiscount.value, 0);
           }
 
-          response.discounted_price = Math.round(discountedPrice * 100) / 100; // Round to 2 decimals
+          // Round to nearest 10 for clean pricing (1490, 1500, 1350 instead of 1495, 1493)
+          response.discounted_price = Math.round(discountedPrice / 10) * 10;
         }
 
         result.push(response);

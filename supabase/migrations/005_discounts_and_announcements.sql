@@ -195,11 +195,9 @@ CREATE TRIGGER set_updated_at
 -- ================================================================
 
 -- Grant SELECT to anon and authenticated for public read access
+-- CRITICAL: These grants are required for frontend to fetch active discounts
+GRANT SELECT ON discounts TO anon, authenticated;
 GRANT SELECT ON discount_services TO anon, authenticated;
 GRANT SELECT ON announcements TO anon, authenticated;
-
--- Discounts already have permissions from previous migrations,
--- but ensure SELECT is granted for anon/authenticated
-GRANT SELECT ON discounts TO anon, authenticated;
 
 COMMIT;
