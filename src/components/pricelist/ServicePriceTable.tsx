@@ -166,8 +166,9 @@ export function ServicePriceTable({
         <div className="lg:col-span-2">
           {/* Service table */}
           {hasPrices && hasServices && (
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow duration-300">
-              <table className="w-full">
+            <>
+              <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                <table className="w-full">
                 <thead>
                   <tr className="bg-gray-50 border-b border-gray-200">
                     <th className="px-4 sm:px-6 py-4 text-left text-sm font-semibold text-gray-900">
@@ -241,6 +242,14 @@ export function ServicePriceTable({
                 </tbody>
               </table>
             </div>
+
+            {/* Discount Notice */}
+            <div className="mt-4 px-4 sm:px-6">
+              <p className="text-xs text-gray-500">
+                {t.discountNotice}
+              </p>
+            </div>
+          </>
           )}
 
           {/* Empty State - no prices */}

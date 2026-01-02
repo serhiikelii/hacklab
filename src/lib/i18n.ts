@@ -20,6 +20,7 @@ export const translations = {
     price: 'Цена',
     warranty: 'Гарантия',
     months: 'мес.',
+    discountNotice: '* При наличии нескольких акций применяется максимальная скидка. Скидки не суммируются.',
 
     // Breadcrumbs
     home: 'Главная',
@@ -196,6 +197,7 @@ export const translations = {
     price: 'Price',
     warranty: 'Warranty',
     months: 'mo.',
+    discountNotice: '* If multiple promotions apply, the maximum discount is applied. Discounts do not stack.',
 
     // Breadcrumbs
     home: 'Home',
@@ -372,6 +374,7 @@ export const translations = {
     price: 'Cena',
     warranty: 'Záruka',
     months: 'měs.',
+    discountNotice: '* Při více akcích se uplatňuje maximální sleva. Slevy se nesčítají.',
 
     // Breadcrumbs
     home: 'Domů',
