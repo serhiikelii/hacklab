@@ -171,9 +171,7 @@ export function AnnouncementsListNew({ announcements: initialAnnouncements }: An
 
     const result = await deleteAnnouncement(announcementToDelete)
 
-    if (!result.success) {
-      console.error('Failed to delete announcement:', result.error)
-    } else {
+    if (result.success) {
       setAnnouncements((prev) => prev.filter((a) => a.id !== announcementToDelete))
     }
 
@@ -217,11 +215,9 @@ export function AnnouncementsListNew({ announcements: initialAnnouncements }: An
 
       if (!response.ok) {
         const errorData = await response.json()
-        console.error('API Error:', errorData)
         throw new Error(errorData.error || 'Failed to update order')
       }
     } catch (error) {
-      console.error('Error updating order:', error)
       // Revert on error
       setAnnouncements(announcements)
     }

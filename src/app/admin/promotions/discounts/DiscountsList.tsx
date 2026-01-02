@@ -49,9 +49,8 @@ export function DiscountsList({ discounts }: DiscountsListProps) {
 
     const result = await deleteDiscount(discountToDelete)
 
-    if (!result.success) {
-      console.error('Failed to delete discount:', result.error)
-    }
+    // Note: Error handling via router.refresh() in server action
+    // No need for client-side error logging
 
     setDeletingId(null)
     setDiscountToDelete(null)
