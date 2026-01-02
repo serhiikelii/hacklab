@@ -30,33 +30,34 @@ import 'swiper/css/effect-fade';
  */
 
 // Variant-based styling system (Design Tokens)
+// Matte: Opacity 90% | Glossy: Gradient with shadow | Outline: Border only
 const bannerVariants = {
   promo: {
-    solid: 'bg-gradient-to-r from-cyan-500 to-teal-600 text-white',
-    gradient: 'bg-gradient-to-r from-cyan-400 via-teal-500 to-cyan-600 text-white',
-    subtle: 'bg-cyan-50 text-cyan-900 border-t border-b border-cyan-200',
+    matte: 'bg-cyan-600/90 text-white',
+    glossy: 'bg-gradient-to-r from-cyan-400 via-teal-500 to-cyan-600 text-white shadow-lg shadow-cyan-500/50',
+    outline: 'bg-white/80 backdrop-blur-sm border-t-2 border-b-2 border-cyan-600 text-cyan-900',
   },
   sale: {
-    solid: 'bg-gradient-to-r from-green-500 to-green-600 text-white',
-    gradient: 'bg-gradient-to-r from-emerald-400 via-green-500 to-teal-500 text-white',
-    subtle: 'bg-green-50 text-green-900 border-t border-b border-green-200',
+    matte: 'bg-green-600/90 text-white',
+    glossy: 'bg-gradient-to-r from-emerald-400 via-green-500 to-teal-500 text-white shadow-lg shadow-green-500/50',
+    outline: 'bg-white/80 backdrop-blur-sm border-t-2 border-b-2 border-green-600 text-green-900',
   },
   warning: {
-    solid: 'bg-gradient-to-r from-red-500 to-red-600 text-white',
-    gradient: 'bg-gradient-to-r from-pink-500 via-red-500 to-orange-500 text-white',
-    subtle: 'bg-red-50 text-red-900 border-t border-b border-red-200',
+    matte: 'bg-red-600/90 text-white',
+    glossy: 'bg-gradient-to-r from-pink-500 via-red-500 to-orange-500 text-white shadow-lg shadow-red-500/50',
+    outline: 'bg-white/80 backdrop-blur-sm border-t-2 border-b-2 border-red-600 text-red-900',
   },
   info: {
-    solid: 'bg-gradient-to-r from-blue-500 to-blue-600 text-white',
-    gradient: 'bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-500 text-white',
-    subtle: 'bg-blue-50 text-blue-900 border-t border-b border-blue-200',
+    matte: 'bg-blue-600/90 text-white',
+    glossy: 'bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-500 text-white shadow-lg shadow-blue-500/50',
+    outline: 'bg-white/80 backdrop-blur-sm border-t-2 border-b-2 border-blue-600 text-blue-900',
   },
 } as const;
 
 type BannerVariant = keyof typeof bannerVariants;
 type BannerTheme = keyof typeof bannerVariants[BannerVariant];
 
-function getBannerClasses(type: string, theme: BannerTheme = 'solid'): string {
+function getBannerClasses(type: string, theme: BannerTheme = 'glossy'): string {
   const variant = (type as BannerVariant) in bannerVariants ? type as BannerVariant : 'info';
   return bannerVariants[variant][theme];
 }

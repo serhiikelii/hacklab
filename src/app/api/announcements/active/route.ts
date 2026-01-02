@@ -5,7 +5,7 @@ import type { Announcement, AnnouncementType } from '@/types/pricelist';
 interface AnnouncementFromDB {
   id: string;
   type: string;
-  theme: 'solid' | 'gradient' | 'subtle';
+  theme: 'matte' | 'glossy' | 'outline';
   title_ru: string;
   title_en: string;
   title_cz: string;

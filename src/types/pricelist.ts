@@ -137,7 +137,7 @@ export interface DiscountedPrice {
 // ========== Announcements/Promotions ==========
 
 export type AnnouncementType = 'promo' | 'warning' | 'info' | 'sale';
-export type AnnouncementTheme = 'solid' | 'gradient' | 'subtle';
+export type AnnouncementTheme = 'matte' | 'glossy' | 'outline';
 
 export interface Announcement {
   id: string;

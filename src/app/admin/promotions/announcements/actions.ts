@@ -6,7 +6,7 @@ import { logCreate, logUpdate, logDelete } from '@/lib/audit'
 
 export type AnnouncementType = 'promo' | 'warning' | 'info' | 'sale'
 
-export type AnnouncementTheme = 'solid' | 'gradient' | 'subtle'
+export type AnnouncementTheme = 'matte' | 'glossy' | 'outline'
 
 export interface Announcement {
   id: string
@@ -105,7 +105,7 @@ export async function createAnnouncement(
     // Parse form data
     const data: CreateAnnouncementData = {
       type: formData.get('type') as AnnouncementType,
-      theme: (formData.get('theme') as AnnouncementTheme) || 'gradient',
+      theme: (formData.get('theme') as AnnouncementTheme) || 'glossy',
       title_ru: (formData.get('title_ru') as string)?.trim(),
       title_en: (formData.get('title_en') as string)?.trim(),
       title_cz: (formData.get('title_cz') as string)?.trim(),
@@ -196,7 +196,7 @@ export async function updateAnnouncement(
     // Parse form data
     const data: CreateAnnouncementData = {
       type: formData.get('type') as AnnouncementType,
-      theme: (formData.get('theme') as AnnouncementTheme) || 'gradient',
+      theme: (formData.get('theme') as AnnouncementTheme) || 'glossy',
       title_ru: (formData.get('title_ru') as string)?.trim(),
       title_en: (formData.get('title_en') as string)?.trim(),
       title_cz: (formData.get('title_cz') as string)?.trim(),

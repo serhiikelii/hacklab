@@ -55,8 +55,8 @@ export function AnnouncementForm({ announcement, onClose }: AnnouncementFormProp
     announcement?.start_date?.slice(0, 16) || ''
   )
   const [endDate, setEndDate] = useState(announcement?.end_date?.slice(0, 16) || '')
-  const [theme, setTheme] = useState<'solid' | 'gradient' | 'subtle'>(
-    announcement?.theme || 'gradient'
+  const [theme, setTheme] = useState<'matte' | 'glossy' | 'outline'>(
+    announcement?.theme || 'glossy'
   )
   const [linkUrl, setLinkUrl] = useState(announcement?.link_url || '')
   const [linkTextRu, setLinkTextRu] = useState(announcement?.link_text_ru || '')
@@ -71,7 +71,7 @@ export function AnnouncementForm({ announcement, onClose }: AnnouncementFormProp
   useEffect(() => {
     if (announcement) {
       setType(announcement.type)
-      setTheme(announcement.theme || 'gradient')
+      setTheme(announcement.theme || 'glossy')
       setTitleRu(announcement.title_ru || '')
       setTitleEn(announcement.title_en || '')
       setTitleCz(announcement.title_cz || '')
@@ -146,7 +146,7 @@ export function AnnouncementForm({ announcement, onClose }: AnnouncementFormProp
         setMessageCz('')
         setStartDate('')
         setEndDate('')
-        setTheme('gradient')
+        setTheme('glossy')
         setLinkUrl('')
         setLinkTextRu('')
         setLinkTextEn('')
@@ -342,21 +342,21 @@ export function AnnouncementForm({ announcement, onClose }: AnnouncementFormProp
             <Label htmlFor="theme">Banner Theme *</Label>
             <Select
               value={theme}
-              onValueChange={(value) => setTheme(value as 'solid' | 'gradient' | 'subtle')}
+              onValueChange={(value) => setTheme(value as 'matte' | 'glossy' | 'outline')}
             >
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="solid">Solid</SelectItem>
-                <SelectItem value="gradient">Gradient (Recommended)</SelectItem>
-                <SelectItem value="subtle">Subtle</SelectItem>
+                <SelectItem value="matte">Matte (Матовый)</SelectItem>
+                <SelectItem value="glossy">Glossy (Глянцевый) - Recommended</SelectItem>
+                <SelectItem value="outline">Outline (Аутлайн)</SelectItem>
               </SelectContent>
             </Select>
             {/* Hidden input to pass theme value to FormData */}
             <input type="hidden" name="theme" value={theme} />
             <p className="text-xs text-gray-500 mt-1">
-              Choose visual style: Solid (flat color), Gradient (modern depth), Subtle (minimal)
+              Matte (opacity 90%), Glossy (gradient with shadow), Outline (border only)
             </p>
           </div>
         </div>

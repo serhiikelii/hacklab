@@ -58,7 +58,7 @@ export function AnnouncementDialog({ announcement, trigger, open: controlledOpen
 
   // Form state
   const [type, setType] = useState<AnnouncementType>(announcement?.type || 'info')
-  const [theme, setTheme] = useState<'solid' | 'gradient' | 'subtle'>(announcement?.theme || 'gradient')
+  const [theme, setTheme] = useState<'matte' | 'glossy' | 'outline'>(announcement?.theme || 'glossy')
   const [titleRu, setTitleRu] = useState(announcement?.title_ru || '')
   const [titleEn, setTitleEn] = useState(announcement?.title_en || '')
   const [titleCz, setTitleCz] = useState(announcement?.title_cz || '')
@@ -86,7 +86,7 @@ export function AnnouncementDialog({ announcement, trigger, open: controlledOpen
       if (!isEditMode) {
         ;(e.target as HTMLFormElement).reset()
         setType('info')
-        setTheme('gradient')
+        setTheme('glossy')
         setTitleRu('')
         setTitleEn('')
         setTitleCz('')
@@ -160,21 +160,21 @@ export function AnnouncementDialog({ announcement, trigger, open: controlledOpen
             <Label htmlFor="theme">Banner Theme *</Label>
             <Select
               value={theme}
-              onValueChange={(value) => setTheme(value as 'solid' | 'gradient' | 'subtle')}
+              onValueChange={(value) => setTheme(value as 'matte' | 'glossy' | 'outline')}
             >
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="solid">Solid</SelectItem>
-                <SelectItem value="gradient">Gradient (Recommended)</SelectItem>
-                <SelectItem value="subtle">Subtle</SelectItem>
+                <SelectItem value="matte">Matte (Матовый)</SelectItem>
+                <SelectItem value="glossy">Glossy (Глянцевый) - Recommended</SelectItem>
+                <SelectItem value="outline">Outline (Аутлайн)</SelectItem>
               </SelectContent>
             </Select>
             {/* Hidden input to pass theme value to FormData */}
             <input type="hidden" name="theme" value={theme} />
             <p className="text-xs text-gray-500 mt-1">
-              Choose visual style: Solid (flat color), Gradient (modern depth), Subtle (minimal)
+              Matte (opacity 90%), Glossy (gradient with shadow), Outline (border only)
             </p>
           </div>
 
