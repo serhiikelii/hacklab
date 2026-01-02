@@ -64,7 +64,7 @@ export function AnnouncementForm({ announcement, onClose }: AnnouncementFormProp
   const [linkTextRu, setLinkTextRu] = useState(announcement?.link_text_ru || '')
   const [linkTextEn, setLinkTextEn] = useState(announcement?.link_text_en || '')
   const [linkTextCz, setLinkTextCz] = useState(announcement?.link_text_cz || '')
-  const [discountId, setDiscountId] = useState<string>(announcement?.discount_id || '')
+  const [discountId, setDiscountId] = useState<string>('') // Local state for UI only (not saved to DB)
   const [displayOrder, setDisplayOrder] = useState(
     announcement?.display_order?.toString() || '0'
   )
@@ -440,7 +440,6 @@ export function AnnouncementForm({ announcement, onClose }: AnnouncementFormProp
           <div>
             <Label htmlFor="discount_id">Select Discount</Label>
             <Select
-              name="discount_id"
               value={discountId}
               onValueChange={handleDiscountSelect}
             >
@@ -461,7 +460,7 @@ export function AnnouncementForm({ announcement, onClose }: AnnouncementFormProp
               </SelectContent>
             </Select>
             <p className="text-xs text-gray-500 mt-1">
-              Selecting a discount will auto-fill title and message fields
+              Selecting a discount will auto-fill title and message fields (for convenience only)
             </p>
           </div>
         </div>

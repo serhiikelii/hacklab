@@ -2,27 +2,70 @@
 
 import { useState, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, Pagination } from 'swiper/modules';
+import { Autoplay, Pagination, EffectFade } from 'swiper/modules';
 import Link from 'next/link';
 import { useLocale } from '@/contexts/LocaleContext';
 import type { Announcement } from '@/types/pricelist';
+import { cn } from '@/lib/utils';
 
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/autoplay';
+import 'swiper/css/effect-fade';
 
 /**
- * AnnouncementBanner - Promotional banner carousel
+ * AnnouncementBanner - Modern promotional banner carousel
  *
  * Features:
  * - Automatic rotation every 5 seconds
  * - Multilingual support (RU/EN/CZ)
- * - Type-based styling (promo/warning/info/sale)
- * - Optional links and discount integration
+ * - Variant-based styling system (promo/warning/info/sale/success)
+ * - Gradient and subtle theme support
+ * - Smooth animations and transitions
+ * - Enhanced accessibility (WCAG AA+)
  *
  * Placement: Between navbar and hero section
+ * Height: 2x increased (py-6) with modern effects
  */
+
+// Variant-based styling system (Design Tokens)
+const bannerVariants = {
+  promo: {
+    solid: 'bg-gradient-to-r from-emerald-500 to-emerald-600 text-white',
+    gradient: 'bg-gradient-to-r from-emerald-400 via-teal-500 to-cyan-500 text-white',
+    subtle: 'bg-emerald-50 text-emerald-900 border-t border-b border-emerald-200',
+  },
+  sale: {
+    solid: 'bg-gradient-to-r from-red-500 to-red-600 text-white',
+    gradient: 'bg-gradient-to-r from-pink-500 via-red-500 to-orange-500 text-white',
+    subtle: 'bg-red-50 text-red-900 border-t border-b border-red-200',
+  },
+  warning: {
+    solid: 'bg-gradient-to-r from-orange-500 to-orange-600 text-white',
+    gradient: 'bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 text-white',
+    subtle: 'bg-orange-50 text-orange-900 border-t border-b border-orange-200',
+  },
+  info: {
+    solid: 'bg-gradient-to-r from-blue-500 to-blue-600 text-white',
+    gradient: 'bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-500 text-white',
+    subtle: 'bg-blue-50 text-blue-900 border-t border-b border-blue-200',
+  },
+  success: {
+    solid: 'bg-gradient-to-r from-green-500 to-green-600 text-white',
+    gradient: 'bg-gradient-to-r from-lime-400 via-green-500 to-emerald-500 text-white',
+    subtle: 'bg-green-50 text-green-900 border-t border-b border-green-200',
+  },
+} as const;
+
+type BannerVariant = keyof typeof bannerVariants;
+type BannerTheme = keyof typeof bannerVariants[BannerVariant];
+
+function getBannerClasses(type: string, theme: BannerTheme = 'solid'): string {
+  const variant = (type as BannerVariant) in bannerVariants ? type as BannerVariant : 'info';
+  return bannerVariants[variant][theme];
+}
+
 export function AnnouncementBanner() {
   const { locale } = useLocale();
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
@@ -64,84 +107,102 @@ export function AnnouncementBanner() {
     return (announcement[key] as string) || '';
   };
 
-  // Get default colors by announcement type
-  const getDefaultColors = (type: string): { bg: string; text: string } => {
-    switch (type) {
-      case 'promo':
-        return { bg: '#10b981', text: '#ffffff' }; // Green
-      case 'warning':
-        return { bg: '#f97316', text: '#ffffff' }; // Orange
-      case 'info':
-        return { bg: '#3b82f6', text: '#ffffff' }; // Blue
-      case 'sale':
-        return { bg: '#ef4444', text: '#ffffff' }; // Red
-      default:
-        return { bg: '#6b7280', text: '#ffffff' }; // Gray
-    }
-  };
-
   return (
     <div className="relative w-full overflow-hidden">
       <Swiper
-        modules={[Autoplay, Pagination]}
+        modules={[Autoplay, Pagination, EffectFade]}
         autoplay={{
           delay: 5000,
           disableOnInteraction: false,
+          pauseOnMouseEnter: true,
+        }}
+        effect="fade"
+        fadeEffect={{
+          crossFade: true,
         }}
         loop={announcements.length > 1}
         pagination={announcements.length > 1 ? { clickable: true } : false}
         className="announcement-swiper"
+        speed={800}
       >
         {announcements.map((announcement) => {
-          const defaultColors = getDefaultColors(announcement.type);
-          const backgroundColor = announcement.background_color || defaultColors.bg;
-          const textColor = announcement.text_color || defaultColors.text;
-
           const title = getLocalizedText(announcement, 'title');
           const message = getLocalizedText(announcement, 'message');
           const linkText = getLocalizedText(announcement, 'link_text');
 
+          // Use variant-based styling instead of custom colors
+          const bannerClasses = getBannerClasses(announcement.type, 'gradient');
+
           return (
             <SwiperSlide key={announcement.id}>
               <div
-                className="py-3 px-4 text-center"
-                style={{
-                  backgroundColor,
-                  color: textColor,
-                }}
+                className={cn(
+                  'py-6 px-4 text-center transition-all duration-500',
+                  'hover:shadow-lg',
+                  bannerClasses
+                )}
+                role="banner"
+                aria-label={title}
               >
-                <div className="container mx-auto flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3">
-                  {/* Icon */}
-                  {announcement.icon && (
-                    <span className="text-xl sm:text-2xl flex-shrink-0" aria-hidden="true">
-                      {announcement.icon}
-                    </span>
-                  )}
-
-                  {/* Content wrapper */}
-                  <div className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 flex-wrap justify-center">
-                    {/* Title */}
-                    <p className="font-medium text-sm sm:text-base">
-                      {title}
-                    </p>
-
-                    {/* Message */}
-                    {message && (
-                      <span className="text-xs sm:text-sm opacity-90">
-                        {message}
+                <div className="container mx-auto">
+                  <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
+                    {/* Icon with animation */}
+                    {announcement.icon && (
+                      <span
+                        className="text-2xl sm:text-3xl flex-shrink-0 animate-bounce-subtle"
+                        aria-hidden="true"
+                        role="img"
+                      >
+                        {announcement.icon}
                       </span>
                     )}
 
-                    {/* Link */}
-                    {announcement.link_url && linkText && (
-                      <Link
-                        href={announcement.link_url}
-                        className="underline hover:no-underline text-xs sm:text-sm font-medium transition-all"
-                        style={{ color: textColor }}
-                      >
-                        {linkText}
-                      </Link>
-                    )}
+                    {/* Content wrapper */}
+                    <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3 flex-wrap justify-center max-w-4xl">
+                      {/* Title */}
+                      <h2 className="font-semibold text-base sm:text-lg md:text-xl leading-tight">
+                        {title}
+                      </h2>
+
+                      {/* Message */}
+                      {message && (
+                        <p className="text-sm sm:text-base opacity-95 leading-relaxed">
+                          {message}
+                        </p>
+                      )}
+
+                      {/* Link */}
+                      {announcement.link_url && linkText && (
+                        <Link
+                          href={announcement.link_url}
+                          className={cn(
+                            'inline-flex items-center gap-1 px-4 py-1.5 rounded-full',
+                            'text-sm sm:text-base font-medium',
+                            'bg-white/20 hover:bg-white/30 backdrop-blur-sm',
+                            'transition-all duration-300 hover:scale-105',
+                            'focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2',
+                            'active:scale-95'
+                          )}
+                          aria-label={`${linkText} - ${title}`}
+                        >
+                          {linkText}
+                          <svg
+                            className="w-4 h-4 transition-transform group-hover:translate-x-1"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            aria-hidden="true"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M9 5l7 7-7 7"
+                            />
+                          </svg>
+                        </Link>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -150,20 +211,53 @@ export function AnnouncementBanner() {
         })}
       </Swiper>
 
-      {/* Custom pagination styles */}
+      {/* Enhanced pagination styles */}
       <style jsx global>{`
+        .announcement-swiper {
+          --swiper-theme-color: rgba(255, 255, 255, 0.9);
+        }
+
         .announcement-swiper .swiper-pagination {
-          bottom: 4px;
+          bottom: 8px;
         }
+
         .announcement-swiper .swiper-pagination-bullet {
-          background: rgba(255, 255, 255, 0.7);
+          background: rgba(255, 255, 255, 0.5);
           opacity: 0.6;
-          width: 6px;
-          height: 6px;
+          width: 8px;
+          height: 8px;
+          transition: all 0.3s ease;
         }
+
         .announcement-swiper .swiper-pagination-bullet-active {
           opacity: 1;
           background: rgba(255, 255, 255, 1);
+          width: 24px;
+          border-radius: 4px;
+        }
+
+        /* Subtle bounce animation for icon */
+        @keyframes bounce-subtle {
+          0%, 100% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(-4px);
+          }
+        }
+
+        .animate-bounce-subtle {
+          animation: bounce-subtle 2s ease-in-out infinite;
+        }
+
+        /* Fade transition */
+        .announcement-swiper .swiper-slide {
+          opacity: 0;
+          transition: opacity 0.8s ease-in-out;
+        }
+
+        .announcement-swiper .swiper-slide-active {
+          opacity: 1;
         }
       `}</style>
     </div>
