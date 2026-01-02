@@ -52,9 +52,9 @@ export function AnnouncementForm({ announcement, onClose }: AnnouncementFormProp
   const [messageEn, setMessageEn] = useState(announcement?.message_en || '')
   const [messageCz, setMessageCz] = useState(announcement?.message_cz || '')
   const [startDate, setStartDate] = useState(
-    announcement?.start_date?.split('T')[0] || ''
+    announcement?.start_date?.slice(0, 16) || ''
   )
-  const [endDate, setEndDate] = useState(announcement?.end_date?.split('T')[0] || '')
+  const [endDate, setEndDate] = useState(announcement?.end_date?.slice(0, 16) || '')
   const [theme, setTheme] = useState<'solid' | 'gradient' | 'subtle'>(
     announcement?.theme || 'gradient'
   )

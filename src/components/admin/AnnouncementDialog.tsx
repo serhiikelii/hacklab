@@ -254,7 +254,7 @@ export function AnnouncementDialog({ announcement, trigger, open: controlledOpen
                 id="start_date"
                 name="start_date"
                 type="datetime-local"
-                defaultValue={announcement?.start_date?.split('.')[0]}
+                defaultValue={announcement?.start_date?.slice(0, 16)}
                 required
               />
             </div>
@@ -264,7 +264,7 @@ export function AnnouncementDialog({ announcement, trigger, open: controlledOpen
                 id="end_date"
                 name="end_date"
                 type="datetime-local"
-                defaultValue={announcement?.end_date?.split('.')[0]}
+                defaultValue={announcement?.end_date?.slice(0, 16)}
               />
             </div>
           </div>
