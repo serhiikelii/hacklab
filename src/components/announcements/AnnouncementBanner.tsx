@@ -127,7 +127,7 @@ export function AnnouncementBanner() {
           const linkText = getLocalizedText(announcement, 'link_text');
 
           // Use variant-based styling instead of custom colors
-          const bannerClasses = getBannerClasses(announcement.type, 'gradient');
+          const bannerClasses = getBannerClasses(announcement.type, announcement.theme);
 
           return (
             <SwiperSlide key={announcement.id}>
