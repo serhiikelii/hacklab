@@ -154,7 +154,7 @@ export const translations = {
     transportTrams: 'Трамваи: 5, 9, 15, 26',
     openingHoursTitle: 'Часы работы',
     weekdaysHours: 'Понедельник - Пятница: 9:00 - 19:00',
-    saturdayHours: 'Суббота: 10:30 - 17:30',
+    saturdayHours: 'Суббота: закрыто',
 
     // Pricelist page
     pricelistTitle: 'Ремонт Apple устройств в Праге',
@@ -185,7 +185,7 @@ export const translations = {
     footerWednesday: 'Среда: 09:00 - 19:00',
     footerThursday: 'Четверг: 09:00 - 19:00',
     footerFriday: 'Пятница: 09:00 - 19:00',
-    footerSaturday: 'Суббота: 10:30 - 17:30',
+    footerSaturday: 'Суббота: закрыто',
     footerSunday: 'Воскресенье: закрыто',
     footerContactTitle: 'Свяжитесь с нами:',
     footerCopyright: 'Copyright © 2025',
@@ -331,7 +331,7 @@ export const translations = {
     transportTrams: 'Trams: 5, 9, 15, 26',
     openingHoursTitle: 'Opening Hours',
     weekdaysHours: 'Monday - Friday: 9:00 - 19:00',
-    saturdayHours: 'Saturday: 10:30 - 17:30',
+    saturdayHours: 'Saturday: closed',
 
     // Pricelist page
     pricelistTitle: 'Apple Device Repair in Prague',
@@ -362,7 +362,7 @@ export const translations = {
     footerWednesday: 'Wednesday: 09:00 - 19:00',
     footerThursday: 'Thursday: 09:00 - 19:00',
     footerFriday: 'Friday: 09:00 - 19:00',
-    footerSaturday: 'Saturday: 10:30 - 17:30',
+    footerSaturday: 'Saturday: closed',
     footerSunday: 'Sunday: closed',
     footerContactTitle: 'Contact Us:',
     footerCopyright: 'Copyright © 2025',
@@ -508,7 +508,7 @@ export const translations = {
     transportTrams: 'Tramvaje: 5, 9, 15, 26',
     openingHoursTitle: 'Otevírací doba',
     weekdaysHours: 'Pondělí - Pátek: 9:00 - 19:00',
-    saturdayHours: 'Sobota: 10:30 - 17:30',
+    saturdayHours: 'Sobota: zavřeno',
 
     // Pricelist page
     pricelistTitle: 'Oprava zařízení Apple v Praze',
@@ -539,7 +539,7 @@ export const translations = {
     footerWednesday: 'Středa: 09:00 - 19:00',
     footerThursday: 'Čtvrtek: 09:00 - 19:00',
     footerFriday: 'Pátek: 09:00 - 19:00',
-    footerSaturday: 'Sobota: 10:30 - 17:30',
+    footerSaturday: 'Sobota: zavřeno',
     footerSunday: 'Neděle: zavřeno',
     footerContactTitle: 'Kontaktujte nás:',
     footerCopyright: 'Copyright © 2025',

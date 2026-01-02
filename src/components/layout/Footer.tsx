@@ -66,9 +66,8 @@ export function Footer() {
             <h4 className="font-bold mb-4">{t.footerContactTitle}</h4>
             <div className="space-y-3">
               <p className="text-sm text-gray-400">
-                Seifertova 83<br />
-                Praha 3 - Žižkov<br />
-                130 00
+                Budějovická 1667/64<br />
+                140 00 Praha 4
               </p>
               <Link
                 href="tel:+420721042342"
