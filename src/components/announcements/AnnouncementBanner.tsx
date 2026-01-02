@@ -130,17 +130,18 @@ export function AnnouncementBanner() {
           const bannerClasses = getBannerClasses(announcement.type, announcement.theme);
 
           return (
-            <SwiperSlide key={announcement.id}>
+            <SwiperSlide key={announcement.id} className="h-auto">
               <div
                 className={cn(
-                  'min-h-[80px] py-4 sm:py-5 md:py-6 px-4 text-center transition-all duration-500',
-                  'hover:shadow-lg w-full',
+                  'min-h-[80px] h-full py-4 sm:py-5 md:py-6 px-4 text-center transition-all duration-500',
+                  'hover:shadow-lg w-full flex items-center justify-center',
+                  announcements.length > 1 ? 'pb-8' : '', // Extra padding for pagination
                   bannerClasses
                 )}
                 role="banner"
                 aria-label={title}
               >
-                <div className="container mx-auto max-w-7xl">
+                <div className="container mx-auto max-w-7xl w-full">
                   <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3">
                     {/* Content wrapper */}
                     <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3 flex-wrap justify-center w-full max-w-5xl">
@@ -202,8 +203,17 @@ export function AnnouncementBanner() {
           --swiper-theme-color: rgba(255, 255, 255, 0.9);
         }
 
+        /* Fix Swiper wrapper to prevent extra space */
+        .announcement-swiper .swiper-wrapper {
+          align-items: stretch;
+        }
+
         .announcement-swiper .swiper-pagination {
-          bottom: 8px;
+          position: absolute;
+          bottom: 4px;
+          left: 0;
+          right: 0;
+          z-index: 10;
         }
 
         .announcement-swiper .swiper-pagination-bullet {
@@ -227,6 +237,7 @@ export function AnnouncementBanner() {
         .announcement-swiper .swiper-slide {
           opacity: 0;
           transition: opacity 0.8s ease-in-out;
+          height: auto;
         }
 
         .announcement-swiper .swiper-slide-active {
