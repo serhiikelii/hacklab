@@ -38,9 +38,9 @@ const bannerVariants = {
     outline: 'bg-white/80 backdrop-blur-sm border-t-2 border-b-2 border-cyan-600 text-cyan-900',
   },
   sale: {
-    matte: 'bg-green-600/90 text-white',
-    glossy: 'bg-gradient-to-r from-emerald-400 via-green-500 to-teal-500 text-white shadow-lg shadow-green-500/50',
-    outline: 'bg-white/80 backdrop-blur-sm border-t-2 border-b-2 border-green-600 text-green-900',
+    matte: 'bg-[#28c1ac]/90 text-white',
+    glossy: 'bg-gradient-to-r from-[#22a89a] via-[#28c1ac] to-[#2ed4be] text-white shadow-lg shadow-[#28c1ac]/50',
+    outline: 'bg-white/80 backdrop-blur-sm border-t-2 border-b-2 border-[#28c1ac] text-[#1a7a6e]',
   },
   warning: {
     matte: 'bg-red-600/90 text-white',
@@ -104,7 +104,7 @@ export function AnnouncementBanner() {
   };
 
   return (
-    <div className="relative w-full overflow-hidden">
+    <div className="relative w-full">
       <Swiper
         modules={[Autoplay, Pagination, EffectFade]}
         autoplay={{
@@ -118,7 +118,7 @@ export function AnnouncementBanner() {
         }}
         loop={announcements.length > 1}
         pagination={announcements.length > 1 ? { clickable: true } : false}
-        className="announcement-swiper"
+        className="announcement-swiper w-full"
         speed={800}
       >
         {announcements.map((announcement) => {
@@ -133,17 +133,17 @@ export function AnnouncementBanner() {
             <SwiperSlide key={announcement.id}>
               <div
                 className={cn(
-                  'py-6 px-4 text-center transition-all duration-500',
-                  'hover:shadow-lg',
+                  'min-h-[80px] py-4 sm:py-5 md:py-6 px-4 text-center transition-all duration-500',
+                  'hover:shadow-lg w-full',
                   bannerClasses
                 )}
                 role="banner"
                 aria-label={title}
               >
-                <div className="container mx-auto">
-                  <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
+                <div className="container mx-auto max-w-7xl">
+                  <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3">
                     {/* Content wrapper */}
-                    <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3 flex-wrap justify-center max-w-4xl">
+                    <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3 flex-wrap justify-center w-full max-w-5xl">
                       {/* Title */}
                       <h2 className="font-semibold text-base sm:text-lg md:text-xl leading-tight">
                         {title}
@@ -207,11 +207,12 @@ export function AnnouncementBanner() {
         }
 
         .announcement-swiper .swiper-pagination-bullet {
-          background: rgba(255, 255, 255, 0.5);
-          opacity: 0.6;
+          background: rgba(255, 255, 255, 0.7);
+          opacity: 0.8;
           width: 8px;
           height: 8px;
           transition: all 0.3s ease;
+          box-shadow: 0 0 4px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(0, 0, 0, 0.1);
         }
 
         .announcement-swiper .swiper-pagination-bullet-active {
@@ -219,6 +220,7 @@ export function AnnouncementBanner() {
           background: rgba(255, 255, 255, 1);
           width: 24px;
           border-radius: 4px;
+          box-shadow: 0 0 6px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(0, 0, 0, 0.15);
         }
 
         /* Fade transition */

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import {
   createAnnouncement,
   updateAnnouncement,
@@ -47,6 +48,7 @@ interface AnnouncementDialogProps {
 }
 
 export function AnnouncementDialog({ announcement, trigger, open: controlledOpen, onOpenChange }: AnnouncementDialogProps) {
+  const router = useRouter()
   const isEditMode = !!announcement
   const [internalOpen, setInternalOpen] = useState(false)
   const open = controlledOpen !== undefined ? controlledOpen : internalOpen
@@ -62,6 +64,17 @@ export function AnnouncementDialog({ announcement, trigger, open: controlledOpen
   const [titleRu, setTitleRu] = useState(announcement?.title_ru || '')
   const [titleEn, setTitleEn] = useState(announcement?.title_en || '')
   const [titleCz, setTitleCz] = useState(announcement?.title_cz || '')
+
+  // Sync form state when announcement prop changes
+  useEffect(() => {
+    if (announcement) {
+      setType(announcement.type)
+      setTheme(announcement.theme || 'glossy')
+      setTitleRu(announcement.title_ru || '')
+      setTitleEn(announcement.title_en || '')
+      setTitleCz(announcement.title_cz || '')
+    }
+  }, [announcement])
 
   // Load info discounts when dialog opens
   useEffect(() => {
@@ -82,6 +95,12 @@ export function AnnouncementDialog({ announcement, trigger, open: controlledOpen
       : await createAnnouncement(formData)
 
     if (result.success) {
+      // Refresh server component data first
+      router.refresh()
+
+      // Small delay to ensure data is refreshed before closing
+      await new Promise(resolve => setTimeout(resolve, 100))
+
       setOpen(false)
       if (!isEditMode) {
         ;(e.target as HTMLFormElement).reset()
