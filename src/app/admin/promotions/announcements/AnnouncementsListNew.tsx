@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { deleteAnnouncement, type Announcement } from './actions'
 import { Button } from '@/components/ui/button'
 import {
@@ -70,6 +70,7 @@ function SortableRow({ announcement, onEdit, onDelete, deletingId }: {
           {...attributes}
           {...listeners}
           className="cursor-grab active:cursor-grabbing text-gray-400 hover:text-gray-600"
+          suppressHydrationWarning
         >
           <GripVertical className="h-5 w-5" />
         </div>
@@ -144,6 +145,11 @@ export function AnnouncementsListNew({ announcements: initialAnnouncements }: An
   const [deletingId, setDeletingId] = useState<string | null>(null)
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [announcementToDelete, setAnnouncementToDelete] = useState<string | null>(null)
+
+  // Sync announcements state with props when server data updates
+  useEffect(() => {
+    setAnnouncements(initialAnnouncements)
+  }, [initialAnnouncements])
 
   const sensors = useSensors(
     useSensor(PointerSensor),
