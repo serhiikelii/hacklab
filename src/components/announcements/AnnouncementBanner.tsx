@@ -32,19 +32,19 @@ import 'swiper/css/effect-fade';
 // Variant-based styling system (Design Tokens)
 const bannerVariants = {
   promo: {
-    solid: 'bg-gradient-to-r from-emerald-500 to-emerald-600 text-white',
-    gradient: 'bg-gradient-to-r from-emerald-400 via-teal-500 to-cyan-500 text-white',
-    subtle: 'bg-emerald-50 text-emerald-900 border-t border-b border-emerald-200',
+    solid: 'bg-gradient-to-r from-cyan-500 to-teal-600 text-white',
+    gradient: 'bg-gradient-to-r from-cyan-400 via-teal-500 to-cyan-600 text-white',
+    subtle: 'bg-cyan-50 text-cyan-900 border-t border-b border-cyan-200',
   },
   sale: {
+    solid: 'bg-gradient-to-r from-green-500 to-green-600 text-white',
+    gradient: 'bg-gradient-to-r from-emerald-400 via-green-500 to-teal-500 text-white',
+    subtle: 'bg-green-50 text-green-900 border-t border-b border-green-200',
+  },
+  warning: {
     solid: 'bg-gradient-to-r from-red-500 to-red-600 text-white',
     gradient: 'bg-gradient-to-r from-pink-500 via-red-500 to-orange-500 text-white',
     subtle: 'bg-red-50 text-red-900 border-t border-b border-red-200',
-  },
-  warning: {
-    solid: 'bg-gradient-to-r from-orange-500 to-orange-600 text-white',
-    gradient: 'bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 text-white',
-    subtle: 'bg-orange-50 text-orange-900 border-t border-b border-orange-200',
   },
   info: {
     solid: 'bg-gradient-to-r from-blue-500 to-blue-600 text-white',

@@ -67,6 +67,27 @@ export function AnnouncementForm({ announcement, onClose }: AnnouncementFormProp
     announcement?.display_order?.toString() || '0'
   )
 
+  // Sync form state when announcement changes
+  useEffect(() => {
+    if (announcement) {
+      setType(announcement.type)
+      setTheme(announcement.theme || 'gradient')
+      setTitleRu(announcement.title_ru || '')
+      setTitleEn(announcement.title_en || '')
+      setTitleCz(announcement.title_cz || '')
+      setMessageRu(announcement.message_ru || '')
+      setMessageEn(announcement.message_en || '')
+      setMessageCz(announcement.message_cz || '')
+      setStartDate(announcement.start_date?.slice(0, 16) || '')
+      setEndDate(announcement.end_date?.slice(0, 16) || '')
+      setLinkUrl(announcement.link_url || '')
+      setLinkTextRu(announcement.link_text_ru || '')
+      setLinkTextEn(announcement.link_text_en || '')
+      setLinkTextCz(announcement.link_text_cz || '')
+      setDisplayOrder(announcement.display_order?.toString() || '0')
+    }
+  }, [announcement])
+
   // Load info discounts
   useEffect(() => {
     if (isOpen) {
