@@ -137,10 +137,12 @@ export interface DiscountedPrice {
 // ========== Announcements/Promotions ==========
 
 export type AnnouncementType = 'promo' | 'warning' | 'info' | 'sale';
+export type AnnouncementTheme = 'solid' | 'gradient' | 'subtle';
 
 export interface Announcement {
   id: string;
   type: AnnouncementType;
+  theme: AnnouncementTheme; // Design theme for variant-based styling
 
   // Multilingual content
   title_ru: string;
@@ -156,9 +158,6 @@ export interface Announcement {
 
   // Display settings
   display_order: number; // Lower = higher priority in rotation
-  background_color?: string | null; // HEX: #FF5733
-  text_color?: string | null; // HEX: #FFFFFF
-  icon?: string | null; // emoji or lucide icon name
 
   // Optional link
   link_url?: string | null;
@@ -170,8 +169,9 @@ export interface Announcement {
   created_at: string;
   updated_at: string;
 
-  // NOTE: Announcements are now independent from discounts
+  // NOTE: Variant-based design system (4 variants × 3 themes)
   // Removed: discount_id, discount (migration 007)
+  // Removed: background_color, text_color, icon (migration 009)
 }
 
 // ========== Компоненты прайс-листа ==========

@@ -51,11 +51,6 @@ const bannerVariants = {
     gradient: 'bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-500 text-white',
     subtle: 'bg-blue-50 text-blue-900 border-t border-b border-blue-200',
   },
-  success: {
-    solid: 'bg-gradient-to-r from-green-500 to-green-600 text-white',
-    gradient: 'bg-gradient-to-r from-lime-400 via-green-500 to-emerald-500 text-white',
-    subtle: 'bg-green-50 text-green-900 border-t border-b border-green-200',
-  },
 } as const;
 
 type BannerVariant = keyof typeof bannerVariants;
@@ -146,17 +141,6 @@ export function AnnouncementBanner() {
               >
                 <div className="container mx-auto">
                   <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
-                    {/* Icon with animation */}
-                    {announcement.icon && (
-                      <span
-                        className="text-2xl sm:text-3xl flex-shrink-0 animate-bounce-subtle"
-                        aria-hidden="true"
-                        role="img"
-                      >
-                        {announcement.icon}
-                      </span>
-                    )}
-
                     {/* Content wrapper */}
                     <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3 flex-wrap justify-center max-w-4xl">
                       {/* Title */}
@@ -234,20 +218,6 @@ export function AnnouncementBanner() {
           background: rgba(255, 255, 255, 1);
           width: 24px;
           border-radius: 4px;
-        }
-
-        /* Subtle bounce animation for icon */
-        @keyframes bounce-subtle {
-          0%, 100% {
-            transform: translateY(0);
-          }
-          50% {
-            transform: translateY(-4px);
-          }
-        }
-
-        .animate-bounce-subtle {
-          animation: bounce-subtle 2s ease-in-out infinite;
         }
 
         /* Fade transition */

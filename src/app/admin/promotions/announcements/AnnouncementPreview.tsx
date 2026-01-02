@@ -1,20 +1,17 @@
 'use client'
 
 import { useState } from 'react'
-import { Megaphone, AlertTriangle, Info, Percent } from 'lucide-react'
-import type { AnnouncementType } from './actions'
+import type { AnnouncementType, AnnouncementTheme } from './actions'
 
 interface AnnouncementPreviewProps {
   type: AnnouncementType
+  theme: AnnouncementTheme
   titleRu: string
   titleEn: string
   titleCz: string
   messageRu?: string
   messageEn?: string
   messageCz?: string
-  backgroundColor?: string
-  textColor?: string
-  icon?: string
   linkUrl?: string
   linkTextRu?: string
   linkTextEn?: string
@@ -23,24 +20,46 @@ interface AnnouncementPreviewProps {
 
 type Language = 'ru' | 'en' | 'cz'
 
-const TYPE_DEFAULTS = {
-  promo: { bg: '#4F46E5', icon: Megaphone },
-  warning: { bg: '#F59E0B', icon: AlertTriangle },
-  info: { bg: '#3B82F6', icon: Info },
-  sale: { bg: '#EF4444', icon: Percent },
+// Variant-based styling system (matching AnnouncementBanner.tsx)
+const bannerVariants = {
+  promo: {
+    solid: 'bg-gradient-to-r from-emerald-500 to-emerald-600 text-white',
+    gradient: 'bg-gradient-to-r from-emerald-400 via-teal-500 to-cyan-500 text-white',
+    subtle: 'bg-emerald-50 text-emerald-900 border border-emerald-200',
+  },
+  sale: {
+    solid: 'bg-gradient-to-r from-red-500 to-red-600 text-white',
+    gradient: 'bg-gradient-to-r from-pink-500 via-red-500 to-orange-500 text-white',
+    subtle: 'bg-red-50 text-red-900 border border-red-200',
+  },
+  warning: {
+    solid: 'bg-gradient-to-r from-orange-500 to-orange-600 text-white',
+    gradient: 'bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 text-white',
+    subtle: 'bg-orange-50 text-orange-900 border border-orange-200',
+  },
+  info: {
+    solid: 'bg-gradient-to-r from-blue-500 to-blue-600 text-white',
+    gradient: 'bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-500 text-white',
+    subtle: 'bg-blue-50 text-blue-900 border border-blue-200',
+  },
+} as const
+
+type BannerVariant = keyof typeof bannerVariants
+
+function getBannerClasses(type: AnnouncementType, theme: AnnouncementTheme = 'gradient'): string {
+  const variant = (type as BannerVariant) in bannerVariants ? type as BannerVariant : 'info'
+  return bannerVariants[variant][theme]
 }
 
 export function AnnouncementPreview({
   type,
+  theme,
   titleRu,
   titleEn,
   titleCz,
   messageRu,
   messageEn,
   messageCz,
-  backgroundColor,
-  textColor = '#FFFFFF',
-  icon,
   linkUrl,
   linkTextRu,
   linkTextEn,
@@ -55,11 +74,8 @@ export function AnnouncementPreview({
   const linkText =
     language === 'ru' ? linkTextRu : language === 'en' ? linkTextEn : linkTextCz
 
-  // Get background color (custom or default)
-  const bgColor = backgroundColor || TYPE_DEFAULTS[type].bg
-
-  // Get icon component
-  const IconComponent = TYPE_DEFAULTS[type].icon
+  // Get banner classes based on type and theme
+  const bannerClasses = getBannerClasses(type, theme)
 
   return (
     <div className="space-y-4">
@@ -98,50 +114,34 @@ export function AnnouncementPreview({
       </div>
 
       {/* Banner preview */}
-      <div
-        className="rounded-lg p-6 shadow-md"
-        style={{ backgroundColor: bgColor, color: textColor }}
-      >
-        <div className="flex items-start gap-4">
-          {/* Icon */}
-          <div className="flex-shrink-0">
-            {icon ? (
-              <span className="text-3xl">{icon}</span>
-            ) : (
-              <IconComponent className="w-8 h-8" />
+      <div className={`rounded-lg p-6 shadow-md ${bannerClasses}`}>
+        <div className="flex-1 min-w-0">
+          {/* Title */}
+          <h3 className="text-xl font-bold mb-2">
+            {title || (
+              <span className="opacity-50">
+                {language === 'ru'
+                  ? 'Заголовок баннера'
+                  : language === 'en'
+                  ? 'Banner title'
+                  : 'Název banneru'}
+              </span>
             )}
-          </div>
+          </h3>
 
-          {/* Content */}
-          <div className="flex-1 min-w-0">
-            {/* Title */}
-            <h3 className="text-xl font-bold mb-2">
-              {title || (
-                <span style={{ opacity: 0.5 }}>
-                  {language === 'ru'
-                    ? 'Заголовок баннера'
-                    : language === 'en'
-                    ? 'Banner title'
-                    : 'Název banneru'}
-                </span>
-              )}
-            </h3>
+          {/* Message */}
+          {message && <p className="text-sm mb-3 opacity-90">{message}</p>}
 
-            {/* Message */}
-            {message && <p className="text-sm mb-3 opacity-90">{message}</p>}
-
-            {/* Link */}
-            {linkUrl && linkText && (
-              <a
-                href={linkUrl}
-                className="inline-flex items-center text-sm font-medium underline hover:no-underline"
-                style={{ color: textColor }}
-                onClick={(e) => e.preventDefault()}
-              >
-                {linkText} →
-              </a>
-            )}
-          </div>
+          {/* Link */}
+          {linkUrl && linkText && (
+            <a
+              href={linkUrl}
+              className="inline-flex items-center text-sm font-medium underline hover:no-underline"
+              onClick={(e) => e.preventDefault()}
+            >
+              {linkText} →
+            </a>
+          )}
         </div>
       </div>
 

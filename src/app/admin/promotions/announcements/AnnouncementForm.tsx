@@ -55,11 +55,9 @@ export function AnnouncementForm({ announcement, onClose }: AnnouncementFormProp
     announcement?.start_date?.split('T')[0] || ''
   )
   const [endDate, setEndDate] = useState(announcement?.end_date?.split('T')[0] || '')
-  const [backgroundColor, setBackgroundColor] = useState(
-    announcement?.background_color || ''
+  const [theme, setTheme] = useState<'solid' | 'gradient' | 'subtle'>(
+    announcement?.theme || 'gradient'
   )
-  const [textColor, setTextColor] = useState(announcement?.text_color || '#FFFFFF')
-  const [icon, setIcon] = useState(announcement?.icon || '')
   const [linkUrl, setLinkUrl] = useState(announcement?.link_url || '')
   const [linkTextRu, setLinkTextRu] = useState(announcement?.link_text_ru || '')
   const [linkTextEn, setLinkTextEn] = useState(announcement?.link_text_en || '')
@@ -127,9 +125,7 @@ export function AnnouncementForm({ announcement, onClose }: AnnouncementFormProp
         setMessageCz('')
         setStartDate('')
         setEndDate('')
-        setBackgroundColor('')
-        setTextColor('#FFFFFF')
-        setIcon('')
+        setTheme('gradient')
         setLinkUrl('')
         setLinkTextRu('')
         setLinkTextEn('')
@@ -318,67 +314,28 @@ export function AnnouncementForm({ announcement, onClose }: AnnouncementFormProp
           </div>
         </div>
 
-        {/* Section 3: Design */}
+        {/* Section 3: Theme */}
         <div className="space-y-4">
-          <h5 className="font-semibold text-gray-900 pb-2 border-b">3. Design</h5>
-          <div className="grid grid-cols-3 gap-4">
-            <div>
-              <Label htmlFor="background_color">Background Color (HEX)</Label>
-              <div className="flex gap-2">
-                <Input
-                  id="background_color"
-                  name="background_color"
-                  type="text"
-                  value={backgroundColor}
-                  onChange={(e) => setBackgroundColor(e.target.value)}
-                  placeholder="#4F46E5"
-                />
-                <input
-                  type="color"
-                  value={backgroundColor || '#4F46E5'}
-                  onChange={(e) => setBackgroundColor(e.target.value)}
-                  className="w-12 h-10 rounded border border-gray-300 cursor-pointer"
-                />
-              </div>
-              <p className="text-xs text-gray-500 mt-1">
-                Leave empty for default by type
-              </p>
-            </div>
-            <div>
-              <Label htmlFor="text_color">Text Color (HEX) *</Label>
-              <div className="flex gap-2">
-                <Input
-                  id="text_color"
-                  name="text_color"
-                  type="text"
-                  value={textColor}
-                  onChange={(e) => setTextColor(e.target.value)}
-                  placeholder="#FFFFFF"
-                  required
-                />
-                <input
-                  type="color"
-                  value={textColor}
-                  onChange={(e) => setTextColor(e.target.value)}
-                  className="w-12 h-10 rounded border border-gray-300 cursor-pointer"
-                />
-              </div>
-            </div>
-            <div>
-              <Label htmlFor="icon">Icon (emoji or text)</Label>
-              <Input
-                id="icon"
-                name="icon"
-                type="text"
-                value={icon}
-                onChange={(e) => setIcon(e.target.value)}
-                placeholder="🎉"
-                maxLength={10}
-              />
-              <p className="text-xs text-gray-500 mt-1">
-                Leave empty for default icon
-              </p>
-            </div>
+          <h5 className="font-semibold text-gray-900 pb-2 border-b">3. Theme</h5>
+          <div>
+            <Label htmlFor="theme">Banner Theme *</Label>
+            <Select
+              name="theme"
+              value={theme}
+              onValueChange={(value) => setTheme(value as 'solid' | 'gradient' | 'subtle')}
+            >
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="solid">Solid</SelectItem>
+                <SelectItem value="gradient">Gradient (Recommended)</SelectItem>
+                <SelectItem value="subtle">Subtle</SelectItem>
+              </SelectContent>
+            </Select>
+            <p className="text-xs text-gray-500 mt-1">
+              Choose visual style: Solid (flat color), Gradient (modern depth), Subtle (minimal)
+            </p>
           </div>
         </div>
 
@@ -493,15 +450,13 @@ export function AnnouncementForm({ announcement, onClose }: AnnouncementFormProp
           <h5 className="font-semibold text-gray-900 pb-2 border-b">7. Preview</h5>
           <AnnouncementPreview
             type={type}
+            theme={theme}
             titleRu={titleRu}
             titleEn={titleEn}
             titleCz={titleCz}
             messageRu={messageRu}
             messageEn={messageEn}
             messageCz={messageCz}
-            backgroundColor={backgroundColor}
-            textColor={textColor}
-            icon={icon}
             linkUrl={linkUrl}
             linkTextRu={linkTextRu}
             linkTextEn={linkTextEn}

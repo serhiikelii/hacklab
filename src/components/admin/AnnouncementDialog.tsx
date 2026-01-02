@@ -58,6 +58,7 @@ export function AnnouncementDialog({ announcement, trigger, open: controlledOpen
 
   // Form state
   const [type, setType] = useState<AnnouncementType>(announcement?.type || 'info')
+  const [theme, setTheme] = useState<'solid' | 'gradient' | 'subtle'>(announcement?.theme || 'gradient')
   const [titleRu, setTitleRu] = useState(announcement?.title_ru || '')
   const [titleEn, setTitleEn] = useState(announcement?.title_en || '')
   const [titleCz, setTitleCz] = useState(announcement?.title_cz || '')
@@ -85,6 +86,7 @@ export function AnnouncementDialog({ announcement, trigger, open: controlledOpen
       if (!isEditMode) {
         ;(e.target as HTMLFormElement).reset()
         setType('info')
+        setTheme('gradient')
         setTitleRu('')
         setTitleEn('')
         setTitleCz('')
@@ -151,6 +153,28 @@ export function AnnouncementDialog({ announcement, trigger, open: controlledOpen
                 </label>
               ))}
             </div>
+          </div>
+
+          {/* Theme selector */}
+          <div>
+            <Label htmlFor="theme">Banner Theme *</Label>
+            <Select
+              name="theme"
+              value={theme}
+              onValueChange={(value) => setTheme(value as 'solid' | 'gradient' | 'subtle')}
+            >
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="solid">Solid</SelectItem>
+                <SelectItem value="gradient">Gradient (Recommended)</SelectItem>
+                <SelectItem value="subtle">Subtle</SelectItem>
+              </SelectContent>
+            </Select>
+            <p className="text-xs text-gray-500 mt-1">
+              Choose visual style: Solid (flat color), Gradient (modern depth), Subtle (minimal)
+            </p>
           </div>
 
           {/* Titles */}

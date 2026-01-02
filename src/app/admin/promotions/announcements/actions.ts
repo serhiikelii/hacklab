@@ -6,9 +6,12 @@ import { logCreate, logUpdate, logDelete } from '@/lib/audit'
 
 export type AnnouncementType = 'promo' | 'warning' | 'info' | 'sale'
 
+export type AnnouncementTheme = 'solid' | 'gradient' | 'subtle'
+
 export interface Announcement {
   id: string
   type: AnnouncementType
+  theme: AnnouncementTheme
   title_ru: string
   title_en: string
   title_cz: string
@@ -18,9 +21,6 @@ export interface Announcement {
   start_date: string
   end_date: string | null
   display_order: number
-  background_color: string | null
-  text_color: string
-  icon: string | null
   link_url: string | null
   link_text_ru: string | null
   link_text_en: string | null
@@ -76,6 +76,7 @@ export async function getInfoDiscounts(): Promise<InfoDiscount[]> {
 
 interface CreateAnnouncementData {
   type: AnnouncementType
+  theme: AnnouncementTheme
   title_ru: string
   title_en: string
   title_cz: string
@@ -85,9 +86,6 @@ interface CreateAnnouncementData {
   start_date: string
   end_date?: string | null
   display_order: number
-  background_color?: string | null
-  text_color: string
-  icon?: string | null
   link_url?: string | null
   link_text_ru?: string | null
   link_text_en?: string | null
@@ -107,6 +105,7 @@ export async function createAnnouncement(
     // Parse form data
     const data: CreateAnnouncementData = {
       type: formData.get('type') as AnnouncementType,
+      theme: (formData.get('theme') as AnnouncementTheme) || 'gradient',
       title_ru: (formData.get('title_ru') as string)?.trim(),
       title_en: (formData.get('title_en') as string)?.trim(),
       title_cz: (formData.get('title_cz') as string)?.trim(),
@@ -116,9 +115,6 @@ export async function createAnnouncement(
       start_date: formData.get('start_date') as string,
       end_date: (formData.get('end_date') as string) || null,
       display_order: parseInt(formData.get('display_order') as string) || 0,
-      background_color: (formData.get('background_color') as string)?.trim() || null,
-      text_color: (formData.get('text_color') as string)?.trim() || '#FFFFFF',
-      icon: (formData.get('icon') as string)?.trim() || null,
       link_url: (formData.get('link_url') as string)?.trim() || null,
       link_text_ru: (formData.get('link_text_ru') as string)?.trim() || null,
       link_text_en: (formData.get('link_text_en') as string)?.trim() || null,
@@ -152,6 +148,7 @@ export async function createAnnouncement(
       .from('announcements')
       .insert({
         type: data.type,
+        theme: data.theme,
         title_ru: data.title_ru,
         title_en: data.title_en,
         title_cz: data.title_cz,
@@ -161,9 +158,6 @@ export async function createAnnouncement(
         start_date: data.start_date,
         end_date: data.end_date,
         display_order: data.display_order,
-        background_color: data.background_color,
-        text_color: data.text_color,
-        icon: data.icon,
         link_url: data.link_url,
         link_text_ru: data.link_text_ru,
         link_text_en: data.link_text_en,
@@ -202,6 +196,7 @@ export async function updateAnnouncement(
     // Parse form data
     const data: CreateAnnouncementData = {
       type: formData.get('type') as AnnouncementType,
+      theme: (formData.get('theme') as AnnouncementTheme) || 'gradient',
       title_ru: (formData.get('title_ru') as string)?.trim(),
       title_en: (formData.get('title_en') as string)?.trim(),
       title_cz: (formData.get('title_cz') as string)?.trim(),
@@ -211,9 +206,6 @@ export async function updateAnnouncement(
       start_date: formData.get('start_date') as string,
       end_date: (formData.get('end_date') as string) || null,
       display_order: parseInt(formData.get('display_order') as string) || 0,
-      background_color: (formData.get('background_color') as string)?.trim() || null,
-      text_color: (formData.get('text_color') as string)?.trim() || '#FFFFFF',
-      icon: (formData.get('icon') as string)?.trim() || null,
       link_url: (formData.get('link_url') as string)?.trim() || null,
       link_text_ru: (formData.get('link_text_ru') as string)?.trim() || null,
       link_text_en: (formData.get('link_text_en') as string)?.trim() || null,
@@ -254,6 +246,7 @@ export async function updateAnnouncement(
       .from('announcements')
       .update({
         type: data.type,
+        theme: data.theme,
         title_ru: data.title_ru,
         title_en: data.title_en,
         title_cz: data.title_cz,
@@ -263,9 +256,6 @@ export async function updateAnnouncement(
         start_date: data.start_date,
         end_date: data.end_date,
         display_order: data.display_order,
-        background_color: data.background_color,
-        text_color: data.text_color,
-        icon: data.icon,
         link_url: data.link_url,
         link_text_ru: data.link_text_ru,
         link_text_en: data.link_text_en,

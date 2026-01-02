@@ -5,6 +5,7 @@ import type { Announcement, AnnouncementType } from '@/types/pricelist';
 interface AnnouncementFromDB {
   id: string;
   type: string;
+  theme: 'solid' | 'gradient' | 'subtle';
   title_ru: string;
   title_en: string;
   title_cz: string;
@@ -14,9 +15,6 @@ interface AnnouncementFromDB {
   start_date: string;
   end_date: string | null;
   display_order: number;
-  background_color: string | null;
-  text_color: string | null;
-  icon: string | null;
   link_url: string | null;
   link_text_ru: string | null;
   link_text_en: string | null;
@@ -66,6 +64,7 @@ export async function GET() {
     const result: Announcement[] = (announcements as AnnouncementFromDB[]).map(announcement => ({
       id: announcement.id,
       type: announcement.type as AnnouncementType,
+      theme: announcement.theme,
       title_ru: announcement.title_ru,
       title_en: announcement.title_en,
       title_cz: announcement.title_cz,
@@ -75,9 +74,6 @@ export async function GET() {
       start_date: announcement.start_date,
       end_date: announcement.end_date,
       display_order: announcement.display_order,
-      background_color: announcement.background_color,
-      text_color: announcement.text_color,
-      icon: announcement.icon,
       link_url: announcement.link_url,
       link_text_ru: announcement.link_text_ru,
       link_text_en: announcement.link_text_en,
