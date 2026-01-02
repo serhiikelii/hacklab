@@ -320,7 +320,6 @@ export function AnnouncementForm({ announcement, onClose }: AnnouncementFormProp
           <div>
             <Label htmlFor="theme">Banner Theme *</Label>
             <Select
-              name="theme"
               value={theme}
               onValueChange={(value) => setTheme(value as 'solid' | 'gradient' | 'subtle')}
             >
@@ -333,6 +332,8 @@ export function AnnouncementForm({ announcement, onClose }: AnnouncementFormProp
                 <SelectItem value="subtle">Subtle</SelectItem>
               </SelectContent>
             </Select>
+            {/* Hidden input to pass theme value to FormData */}
+            <input type="hidden" name="theme" value={theme} />
             <p className="text-xs text-gray-500 mt-1">
               Choose visual style: Solid (flat color), Gradient (modern depth), Subtle (minimal)
             </p>
