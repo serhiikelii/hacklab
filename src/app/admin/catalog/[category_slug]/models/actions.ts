@@ -77,7 +77,7 @@ export async function createModel(formData: FormData) {
     if (error instanceof z.ZodError) {
       return {
         success: false,
-        error: error.errors.map((e) => e.message).join(', '),
+        error: error.issues.map((e) => e.message).join(', '),
       }
     }
     return { success: false, error: 'Unknown error' }
@@ -148,7 +148,7 @@ export async function updateModel(formData: FormData) {
     if (error instanceof z.ZodError) {
       return {
         success: false,
-        error: error.errors.map((e) => e.message).join(', '),
+        error: error.issues.map((e) => e.message).join(', '),
       }
     }
     return { success: false, error: 'Unknown error' }

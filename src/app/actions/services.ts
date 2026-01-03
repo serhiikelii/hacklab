@@ -16,7 +16,7 @@ const ServiceSchema = z.object({
   description_en: z.string().optional().nullable(),
   description_cz: z.string().optional().nullable(),
   service_type: z.enum(['main', 'extra'], {
-    errorMap: () => ({ message: 'Select service type' }),
+    message: 'Select service type',
   }),
   order: z.number().int().min(0).optional().nullable(),
   category_id: z.string().uuid('Category not selected'),
