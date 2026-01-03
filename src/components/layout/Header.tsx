@@ -15,9 +15,9 @@ type LanguageConfig = {
 }
 
 const languages: LanguageConfig[] = [
-  { locale: "ru", label: "RU" },
-  { locale: "en", label: "EN" },
   { locale: "cz", label: "CZ" },
+  { locale: "en", label: "EN" },
+  { locale: "ru", label: "RU" },
 ]
 
 export function Header() {

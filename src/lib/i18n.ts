@@ -5,9 +5,9 @@
 
 export type Locale = 'ru' | 'en' | 'cz';
 
-export const DEFAULT_LOCALE: Locale = 'ru';
+export const DEFAULT_LOCALE: Locale = 'cz';
 
-export const SUPPORTED_LOCALES: Locale[] = ['ru', 'en', 'cz'];
+export const SUPPORTED_LOCALES: Locale[] = ['cz', 'en', 'ru'];
 
 /**
  * Переводы для UI элементов
