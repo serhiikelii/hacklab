@@ -120,6 +120,9 @@ export function AnnouncementBanner() {
         pagination={announcements.length > 1 ? { clickable: true } : false}
         className="announcement-swiper w-full"
         speed={800}
+        preventClicks={false}
+        preventClicksPropagation={false}
+        touchStartPreventDefault={false}
       >
         {announcements.map((announcement) => {
           const title = getLocalizedText(announcement, 'title');
@@ -162,14 +165,16 @@ export function AnnouncementBanner() {
                         <Link
                           href={announcement.link_url}
                           className={cn(
-                            'inline-flex items-center gap-1 px-4 py-1.5 rounded-full',
+                            'swiper-no-swiping group inline-flex items-center gap-1 px-4 py-1.5 rounded-full',
                             'text-sm sm:text-base font-medium',
                             'bg-white/20 hover:bg-white/30 backdrop-blur-sm',
                             'transition-all duration-300 hover:scale-105',
                             'focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2',
-                            'active:scale-95'
+                            'active:scale-95',
+                            'relative z-20 cursor-pointer'
                           )}
                           aria-label={`${linkText} - ${title}`}
+                          onClick={(e) => e.stopPropagation()}
                         >
                           {linkText}
                           <svg

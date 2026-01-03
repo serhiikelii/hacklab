@@ -18,7 +18,7 @@ export function SocialLinks({ variant = "footer", className = "" }: SocialLinksP
   const socialLinks: SocialLinkItem[] = [
     {
       name: "Telegram",
-      href: "https://t.me/placeholder",
+      href: "https://t.me/serhiikelii",
       ariaLabel: "Visit our Telegram channel",
       icon: (
         <svg
@@ -33,7 +33,7 @@ export function SocialLinks({ variant = "footer", className = "" }: SocialLinksP
     },
     {
       name: "Instagram",
-      href: "https://instagram.com/placeholder",
+      href: "https://www.instagram.com/sergey_keliy?igsh=MW9ucGpwZzc2endsdA%3D%3D&utm_source=qr",
       ariaLabel: "Follow us on Instagram",
       icon: (
         <svg
@@ -48,7 +48,7 @@ export function SocialLinks({ variant = "footer", className = "" }: SocialLinksP
     },
     {
       name: "Facebook",
-      href: "https://facebook.com/placeholder",
+      href: "https://www.facebook.com/sergey.keliy",
       ariaLabel: "Like us on Facebook",
       icon: (
         <svg
