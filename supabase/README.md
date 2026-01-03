@@ -30,7 +30,7 @@ This project uses Supabase as the database and authentication provider.
 1. Go to [https://supabase.com](https://supabase.com)
 2. Click "New Project"
 3. Fill in:
-   - Project name: `mojservice`
+   - Project name: `hacklab`
    - Database password: (choose a strong password)
    - Region: Europe (Frankfurt) - `eu-central-1`
 4. Wait for the project to be created (~2 minutes)

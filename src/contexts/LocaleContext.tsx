@@ -10,7 +10,7 @@ interface LocaleContextType {
 
 const LocaleContext = createContext<LocaleContextType | undefined>(undefined);
 
-const LOCALE_STORAGE_KEY = 'mojservice-locale';
+const LOCALE_STORAGE_KEY = 'hacklab-locale';
 
 export function LocaleProvider({ children }: { children: ReactNode }) {
   const [locale, setLocaleState] = useState<Locale>(DEFAULT_LOCALE);

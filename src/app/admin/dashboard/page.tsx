@@ -9,7 +9,7 @@ export default function AdminDashboard() {
         <div className="bg-white shadow rounded-lg p-6 mb-6">
           <h2 className="text-xl font-semibold mb-4">Problem Solved!</h2>
           <p className="mb-2">Authentication is working!</p>
-          <p className="mb-2">Email: test@mojservice.cz</p>
+          <p className="mb-2">Email: test@hacklab.com</p>
           <p className="mb-2">Role: superadmin</p>
         </div>
 
