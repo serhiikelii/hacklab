@@ -23,9 +23,8 @@ export function ContactSection() {
               <div>
                 <h3 className="font-bold text-gray-900 mb-2">{t.addressTitle}</h3>
                 <p className="text-gray-700">MojService</p>
-                <p className="text-gray-700">Seifertova 83</p>
-                <p className="text-gray-700">Praha 3 - Žižkov</p>
-                <p className="text-gray-700">130 00</p>
+                <p className="text-gray-700">Budějovická 1667/64</p>
+                <p className="text-gray-700">140 00 Praha 4</p>
               </div>
             </div>
 
@@ -70,6 +69,7 @@ export function ContactSection() {
                 <h3 className="font-bold text-gray-900 mb-2">{t.openingHoursTitle}</h3>
                 <p className="text-gray-700">{t.weekdaysHours}</p>
                 <p className="text-gray-700">{t.saturdayHours}</p>
+                <p className="text-gray-700">{t.sundayHours}</p>
               </div>
             </div>
 

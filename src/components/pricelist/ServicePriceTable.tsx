@@ -1,12 +1,12 @@
 'use client';
 
-import { DeviceModel, Service, ServicePrice } from '@/types/pricelist';
+import { DeviceModel, Service, ServicePrice, Discount } from '@/types/pricelist';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Home, ChevronRight } from 'lucide-react';
 import { getTranslations, getServiceName, formatMessage, getCategoryName } from '@/lib/i18n';
 import { useLocale } from '@/contexts/LocaleContext';
-import { useState } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -17,6 +17,12 @@ export interface ServicePriceTableProps {
   services: Service[];
   prices: ServicePrice[];
   onReserve?: (service: Service, model: DeviceModel) => void;
+}
+
+interface DiscountResponse {
+  category_service_id: string;
+  discount: Discount;
+  discounted_price?: number;
 }
 
 
@@ -48,13 +54,68 @@ export function ServicePriceTable({
   // State for fallback image on load error
   const [imageError, setImageError] = useState(false);
 
+  // State for discounts
+  const [discounts, setDiscounts] = useState<Map<string, DiscountResponse>>(new Map());
+  const [isLoadingDiscounts, setIsLoadingDiscounts] = useState(true);
+
   // Parse model name for iPad/MacBook
   const { mainName, modelCodes } = parseModelName(model.name, model.category);
 
-  // Create price map for quick access
-  const priceMap = new Map(
-    prices.map((p) => [p.serviceId, p])
-  );
+  // Create price map for quick access using useMemo to avoid recreation on every render
+  const priceMap = useMemo(() => {
+    return new Map(prices.map((p) => [p.serviceId, p]));
+  }, [prices]);
+
+  // Load active discounts for category-service combinations
+  useEffect(() => {
+    async function fetchDiscounts() {
+      try {
+        setIsLoadingDiscounts(true);
+
+        // Get all category_service IDs from prices
+        const categoryServiceIds = Array.from(priceMap.values())
+          .map(p => p.categoryServiceId)
+          .filter((id): id is string => id !== null && id !== undefined)
+          .join(',');
+
+        if (!categoryServiceIds) {
+          setIsLoadingDiscounts(false);
+          return;
+        }
+
+        // Get original prices in the same order as category_service_ids
+        const originalPrices = Array.from(priceMap.values())
+          .filter(p => p.categoryServiceId)
+          .map(p => p.price || 0)
+          .join(',');
+
+        // Fetch active discounts using category_service_ids
+        const response = await fetch(
+          `/api/discounts/active?category_service_ids=${categoryServiceIds}&original_prices=${originalPrices}`
+        );
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch discounts');
+        }
+
+        const data = await response.json();
+
+        // Convert array to Map for quick lookup by category_service_id
+        const discountMap = new Map<string, DiscountResponse>();
+        (data.discounts || []).forEach((d: DiscountResponse) => {
+          discountMap.set(d.category_service_id, d);
+        });
+
+        setDiscounts(discountMap);
+      } catch (err) {
+        console.error('Error fetching discounts:', err);
+      } finally {
+        setIsLoadingDiscounts(false);
+      }
+    }
+
+    fetchDiscounts();
+  }, [priceMap]);
 
   const hasPrices = prices.length > 0;
   const hasServices = services.length > 0;
@@ -105,8 +166,9 @@ export function ServicePriceTable({
         <div className="lg:col-span-2">
           {/* Service table */}
           {hasPrices && hasServices && (
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow duration-300">
-              <table className="w-full">
+            <>
+              <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                <table className="w-full">
                 <thead>
                   <tr className="bg-gray-50 border-b border-gray-200">
                     <th className="px-4 sm:px-6 py-4 text-left text-sm font-semibold text-gray-900">
@@ -141,9 +203,38 @@ export function ServicePriceTable({
                           </div>
                         </td>
                         <td className="px-4 sm:px-6 py-4 text-right">
-                          <div className="font-semibold text-gray-900 text-lg">
-                            {price.price} Kč
-                          </div>
+                          {(() => {
+                            const discountData = price.categoryServiceId
+                              ? discounts.get(price.categoryServiceId)
+                              : null;
+
+                            if (discountData && discountData.discounted_price !== undefined) {
+                              // Service has an active discount
+                              const originalPrice = price.price;
+                              const discountedPrice = discountData.discounted_price;
+
+                              return (
+                                <div className="flex flex-col items-end gap-1">
+                                  {/* Original price (strikethrough) */}
+                                  <div className="text-sm text-gray-400 line-through">
+                                    {originalPrice} Kč
+                                  </div>
+
+                                  {/* Discounted price (green) */}
+                                  <div className="font-semibold text-green-600 text-xl">
+                                    {discountedPrice} Kč
+                                  </div>
+                                </div>
+                              );
+                            }
+
+                            // No discount - show regular price
+                            return (
+                              <div className="font-semibold text-gray-900 text-lg">
+                                {price.price} Kč
+                              </div>
+                            );
+                          })()}
                         </td>
                       </tr>
                     );
@@ -151,6 +242,14 @@ export function ServicePriceTable({
                 </tbody>
               </table>
             </div>
+
+            {/* Discount Notice */}
+            <div className="mt-4 px-4 sm:px-6">
+              <p className="text-xs text-gray-500">
+                {t.discountNotice}
+              </p>
+            </div>
+          </>
           )}
 
           {/* Empty State - no prices */}

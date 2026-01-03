@@ -17,6 +17,9 @@ export type AuditTable =
   | 'category_services'
   | 'prices'
   | 'device_images'
+  | 'discounts'
+  | 'discount_category_services'
+  | 'announcements'
 
 interface AuditLogParams {
   adminId: string

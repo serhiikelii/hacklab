@@ -1,9 +1,9 @@
 "use client"
 
 export function MapSection() {
-  const address = "Seifertova 83, Praha 3 - Žižkov, 130 00"
-  const googleMapsUrl = `https://www.google.com/maps?q=Seifertova+83,+Praha+3+-+Žižkov,+130+00&output=embed`
-  const navigationUrl = `https://www.google.com/maps/dir/?api=1&destination=Seifertova+83,+Praha+3,+130+00`
+  const address = "Budějovická 1667/64, 140 00 Praha 4"
+  const googleMapsUrl = `https://www.google.com/maps?q=Budějovická+1667/64,+140+00+Praha+4&output=embed`
+  const navigationUrl = `https://www.google.com/maps/dir/?api=1&destination=Budějovická+1667/64,+140+00+Praha+4`
 
   return (
     <div className="relative h-full min-h-[400px] rounded-lg overflow-hidden">

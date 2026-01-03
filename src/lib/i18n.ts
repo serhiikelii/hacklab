@@ -20,6 +20,7 @@ export const translations = {
     price: 'Цена',
     warranty: 'Гарантия',
     months: 'мес.',
+    discountNotice: '* При наличии нескольких акций применяется максимальная скидка. Скидки не суммируются.',
 
     // Breadcrumbs
     home: 'Главная',
@@ -149,11 +150,12 @@ export const translations = {
     // ContactSection
     addressTitle: 'Адрес',
     transportTitle: 'Транспорт',
-    transportStop: 'Остановка: Lipanská',
-    transportTrams: 'Трамваи: 5, 9, 15, 26',
+    transportStop: 'Остановка: Budějovická',
+    transportTrams: 'Автобусы: 124, 134, 170',
     openingHoursTitle: 'Часы работы',
     weekdaysHours: 'Понедельник - Пятница: 9:00 - 19:00',
-    saturdayHours: 'Суббота: 10:30 - 17:30',
+    saturdayHours: 'Суббота: закрыто',
+    sundayHours: 'Воскресенье: закрыто',
 
     // Pricelist page
     pricelistTitle: 'Ремонт Apple устройств в Праге',
@@ -184,7 +186,7 @@ export const translations = {
     footerWednesday: 'Среда: 09:00 - 19:00',
     footerThursday: 'Четверг: 09:00 - 19:00',
     footerFriday: 'Пятница: 09:00 - 19:00',
-    footerSaturday: 'Суббота: 10:30 - 17:30',
+    footerSaturday: 'Суббота: закрыто',
     footerSunday: 'Воскресенье: закрыто',
     footerContactTitle: 'Свяжитесь с нами:',
     footerCopyright: 'Copyright © 2025',
@@ -196,6 +198,7 @@ export const translations = {
     price: 'Price',
     warranty: 'Warranty',
     months: 'mo.',
+    discountNotice: '* If multiple promotions apply, the maximum discount is applied. Discounts do not stack.',
 
     // Breadcrumbs
     home: 'Home',
@@ -325,11 +328,12 @@ export const translations = {
     // ContactSection
     addressTitle: 'Address',
     transportTitle: 'Transport',
-    transportStop: 'Stop: Lipanská',
-    transportTrams: 'Trams: 5, 9, 15, 26',
+    transportStop: 'Stop: Budějovická',
+    transportTrams: 'Buses: 124, 134, 170',
     openingHoursTitle: 'Opening Hours',
     weekdaysHours: 'Monday - Friday: 9:00 - 19:00',
-    saturdayHours: 'Saturday: 10:30 - 17:30',
+    saturdayHours: 'Saturday: closed',
+    sundayHours: 'Sunday: closed',
 
     // Pricelist page
     pricelistTitle: 'Apple Device Repair in Prague',
@@ -360,7 +364,7 @@ export const translations = {
     footerWednesday: 'Wednesday: 09:00 - 19:00',
     footerThursday: 'Thursday: 09:00 - 19:00',
     footerFriday: 'Friday: 09:00 - 19:00',
-    footerSaturday: 'Saturday: 10:30 - 17:30',
+    footerSaturday: 'Saturday: closed',
     footerSunday: 'Sunday: closed',
     footerContactTitle: 'Contact Us:',
     footerCopyright: 'Copyright © 2025',
@@ -372,6 +376,7 @@ export const translations = {
     price: 'Cena',
     warranty: 'Záruka',
     months: 'měs.',
+    discountNotice: '* Při více akcích se uplatňuje maximální sleva. Slevy se nesčítají.',
 
     // Breadcrumbs
     home: 'Domů',
@@ -501,11 +506,12 @@ export const translations = {
     // ContactSection
     addressTitle: 'Adresa',
     transportTitle: 'Doprava',
-    transportStop: 'Zastávka: Lipanská',
-    transportTrams: 'Tramvaje: 5, 9, 15, 26',
+    transportStop: 'Zastávka: Budějovická',
+    transportTrams: 'Autobusy: 124, 134, 170',
     openingHoursTitle: 'Otevírací doba',
     weekdaysHours: 'Pondělí - Pátek: 9:00 - 19:00',
-    saturdayHours: 'Sobota: 10:30 - 17:30',
+    saturdayHours: 'Sobota: zavřeno',
+    sundayHours: 'Neděle: zavřeno',
 
     // Pricelist page
     pricelistTitle: 'Oprava zařízení Apple v Praze',
@@ -536,7 +542,7 @@ export const translations = {
     footerWednesday: 'Středa: 09:00 - 19:00',
     footerThursday: 'Čtvrtek: 09:00 - 19:00',
     footerFriday: 'Pátek: 09:00 - 19:00',
-    footerSaturday: 'Sobota: 10:30 - 17:30',
+    footerSaturday: 'Sobota: zavřeno',
     footerSunday: 'Neděle: zavřeno',
     footerContactTitle: 'Kontaktujte nás:',
     footerCopyright: 'Copyright © 2025',

@@ -196,7 +196,8 @@ export async function getServicesForCategory(categorySlug: DeviceCategory): Prom
 }
 
 /**
- * Get prices for a specific model (no cache - Next.js deduplicates automatically)
+ * Get prices for a specific model with category_service_id for discount lookups
+ * (no cache - Next.js deduplicates automatically)
  */
 export async function getPricesForModel(modelId: string): Promise<ServicePrice[]> {
   try {
@@ -210,18 +211,57 @@ export async function getPricesForModel(modelId: string): Promise<ServicePrice[]
       return [];
     }
 
-    const { data, error } = await supabase
+    // Get model to know its category
+    const { data: model, error: modelError } = await supabase
+      .from('device_models')
+      .select('category_id')
+      .eq('id', modelId)
+      .single();
+
+    if (modelError || !model) {
+      console.error('Error fetching model category:', modelError);
+      return [];
+    }
+
+    // TypeScript type narrowing fix for .single() return type
+    const modelCategory = model as { category_id: string };
+
+    // Get prices for the model
+    const { data: pricesData, error: pricesError } = await supabase
       .from('prices')
       .select('*')
       .eq('model_id', modelId)
       .order('service_id');
 
-    if (error) {
-      console.error('Error fetching prices:', error);
+    if (pricesError) {
+      console.error('Error fetching prices:', pricesError);
       return [];
     }
 
-    return data ? data.map(transformPrice) : [];
+    // Get category_services for this category to map service_id -> category_service_id
+    const { data: categoryServices, error: csError } = await supabase
+      .from('category_services')
+      .select('id, service_id')
+      .eq('category_id', modelCategory.category_id);
+
+    if (csError) {
+      console.error('Error fetching category_services:', csError);
+      return pricesData ? pricesData.map(transformPrice) : [];
+    }
+
+    // TypeScript type narrowing fix
+    const csData = (categoryServices || []) as Array<{ id: string; service_id: string }>;
+
+    // Create map: service_id -> category_service_id
+    const serviceMap = new Map(
+      csData.map(cs => [cs.service_id, cs.id])
+    );
+
+    // Transform prices and add category_service_id
+    return pricesData ? pricesData.map((price: any) => ({
+      ...transformPrice(price),
+      categoryServiceId: serviceMap.get(price.service_id) || null,
+    })) : [];
   } catch (error) {
     console.error('Unexpected error in getPricesForModel:', error);
     return [];
