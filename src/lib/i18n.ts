@@ -150,11 +150,12 @@ export const translations = {
     // ContactSection
     addressTitle: 'Адрес',
     transportTitle: 'Транспорт',
-    transportStop: 'Остановка: Lipanská',
-    transportTrams: 'Трамваи: 5, 9, 15, 26',
+    transportStop: 'Остановка: Budějovická',
+    transportTrams: 'Автобусы: 124, 134, 170',
     openingHoursTitle: 'Часы работы',
     weekdaysHours: 'Понедельник - Пятница: 9:00 - 19:00',
     saturdayHours: 'Суббота: закрыто',
+    sundayHours: 'Воскресенье: закрыто',
 
     // Pricelist page
     pricelistTitle: 'Ремонт Apple устройств в Праге',
@@ -327,11 +328,12 @@ export const translations = {
     // ContactSection
     addressTitle: 'Address',
     transportTitle: 'Transport',
-    transportStop: 'Stop: Lipanská',
-    transportTrams: 'Trams: 5, 9, 15, 26',
+    transportStop: 'Stop: Budějovická',
+    transportTrams: 'Buses: 124, 134, 170',
     openingHoursTitle: 'Opening Hours',
     weekdaysHours: 'Monday - Friday: 9:00 - 19:00',
     saturdayHours: 'Saturday: closed',
+    sundayHours: 'Sunday: closed',
 
     // Pricelist page
     pricelistTitle: 'Apple Device Repair in Prague',
@@ -504,11 +506,12 @@ export const translations = {
     // ContactSection
     addressTitle: 'Adresa',
     transportTitle: 'Doprava',
-    transportStop: 'Zastávka: Lipanská',
-    transportTrams: 'Tramvaje: 5, 9, 15, 26',
+    transportStop: 'Zastávka: Budějovická',
+    transportTrams: 'Autobusy: 124, 134, 170',
     openingHoursTitle: 'Otevírací doba',
     weekdaysHours: 'Pondělí - Pátek: 9:00 - 19:00',
     saturdayHours: 'Sobota: zavřeno',
+    sundayHours: 'Neděle: zavřeno',
 
     // Pricelist page
     pricelistTitle: 'Oprava zařízení Apple v Praze',

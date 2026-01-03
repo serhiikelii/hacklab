@@ -64,6 +64,10 @@ export function AnnouncementDialog({ announcement, trigger, open: controlledOpen
   const [titleRu, setTitleRu] = useState(announcement?.title_ru || '')
   const [titleEn, setTitleEn] = useState(announcement?.title_en || '')
   const [titleCz, setTitleCz] = useState(announcement?.title_cz || '')
+  const [linkUrl, setLinkUrl] = useState(announcement?.link_url || '')
+  const [linkTextRu, setLinkTextRu] = useState(announcement?.link_text_ru || '')
+  const [linkTextEn, setLinkTextEn] = useState(announcement?.link_text_en || '')
+  const [linkTextCz, setLinkTextCz] = useState(announcement?.link_text_cz || '')
 
   // Sync form state when announcement prop changes
   useEffect(() => {
@@ -73,6 +77,10 @@ export function AnnouncementDialog({ announcement, trigger, open: controlledOpen
       setTitleRu(announcement.title_ru || '')
       setTitleEn(announcement.title_en || '')
       setTitleCz(announcement.title_cz || '')
+      setLinkUrl(announcement.link_url || '')
+      setLinkTextRu(announcement.link_text_ru || '')
+      setLinkTextEn(announcement.link_text_en || '')
+      setLinkTextCz(announcement.link_text_cz || '')
     }
   }, [announcement])
 
@@ -109,6 +117,10 @@ export function AnnouncementDialog({ announcement, trigger, open: controlledOpen
         setTitleRu('')
         setTitleEn('')
         setTitleCz('')
+        setLinkUrl('')
+        setLinkTextRu('')
+        setLinkTextEn('')
+        setLinkTextCz('')
       }
     } else {
       setError(result.error || `Error ${isEditMode ? 'updating' : 'creating'} announcement`)
@@ -303,6 +315,56 @@ export function AnnouncementDialog({ announcement, trigger, open: controlledOpen
             <p className="text-xs text-gray-500 mt-1">
               Lower number = higher priority (shown first)
             </p>
+          </div>
+
+          {/* Link URL (optional) */}
+          <div>
+            <Label htmlFor="link_url">Link URL (optional)</Label>
+            <Input
+              id="link_url"
+              name="link_url"
+              type="url"
+              value={linkUrl}
+              onChange={(e) => setLinkUrl(e.target.value)}
+              placeholder="https://example.com/promotion"
+            />
+            <p className="text-xs text-gray-500 mt-1">
+              Optional link for the banner action button
+            </p>
+          </div>
+
+          {/* Link Button Text (optional) */}
+          <div className="grid grid-cols-3 gap-4">
+            <div>
+              <Label htmlFor="link_text_ru">Link Text (RU)</Label>
+              <Input
+                id="link_text_ru"
+                name="link_text_ru"
+                value={linkTextRu}
+                onChange={(e) => setLinkTextRu(e.target.value)}
+                placeholder="Узнать больше"
+              />
+            </div>
+            <div>
+              <Label htmlFor="link_text_en">Link Text (EN)</Label>
+              <Input
+                id="link_text_en"
+                name="link_text_en"
+                value={linkTextEn}
+                onChange={(e) => setLinkTextEn(e.target.value)}
+                placeholder="Learn more"
+              />
+            </div>
+            <div>
+              <Label htmlFor="link_text_cz">Link Text (CZ)</Label>
+              <Input
+                id="link_text_cz"
+                name="link_text_cz"
+                value={linkTextCz}
+                onChange={(e) => setLinkTextCz(e.target.value)}
+                placeholder="Více informací"
+              />
+            </div>
           </div>
 
           {/* Active checkbox */}

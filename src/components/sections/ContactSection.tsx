@@ -69,6 +69,7 @@ export function ContactSection() {
                 <h3 className="font-bold text-gray-900 mb-2">{t.openingHoursTitle}</h3>
                 <p className="text-gray-700">{t.weekdaysHours}</p>
                 <p className="text-gray-700">{t.saturdayHours}</p>
+                <p className="text-gray-700">{t.sundayHours}</p>
               </div>
             </div>
 
