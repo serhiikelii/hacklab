@@ -5,6 +5,33 @@ export async function PATCH(request: NextRequest) {
   try {
     const supabase = await createClient()
 
+    // Authentication check
+    const {
+      data: { session },
+    } = await supabase.auth.getSession()
+
+    if (!session) {
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized' },
+        { status: 401 }
+      )
+    }
+
+    // Check if user is admin
+    const { data: adminData, error: adminError } = await supabase
+      .from('admins')
+      .select('id')
+      .eq('user_id', session.user.id)
+      .eq('is_active', true)
+      .single()
+
+    if (adminError || !adminData) {
+      return NextResponse.json(
+        { success: false, error: 'Forbidden - Admin access required' },
+        { status: 403 }
+      )
+    }
+
     // Parse request body
     const { orders } = await request.json()
 

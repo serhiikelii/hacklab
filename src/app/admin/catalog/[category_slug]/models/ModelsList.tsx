@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 import {
   DndContext,
   closestCenter,
@@ -82,9 +83,11 @@ function SortableModelItem({
         >
           <div className="flex items-center space-x-4">
             {model.image_url ? (
-              <img
+              <Image
                 src={model.image_url}
                 alt={model.name}
+                width={48}
+                height={48}
                 className="h-12 w-12 rounded object-cover"
               />
             ) : (
